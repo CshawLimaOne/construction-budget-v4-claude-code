@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell.exe -Command \"Get-Command npm | Select-Object -ExpandProperty Source\")",
+      "Bash(powershell.exe -Command \"Get-Command node -ErrorAction SilentlyContinue | Select-Object Source; ls ''C:\\\\Program Files\\\\nodejs'' -ErrorAction SilentlyContinue; ls ''C:\\\\Users\\\\cshaw\\\\AppData\\\\Roaming\\\\nvm'' -ErrorAction SilentlyContinue\")",
+      "Bash(\"/c/Program Files/nodejs/npm.cmd\" install)",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
+      "Bash(npm install:*)",
+      "mcp__Claude_Preview__preview_start",
+      "WebFetch(domain:www.limaone.com)",
+      "Bash(find '/c/Users/cshaw/OneDrive - Lima One Capital/Desktop/construction-budget-v4-claude-code' -maxdepth 2 \\\\\\(-name *.png -o -name *.jpg -o -name *.jpeg -o -name *.webp \\\\\\))",
+      "Bash(npm run:*)"
+    ]
+  }
+}

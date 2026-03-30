@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Construction Budget Spreadsheet</title>
+  <!-- Lima One brand color token — must be defined before Tailwind CDN initializes -->
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50:  '#eff8fe',
+                100: '#d5edfb',
+                200: '#a8daf7',
+                300: '#6bbff1',
+                400: '#2fa3e8',
+                500: '#0693e3',
+                600: '#0578c4',
+                700: '#0460a3',
+                800: '#074d80',
+                900: '#09406a',
+              }
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <!-- Tailwind CDN is now injected by index.tsx if missing, but kept here for dev speed -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Shepherd.js CSS injected by index.tsx if missing -->
+  <!-- SheetJS library for parsing .xlsx files -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "shepherd.js": "https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/+esm",
+    "@google/genai": "https://esm.sh/@google/genai",
+    "vite": "https://aistudiocdn.com/vite@^7.2.4",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1",
+    "path": "https://aistudiocdn.com/path@^0.12.7",
+    "url": "https://aistudiocdn.com/url@^0.11.4"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <!-- Widget Container for Style Isolation -->
+  <div id="construction-budget-app"></div>
+  <script type="module" src="/index.tsx"></script>
+  <!-- Auto-initialize the widget for standalone preview -->
+  <script>
+    window.addEventListener('load', () => {
+      if (window.ConstructionBudget) {
+        window.ConstructionBudget.mount();
+      }
+    });
+  </script>
+</body>
+</html>

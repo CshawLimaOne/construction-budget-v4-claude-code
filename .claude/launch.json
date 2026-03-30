@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "construction-budget-v4",
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/c", "start-dev.bat"],
+      "port": 5173
+    }
+  ]
+}

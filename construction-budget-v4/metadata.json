@@ -1,0 +1,9 @@
+{
+  "name": "Construction Budget V4",
+  "description": "A web application to manage construction project budgets, replicating a detailed spreadsheet format. Allows input for property details, project scope, and line-item budgeting.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "prompt": ""
+}

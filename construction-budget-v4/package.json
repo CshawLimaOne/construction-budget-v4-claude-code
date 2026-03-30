@@ -1,0 +1,24 @@
+{
+  "name": "construction-budget-v4",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:widget": "BUILD_TARGET=widget vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "shepherd.js": "10.0.1",
+    "@google/genai": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.1.1",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}
