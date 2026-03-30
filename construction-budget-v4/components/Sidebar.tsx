@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { BuildingIcon, ClipboardUserIcon, CalculatorIcon, ClipboardCheckIcon, CheckCircleIcon, MapPinIcon } from './Icons';
+import { HomeIcon, IdentificationIcon, BanknotesIcon, PaperAirplaneIcon, CheckCircleIcon, MapPinIcon } from './Icons';
 import { ApplicationStatus, UserRole, CommentThread, RiskAnalysisResult, ApplicationStrength } from '../types';
 import { ActionCenterWidget } from './ActionCenter';
 import { RiskGauge } from './RiskGauge';
@@ -27,10 +27,10 @@ interface SidebarProps {
 }
 
 const steps = [
-  { number: 1, label: 'Property Detail', icon: <BuildingIcon className="step-icon" /> },
-  { number: 2, label: 'GC & Documents', icon: <ClipboardUserIcon className="step-icon" /> },
-  { number: 3, label: 'Detailed Budget', icon: <CalculatorIcon className="step-icon" /> },
-  { number: 4, label: 'Review & Submit', icon: <ClipboardCheckIcon className="step-icon" /> },
+  { number: 1, label: 'Property Detail', icon: <HomeIcon className="step-icon" /> },
+  { number: 2, label: 'GC & Documents', icon: <IdentificationIcon className="step-icon" /> },
+  { number: 3, label: 'Detailed Budget', icon: <BanknotesIcon className="step-icon" /> },
+  { number: 4, label: 'Review & Submit', icon: <PaperAirplaneIcon className="step-icon" /> },
 ];
 
 const RiskMonitorWidget: React.FC<{ riskAnalysis: RiskAnalysisResult }> = ({ riskAnalysis }) => {
@@ -81,6 +81,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentStep, propertyAddress, 
   );
 
   return (
+    <>
     <aside className="sidebar">
       {/* Floating Glass Panel */}
       <div className="sidebar-glass-panel">
@@ -147,9 +148,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentStep, propertyAddress, 
           </div>
       </div>
 
-      <DealStrengthLogicModal 
-        isOpen={isLogicModalOpen} 
-        onClose={() => setIsLogicModalOpen(false)} 
+    </aside>
+
+      <DealStrengthLogicModal
+        isOpen={isLogicModalOpen}
+        onClose={() => setIsLogicModalOpen(false)}
+        strength={applicationStrength}
       />
 
       <ComplexModal
@@ -173,6 +177,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentStep, propertyAddress, 
               <div className="text-center p-4">Loading recommendation...</div>
           )}
       </ComplexModal>
-    </aside>
+    </>
   );
 };

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ApplicationStrength } from '../types';
-import { CalculatorIcon as LogicIcon } from './Icons';
+import { InfoIcon, HomeIcon, IdentificationIcon, BanknotesIcon, DocumentTextIcon, CameraIcon, CheckCircleIcon } from './Icons';
 
 interface ApplicationStrengthWidgetProps {
   strength: ApplicationStrength;
@@ -9,94 +9,190 @@ interface ApplicationStrengthWidgetProps {
   onShowLogic: () => void;
 }
 
-export const ApplicationStrengthWidget: React.FC<ApplicationStrengthWidgetProps> = ({ strength, onActionClick, onShowLogic }) => {
-  const { score, level, nextBestAction, nextActionDescription } = strength;
+const CATEGORIES = [
+  { key: 'basics'  as const, label: 'The Basics',   max: 20, Icon: HomeIcon },
+  { key: 'team'    as const, label: 'Team & Docs',   max: 15, Icon: IdentificationIcon },
+  { key: 'budget'  as const, label: 'Budget Detail', max: 30, Icon: BanknotesIcon },
+  { key: 'quality' as const, label: 'Descriptions',  max: 20, Icon: DocumentTextIcon },
+  { key: 'photos'  as const, label: 'Photos',        max: 15, Icon: CameraIcon },
+];
 
-  // Bar color progression: slate → LO cyan → purple → emerald
-  let barColor = '#475569';       // 0–39: slate
-  let textColor = 'text-slate-300';
+export const ApplicationStrengthWidget: React.FC<ApplicationStrengthWidgetProps> = ({
+  strength,
+  onActionClick,
+  onShowLogic,
+}) => {
+  const { score, level, nextBestAction, nextActionDescription, breakdown } = strength;
+
+  // Color tier
+  let barColor   = '#475569';
+  let textColor  = 'text-slate-300';
+  let topBorder  = 'rgba(71,85,105,0.4)';
   if (score >= 90) {
-      barColor = '#10b981';       // 90–100: emerald
-      textColor = 'text-emerald-300';
+    barColor  = '#10b981';
+    textColor = 'text-emerald-300';
+    topBorder = 'rgba(16,185,129,0.45)';
   } else if (score >= 70) {
-      barColor = '#a855f7';       // 70–89: purple
-      textColor = 'text-purple-300';
+    barColor  = '#a855f7';
+    textColor = 'text-purple-300';
+    topBorder = 'rgba(168,85,247,0.45)';
   } else if (score >= 40) {
-      barColor = '#0693e3';       // 40–69: LO cyan
-      textColor = 'text-[#0693e3]';
+    barColor  = '#0693e3';
+    textColor = 'text-[#0693e3]';
+    topBorder = 'rgba(6,147,227,0.45)';
   }
 
-  // Format Description with Bold Markdown support
+  // Dynamic subtitle by tier
+  const subtitle =
+    score >= 90 ? 'Your application is strong and ready for analyst review!' :
+    score >= 70 ? 'Almost there — a few more steps will make this loan-ready.' :
+    score >= 40 ? 'Good progress — keep filling in details to strengthen your file.' :
+                  'Your application needs significant work before submission.';
+
+  // Bold markdown support in description
   const formattedDesc = nextActionDescription.split('**').map((part, i) =>
-      i % 2 === 1 ? <strong key={i} className="text-white font-bold">{part}</strong> : part
+    i % 2 === 1
+      ? <strong key={i} className="text-white font-bold">{part}</strong>
+      : part
   );
 
-  return (
-    <div className="bg-slate-900/90 border border-slate-700/50 rounded-2xl shadow-xl backdrop-blur-sm overflow-hidden mb-6">
+  const isComplete = score >= 100;
 
-      {/* Header */}
-      <div className="px-5 py-3 border-b border-white/5 flex justify-between items-center bg-white/5">
-          <h4 className="font-bold text-slate-100 text-xs uppercase tracking-widest">
-            Application Guide
-          </h4>
-          {import.meta.env.DEV && (
-            <button
-              onClick={onShowLogic}
-              className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 group"
-              title="How is this calculated?"
-            >
-              <LogicIcon className="w-3.5 h-3.5" />
-              <span className="text-[10px] font-bold uppercase group-hover:underline">Logic</span>
-            </button>
-          )}
+  return (
+    <div
+      className="rounded-2xl overflow-hidden mb-6 shadow-xl backdrop-blur-sm"
+      style={{
+        background: 'linear-gradient(135deg, rgba(6,147,227,0.06) 0%, rgba(10,15,35,0.96) 100%)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderTop: `2px solid ${topBorder}`,
+      }}
+    >
+      {/* ── Header ── */}
+      <div
+        className="px-5 py-3 border-b border-white/5 flex justify-between items-center"
+        style={{ background: 'rgba(255,255,255,0.02)' }}
+      >
+        <h4 className="font-bold text-slate-100 text-xs uppercase tracking-widest flex items-center gap-2">
+          <span
+            className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0"
+            style={{ backgroundColor: barColor }}
+          />
+          Application Guide
+        </h4>
+        <button
+          onClick={onShowLogic}
+          aria-label="How is the Application Score calculated?"
+          className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors group cursor-pointer"
+        >
+          <InfoIcon className="w-3.5 h-3.5 !ml-0" />
+          <span className="text-[10px] font-bold uppercase group-hover:underline">Logic</span>
+        </button>
       </div>
 
-      {/* Main Content */}
-      <div className="p-5">
-
-          {/* Level label + score */}
-          <div className="flex items-baseline justify-between mb-1">
-            <span className={`text-base font-bold ${textColor}`}>{level}</span>
-            <span className="text-sm font-black text-white tabular-nums">{score}%</span>
-          </div>
-
-          {/* Slim linear progress bar */}
-          <div className="w-full h-2 bg-slate-700/60 rounded-full overflow-hidden mb-3">
+      {/* ── Body ── */}
+      <div className="p-4">
+        {isComplete ? (
+          /* Celebration state */
+          <div className="text-center py-3">
             <div
-              className="h-full rounded-full transition-all duration-700 ease-out"
-              style={{ width: `${score}%`, backgroundColor: barColor, boxShadow: `0 0 8px ${barColor}80` }}
-            />
+              className="w-14 h-14 mx-auto mb-3 rounded-full flex items-center justify-center"
+              style={{ background: 'rgba(16,185,129,0.15)', boxShadow: '0 0 24px rgba(16,185,129,0.35)' }}
+            >
+              <CheckCircleIcon className="w-8 h-8 text-emerald-400" />
+            </div>
+            <p className="text-sm font-bold text-emerald-300 mb-1">Application Ready!</p>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              All sections complete. You're ready for analyst review.
+            </p>
           </div>
-
-          {/* Subtitle */}
-          <p className="text-xs text-slate-400 leading-snug mb-0">
-            {score < 100
-              ? 'Complete tasks to improve your application health.'
-              : 'Great job! Your application is ready for review.'}
-          </p>
-
-          {/* Next Best Action Card */}
-          {score < 100 && (
-              <div className="mt-5 bg-white/5 rounded-xl border border-white/10 p-4 relative group hover:bg-white/10 transition-colors">
-                  <div className="absolute -left-[1px] top-4 bottom-4 w-1 bg-[#0693e3] rounded-r-full"></div>
-                  
-                  <div className="pl-3">
-                      <h5 className="text-sm font-bold text-white mb-1">
-                          {nextBestAction}
-                      </h5>
-                      <p className="text-xs text-slate-400 mb-3 leading-relaxed">
-                          {formattedDesc}
-                      </p>
-                      
-                      <button
-                          onClick={onActionClick}
-                          className="text-xs font-bold text-[#0693e3] hover:text-white flex items-center group-hover:translate-x-1 transition-all"
-                      >
-                          Do this now →
-                      </button>
-                  </div>
+        ) : (
+          <>
+            {/* Score + Level */}
+            <div className="flex items-end justify-between mb-2">
+              <div>
+                <span className={`text-[10px] font-semibold uppercase tracking-wider ${textColor} opacity-80`}>
+                  {level}
+                </span>
+                <div className="text-3xl font-black text-white tabular-nums leading-none mt-0.5">
+                  {score}
+                  <span className="text-base font-bold text-slate-500 ml-0.5">%</span>
+                </div>
               </div>
-          )}
+              <span className="text-[10px] text-slate-600 font-medium pb-1">out of 100</span>
+            </div>
+
+            {/* Progress bar */}
+            <div className="w-full h-3 bg-slate-800/80 rounded-full overflow-hidden mb-2">
+              <div
+                className="h-full rounded-full transition-all duration-700 ease-out"
+                style={{
+                  width: `${score}%`,
+                  backgroundColor: barColor,
+                  boxShadow: `0 0 10px ${barColor}70`,
+                }}
+              />
+            </div>
+
+            {/* Dynamic subtitle */}
+            <p className="text-xs text-slate-500 leading-snug mb-4">{subtitle}</p>
+
+            {/* 5-Category Checklist */}
+            <div className="space-y-2 mb-4 p-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+              {CATEGORIES.map(({ key, label, max, Icon }) => {
+                const earned = breakdown[key] ?? 0;
+                const done = earned >= max;
+                const pct = Math.min(100, Math.round((earned / max) * 100));
+                return (
+                  <div key={key} className="flex items-center gap-1.5">
+                    {/* Check/dot */}
+                    <div
+                      className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${done ? 'bg-emerald-500/20' : 'bg-white/5 border border-white/10'}`}
+                    >
+                      {done
+                        ? <svg viewBox="0 0 12 12" className="w-2.5 h-2.5 text-emerald-400" fill="none" stroke="currentColor" strokeWidth={2}><path d="M2 6l3 3 5-5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                        : <div className="w-1.5 h-1.5 rounded-full bg-slate-700" />
+                      }
+                    </div>
+                    {/* Icon */}
+                    <Icon className={`w-3 h-3 flex-shrink-0 ${done ? 'text-emerald-400' : 'text-slate-600'}`} />
+                    {/* Label */}
+                    <span className={`text-[11px] flex-1 min-w-0 truncate ${done ? 'text-slate-300' : 'text-slate-500'}`}>{label}</span>
+                    {/* Mini bar */}
+                    <div className="w-10 h-1.5 bg-slate-800 rounded-full overflow-hidden flex-shrink-0">
+                      <div
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{ width: `${pct}%`, backgroundColor: done ? '#10b981' : barColor }}
+                      />
+                    </div>
+                    {/* Points */}
+                    <span className={`text-[10px] font-bold tabular-nums w-7 text-right flex-shrink-0 ${done ? 'text-emerald-400' : 'text-slate-600'}`}>
+                      {earned}/{max}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Next Best Action Card */}
+            <div
+              className="rounded-xl p-4 relative group hover:bg-white/5 transition-colors cursor-default"
+              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}
+            >
+              <div className="absolute -left-[1px] top-4 bottom-4 w-1 rounded-r-full" style={{ backgroundColor: barColor }} />
+              <div className="pl-3">
+                <h5 className="text-sm font-bold text-white mb-1">{nextBestAction}</h5>
+                <p className="text-xs text-slate-400 mb-3 leading-relaxed">{formattedDesc}</p>
+                <button
+                  onClick={onActionClick}
+                  className="text-xs font-bold flex items-center gap-1 hover:text-white transition-all group-hover:translate-x-1 cursor-pointer"
+                  style={{ color: barColor }}
+                >
+                  Do this now →
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

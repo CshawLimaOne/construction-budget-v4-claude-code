@@ -121,6 +121,43 @@ export const ClipboardCheckIcon: React.FC<{className?: string}> = ({className}) 
     </svg>
 );
 
+// Descriptive Quality — pencil on document
+export const DocumentTextIcon: React.FC<{className?: string}> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+    </svg>
+);
+
+/* ── Sidebar step icons ───────────────────────────────────────────────── */
+
+// Step 1 — Property Detail: house silhouette
+export const HomeIcon: React.FC<{className?: string}> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12 11.204 3.045c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+    </svg>
+);
+
+// Step 2 — GC & Documents: ID card with person (contractor identity)
+export const IdentificationIcon: React.FC<{className?: string}> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z" />
+    </svg>
+);
+
+// Step 3 — Detailed Budget: banknotes (money / costs)
+export const BanknotesIcon: React.FC<{className?: string}> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+    </svg>
+);
+
+// Step 4 — Review & Submit: paper airplane (send / submit)
+export const PaperAirplaneIcon: React.FC<{className?: string}> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+    </svg>
+);
+
 export const ChatBubbleIcon: React.FC<{className?: string}> = ({className}) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-5 h-5 ${className}`}>
         <path fillRule="evenodd" d="M2.5 4A1.5 1.5 0 0 1 4 2.5h12A1.5 1.5 0 0 1 17.5 4v8.5A1.5 1.5 0 0 1 16 14H6.621a1.5 1.5 0 0 0-1.06.44L2.5 17.5V4Z" clipRule="evenodd" />
@@ -214,10 +251,39 @@ export const NewConstructionIcon: React.FC<{className?: string}> = ({className})
     </svg>
 );
 
+// New Construction: Tower crane + ascending building floors
 export const TractorIcon: React.FC<{className?: string}> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Foundation slab */}
+    <rect x="7" y="42" width="22" height="4" rx="1" fill="#fb923c" fillOpacity="0.2" stroke="#fb923c" strokeWidth="1.5" strokeOpacity="0.65"/>
+    {/* Building floor 1 (bottom) */}
+    <rect x="9" y="32" width="18" height="10" rx="0.5" fill="#fb923c" fillOpacity="0.08" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Building floor 2 (middle) */}
+    <rect x="11" y="23" width="14" height="9" rx="0.5" fill="#fb923c" fillOpacity="0.13" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Building floor 3 (top, partially under construction) */}
+    <rect x="13" y="15" width="10" height="8" rx="0.5" fill="#fb923c" fillOpacity="0.2" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Window details — floor 1 */}
+    <rect x="12" y="34.5" width="3" height="4" rx="0.5" fill="#fb923c" fillOpacity="0.3" stroke="currentColor" strokeWidth="1"/>
+    <rect x="17" y="34.5" width="3" height="4" rx="0.5" fill="#fb923c" fillOpacity="0.3" stroke="currentColor" strokeWidth="1"/>
+    <rect x="22" y="34.5" width="3" height="4" rx="0.5" fill="#fb923c" fillOpacity="0.3" stroke="currentColor" strokeWidth="1"/>
+    {/* Window details — floor 2 */}
+    <rect x="14" y="26" width="2.5" height="3" rx="0.5" fill="#fb923c" fillOpacity="0.2" stroke="currentColor" strokeWidth="1"/>
+    <rect x="19.5" y="26" width="2.5" height="3" rx="0.5" fill="#fb923c" fillOpacity="0.2" stroke="currentColor" strokeWidth="1"/>
+    {/* Crane mast — vertical */}
+    <line x1="38" y1="46" x2="38" y2="6" stroke="currentColor" strokeWidth="2.5"/>
+    {/* Crane brace */}
+    <line x1="38" y1="22" x2="32" y2="46" stroke="currentColor" strokeWidth="1" strokeOpacity="0.3"/>
+    {/* Crane boom — horizontal */}
+    <line x1="14" y1="8" x2="44" y2="8" stroke="currentColor" strokeWidth="2"/>
+    {/* Back stay — diagonal from mast top to end of boom */}
+    <line x1="38" y1="7" x2="16" y2="8" stroke="currentColor" strokeWidth="1" strokeOpacity="0.4"/>
+    {/* Counterweight block */}
+    <rect x="40" y="5" width="6" height="6" rx="1" fill="#fb923c" fillOpacity="0.35" stroke="#fb923c" strokeWidth="1.5"/>
+    {/* Lift cable — dashed orange */}
+    <line x1="24" y1="8" x2="24" y2="18" stroke="#fb923c" strokeWidth="1.5" strokeOpacity="0.75" strokeDasharray="2,1.5"/>
+    {/* Hook */}
+    <path d="M22 18 L22 22 Q22 26 26 26 Q30 26 30 22" stroke="#fb923c" strokeWidth="1.5" strokeOpacity="0.75" fill="none"/>
+  </svg>
 );
 
 export const MagicWandIcon: React.FC<{className?: string}> = ({className}) => (
@@ -258,77 +324,96 @@ export const WrenchScrewdriverIcon: React.FC<{className?: string}> = ({className
     </svg>
 );
 
-// ── Rehab Type Icons — custom 48×48 architectural line-art ──────────────────
+// ── Rehab Type Icons — premium 48×48 illustrated icons ──────────────────────
 
-// Light Cosmetic: paint roller — roller with nap texture, L-arm, ergonomic handle
+// Light Cosmetic: paint roller with fresh mint-green paint swath + drops
 export const RehabLightIcon: React.FC<{className?: string}> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className={className}>
-        {/* Roller outer body */}
-        <rect x="2" y="4" width="31" height="14" rx="6" />
-        {/* Nap texture — zigzag across top of roller showing pile */}
-        <polyline points="5,7 7.5,12 10,7 12.5,12 15,7 17.5,12 20,7 22.5,12 25,7 27.5,12 30,7" strokeWidth={1.5} />
-        {/* End cap — small rect on right face of roller */}
-        <rect x="31" y="6" width="5" height="10" rx="1" />
-        {/* Arm — L-shape: short horizontal right, then straight down */}
-        <polyline points="36,11 43,11 43,29" />
-        {/* Handle — ergonomic tapered shape, wider at top, rounded bottom */}
-        <path d="M39,29 L47,29 Q48,36 46,41 Q44,46 43,46 Q42,46 40,41 Q38,36 39,29 Z" />
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Fresh paint swath — wide stroke for paint film */}
+    <path d="M3 24 Q10 20 18 23 Q26 26 34 22" stroke="#4ade80" strokeWidth="5" strokeOpacity="0.22" fill="none"/>
+    <path d="M3 24 Q10 20 18 23 Q26 26 34 22" stroke="#4ade80" strokeWidth="2" strokeOpacity="0.7" fill="none"/>
+    {/* Roller cylinder */}
+    <rect x="2" y="6" width="28" height="13" rx="5" stroke="currentColor" strokeWidth="2"/>
+    {/* Nap texture — zigzag pile on roller face */}
+    <path d="M5 9 L7.5 14 L10 9 L12.5 14 L15 9 L17.5 14 L20 9 L22.5 14 L25 9 L27.5 14" stroke="currentColor" strokeWidth="1.3" strokeOpacity="0.5"/>
+    {/* End cap */}
+    <rect x="29" y="8" width="5" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+    {/* L-arm */}
+    <path d="M34 12.5 L42 12.5 L42 30" stroke="currentColor" strokeWidth="2"/>
+    {/* Handle grip */}
+    <rect x="38" y="30" width="8" height="14" rx="4" stroke="currentColor" strokeWidth="2"/>
+    {/* Grip texture lines */}
+    <line x1="40" y1="33" x2="44" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.35"/>
+    <line x1="40" y1="36" x2="44" y2="36" stroke="currentColor" strokeWidth="1" strokeOpacity="0.35"/>
+    <line x1="40" y1="39" x2="44" y2="39" stroke="currentColor" strokeWidth="1" strokeOpacity="0.35"/>
+    {/* Paint drops — green filled circles */}
+    <circle cx="10" cy="29" r="2.5" fill="#4ade80" fillOpacity="0.65"/>
+    <circle cx="20" cy="31" r="1.8" fill="#4ade80" fillOpacity="0.45"/>
+    <circle cx="29" cy="29" r="2" fill="#4ade80" fillOpacity="0.55"/>
+  </svg>
 );
 
-// Standard Full: house with right-side wall framing exposed (studs visible, foundation intact)
+// Standard Full: house cross-section — left half finished, right half teal framing exposed
 export const RehabStandardIcon: React.FC<{className?: string}> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className={className}>
-        {/* Ground */}
-        <line x1="4" y1="43" x2="44" y2="43" strokeWidth={2} />
-        {/* Roof */}
-        <polyline points="4,24 24,8 44,24" />
-        {/* Left wall — solid/sheathed */}
-        <line x1="6" y1="24" x2="6" y2="43" />
-        {/* Left window */}
-        <rect x="8" y="26" width="8" height="7" />
-        <line x1="12" y1="26" x2="12" y2="33" />
-        <line x1="8" y1="29.5" x2="16" y2="29.5" />
-        {/* Door */}
-        <rect x="18" y="32" width="8" height="11" />
-        {/* Dashed divider — where framing is exposed */}
-        <line x1="27" y1="24" x2="27" y2="43" strokeDasharray="3 2" />
-        {/* Right side — exposed stud framing */}
-        <line x1="42" y1="24" x2="42" y2="43" />
-        {/* Top plate */}
-        <line x1="27" y1="24" x2="42" y2="24" strokeWidth={2.5} />
-        {/* Bottom plate */}
-        <line x1="27" y1="43" x2="42" y2="43" strokeWidth={2.5} />
-        {/* Studs */}
-        <line x1="31" y1="24" x2="31" y2="43" />
-        <line x1="36" y1="24" x2="36" y2="43" />
-        <line x1="41" y1="24" x2="41" y2="43" />
-        {/* Mid nogging */}
-        <line x1="27" y1="34" x2="42" y2="34" />
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Foundation block — teal accent */}
+    <rect x="4" y="42" width="40" height="4" rx="1" fill="#2dd4bf" fillOpacity="0.12" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Roof */}
+    <path d="M4 24 L24 8 L44 24" stroke="currentColor" strokeWidth="2"/>
+    {/* Left wall (finished) */}
+    <path d="M6 24 L6 42" stroke="currentColor" strokeWidth="2"/>
+    <path d="M6 42 L26 42" stroke="currentColor" strokeWidth="2"/>
+    {/* Left window */}
+    <rect x="8" y="27" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="12" y1="27" x2="12" y2="34" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    <line x1="8" y1="30.5" x2="16" y2="30.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    {/* Door */}
+    <rect x="17" y="32" width="9" height="10" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <circle cx="24.5" cy="37" r="0.9" fill="currentColor"/>
+    {/* Cutaway divider — dashed teal line */}
+    <line x1="28" y1="24" x2="28" y2="42" stroke="#2dd4bf" strokeWidth="1.5" strokeDasharray="3,2" strokeOpacity="0.85"/>
+    {/* Right half — exposed framing area tint */}
+    <rect x="28" y="24" width="14" height="18" fill="#2dd4bf" fillOpacity="0.06"/>
+    {/* Right wall */}
+    <path d="M42 24 L42 42 L28 42" stroke="currentColor" strokeWidth="2"/>
+    {/* Top plate */}
+    <line x1="28" y1="24" x2="42" y2="24" stroke="#2dd4bf" strokeWidth="2.5" strokeOpacity="0.8"/>
+    {/* Bottom plate */}
+    <line x1="28" y1="42" x2="42" y2="42" stroke="#2dd4bf" strokeWidth="2.5" strokeOpacity="0.8"/>
+    {/* Studs */}
+    <line x1="32" y1="24" x2="32" y2="42" stroke="#2dd4bf" strokeWidth="1.5" strokeOpacity="0.65"/>
+    <line x1="37" y1="24" x2="37" y2="42" stroke="#2dd4bf" strokeWidth="1.5" strokeOpacity="0.65"/>
+    {/* Mid nogging */}
+    <line x1="28" y1="33" x2="42" y2="33" stroke="#2dd4bf" strokeWidth="1" strokeOpacity="0.5"/>
+  </svg>
 );
 
-// Heavy: wrecking ball smashing house — traced from reference image
+// Heavy: sledgehammer with amber impact zone + cracks
 export const RehabHeavyIcon: React.FC<{className?: string}> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className={className}>
-        {/* Cable — diagonal from upper right down to ball */}
-        <line x1="32" y1="4" x2="17" y2="22" />
-        {/* Wrecking ball */}
-        <circle cx="13" cy="31" r="9" />
-        {/* Motion lines — left of ball showing swing */}
-        <line x1="2" y1="26" x2="5" y2="29" strokeWidth={1.5} />
-        <line x1="1" y1="31" x2="4" y2="31" strokeWidth={1.5} />
-        <line x1="2" y1="36" x2="5" y2="33" strokeWidth={1.5} />
-        {/* House — roof */}
-        <polyline points="26,21 37,8 46,21" />
-        {/* House — walls and floor */}
-        <polyline points="26,21 26,44 46,44 46,21" />
-        {/* Bold crack — zigzag splitting house from roof to floor */}
-        <polyline points="35,9 32,17 37,23 30,32 34,38 29,44" strokeWidth={2.5} />
-        {/* Window — right side, 2-pane */}
-        <rect x="38" y="26" width="7" height="6" />
-        <line x1="41.5" y1="26" x2="41.5" y2="32" />
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Ground impact glow */}
+    <ellipse cx="22" cy="44" rx="14" ry="3" fill="#fbbf24" fillOpacity="0.18"/>
+    {/* Impact crack lines on ground */}
+    <path d="M14 44 L18 40 L22 43 L26 38 L30 42 L34 44" stroke="#fbbf24" strokeWidth="1.5" strokeOpacity="0.65" fill="none"/>
+    {/* Sledgehammer head — amber filled */}
+    <rect x="3" y="19" width="22" height="14" rx="2.5" fill="#fbbf24" fillOpacity="0.18" stroke="currentColor" strokeWidth="2"/>
+    {/* Head texture lines (weight/mass feel) */}
+    <line x1="8" y1="21" x2="8" y2="31" stroke="#fbbf24" strokeWidth="1.3" strokeOpacity="0.45"/>
+    <line x1="14" y1="21" x2="14" y2="31" stroke="#fbbf24" strokeWidth="1.1" strokeOpacity="0.3"/>
+    <line x1="20" y1="21" x2="20" y2="31" stroke="#fbbf24" strokeWidth="1.1" strokeOpacity="0.3"/>
+    {/* Handle — diagonal, thick */}
+    <line x1="21" y1="26" x2="44" y2="5" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round"/>
+    {/* Wood grain marks on handle */}
+    <line x1="30" y1="19" x2="32" y2="17" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.3"/>
+    <line x1="36" y1="13" x2="38" y2="11" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.3"/>
+    {/* Radial impact lines — amber */}
+    <line x1="2" y1="22" x2="4" y2="25" stroke="#fbbf24" strokeWidth="1.5" strokeOpacity="0.75"/>
+    <line x1="1" y1="29" x2="3" y2="29" stroke="#fbbf24" strokeWidth="1.5" strokeOpacity="0.75"/>
+    <line x1="2" y1="36" x2="4" y2="33" stroke="#fbbf24" strokeWidth="1.5" strokeOpacity="0.75"/>
+    <line x1="8" y1="38" x2="9" y2="41" stroke="#fbbf24" strokeWidth="1.5" strokeOpacity="0.65"/>
+    <line x1="16" y1="39" x2="16" y2="43" stroke="#fbbf24" strokeWidth="1.5" strokeOpacity="0.65"/>
+    <line x1="24" y1="37" x2="26" y2="40" stroke="#fbbf24" strokeWidth="1.5" strokeOpacity="0.65"/>
+  </svg>
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -358,164 +443,320 @@ export const PhotoIcon: React.FC<{className?: string}> = ({className}) => (
     </svg>
 );
 
-// C-1: Nearly New — pristine house, perfect geometry, both windows with pane dividers
+// ── Condition Icons — premium house illustrations with color-coded status badges ──
+
+// Shared house base paths (defined inline for clarity in each icon)
+// viewBox 0 0 48 48, strokeLinecap/Join="round"
+
+// C-1: Nearly New — pristine house + emerald 4-point sparkle star + shine marks
 export const ConditionC1Icon: React.FC<{className?: string}> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className={className}>
-        {/* Ground */}
-        <line x1="4" y1="40" x2="44" y2="40" />
-        {/* Walls */}
-        <polyline points="6,22 6,40 42,40 42,22" />
-        {/* Roof */}
-        <polyline points="4,23 24,8 44,23" />
-        {/* Chimney */}
-        <polyline points="31,14 31,7 36,7 36,17" />
-        {/* Door */}
-        <rect x="19" y="30" width="10" height="10" />
-        {/* Left window frame */}
-        <rect x="8" y="24" width="8" height="7" />
-        {/* Left window pane dividers */}
-        <line x1="12" y1="24" x2="12" y2="31" />
-        <line x1="8" y1="27.5" x2="16" y2="27.5" />
-        {/* Right window frame */}
-        <rect x="32" y="24" width="8" height="7" />
-        {/* Right window pane dividers */}
-        <line x1="36" y1="24" x2="36" y2="31" />
-        <line x1="32" y1="27.5" x2="40" y2="27.5" />
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Ground */}
+    <line x1="3" y1="41" x2="45" y2="41" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Walls */}
+    <path d="M6 23 L6 41 L42 41 L42 23" stroke="currentColor" strokeWidth="2"/>
+    {/* Roof */}
+    <path d="M4 24 L24 8 L44 24" stroke="currentColor" strokeWidth="2"/>
+    {/* Chimney */}
+    <path d="M31 15 L31 8 L36 8 L36 18" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Door — emerald tint */}
+    <rect x="19" y="31" width="10" height="10" rx="0.5" fill="#22c55e" fillOpacity="0.1" stroke="currentColor" strokeWidth="1.5"/>
+    <circle cx="27.5" cy="36" r="0.9" fill="currentColor"/>
+    {/* Left window */}
+    <rect x="8" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="12" y1="26" x2="12" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    <line x1="8" y1="29.5" x2="16" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    {/* Right window */}
+    <rect x="32" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="36" y1="26" x2="36" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    <line x1="32" y1="29.5" x2="40" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    {/* Sparkle star badge — top right, emerald */}
+    <path d="M40 3 L41.5 7 L45.5 8.5 L41.5 10 L40 14 L38.5 10 L34.5 8.5 L38.5 7 Z" fill="#22c55e" fillOpacity="0.85" stroke="#22c55e" strokeWidth="0.5"/>
+    {/* Small secondary sparkle */}
+    <line x1="46" y1="3" x2="46" y2="6" stroke="#22c55e" strokeWidth="1.3" strokeOpacity="0.7"/>
+    <line x1="44.5" y1="4.5" x2="47.5" y2="4.5" stroke="#22c55e" strokeWidth="1.3" strokeOpacity="0.7"/>
+    {/* Wall shine marks */}
+    <line x1="10" y1="24" x2="10" y2="22" stroke="#22c55e" strokeWidth="1.3" strokeOpacity="0.6"/>
+    <line x1="38" y1="24" x2="38" y2="22" stroke="#22c55e" strokeWidth="1.3" strokeOpacity="0.6"/>
+  </svg>
 );
 
-// C-2: Excellent — house + bold 8-point star badge (clearly visible at small sizes)
+// C-2: Excellent — house + green circle-check badge
 export const ConditionC2Icon: React.FC<{className?: string}> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className={className}>
-        {/* Ground */}
-        <line x1="4" y1="40" x2="44" y2="40" />
-        {/* Walls */}
-        <polyline points="6,22 6,40 42,40 42,22" />
-        {/* Roof */}
-        <polyline points="4,23 24,8 44,23" />
-        {/* Chimney */}
-        <polyline points="31,14 31,7 36,7 36,17" />
-        {/* Door */}
-        <rect x="19" y="30" width="10" height="10" />
-        {/* Left window */}
-        <rect x="8" y="24" width="8" height="7" />
-        <line x1="12" y1="24" x2="12" y2="31" />
-        <line x1="8" y1="27.5" x2="16" y2="27.5" />
-        {/* Right window */}
-        <rect x="32" y="24" width="8" height="7" />
-        <line x1="36" y1="24" x2="36" y2="31" />
-        <line x1="32" y1="27.5" x2="40" y2="27.5" />
-        {/* Bold 4-point star — top-left corner, well clear of house */}
-        <line x1="7" y1="2" x2="7" y2="14" strokeWidth={3} />
-        <line x1="1" y1="8" x2="13" y2="8" strokeWidth={3} />
-        <line x1="3" y1="4" x2="11" y2="12" strokeWidth={1.8} />
-        <line x1="11" y1="4" x2="3" y2="12" strokeWidth={1.8} />
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Ground */}
+    <line x1="3" y1="41" x2="45" y2="41" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Walls */}
+    <path d="M6 23 L6 41 L42 41 L42 23" stroke="currentColor" strokeWidth="2"/>
+    {/* Roof */}
+    <path d="M4 24 L24 8 L44 24" stroke="currentColor" strokeWidth="2"/>
+    {/* Chimney */}
+    <path d="M31 15 L31 8 L36 8 L36 18" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Door */}
+    <rect x="19" y="31" width="10" height="10" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <circle cx="27.5" cy="36" r="0.9" fill="currentColor"/>
+    {/* Left window */}
+    <rect x="8" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="12" y1="26" x2="12" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    <line x1="8" y1="29.5" x2="16" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    {/* Right window */}
+    <rect x="32" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="36" y1="26" x2="36" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    <line x1="32" y1="29.5" x2="40" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    {/* Circle-check badge — top right, light green */}
+    <circle cx="40" cy="7.5" r="7" fill="#4ade80" fillOpacity="0.18" stroke="#4ade80" strokeWidth="2"/>
+    <path d="M36 7.5 L39 10.5 L44 5" stroke="#4ade80" strokeWidth="2.5" fill="none"/>
+  </svg>
 );
 
-// C-3: Well Maintained — house with a bold filled patch on the lower-left wall
+// C-3: Well Maintained — house + yellow wrench-circle badge
 export const ConditionC3Icon: React.FC<{className?: string}> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className={className}>
-        {/* Ground */}
-        <line x1="4" y1="40" x2="44" y2="40" />
-        {/* Walls */}
-        <polyline points="6,22 6,40 42,40 42,22" />
-        {/* Roof */}
-        <polyline points="4,23 24,8 44,23" />
-        {/* Chimney */}
-        <polyline points="31,14 31,7 36,7 36,17" />
-        {/* Door */}
-        <rect x="19" y="30" width="10" height="10" />
-        {/* Left window */}
-        <rect x="8" y="24" width="8" height="7" />
-        <line x1="12" y1="24" x2="12" y2="31" />
-        <line x1="8" y1="27.5" x2="16" y2="27.5" />
-        {/* Right window */}
-        <rect x="32" y="24" width="8" height="7" />
-        <line x1="36" y1="24" x2="36" y2="31" />
-        <line x1="32" y1="27.5" x2="40" y2="27.5" />
-        {/* Bold patch on lower-left wall — thick border + filled tint + cross */}
-        <rect x="7" y="32" width="9" height="7" strokeWidth={2.5} fill="currentColor" fillOpacity={0.3} />
-        <line x1="7" y1="35.5" x2="16" y2="35.5" strokeWidth={2} />
-        <line x1="11.5" y1="32" x2="11.5" y2="39" strokeWidth={2} />
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Ground */}
+    <line x1="3" y1="41" x2="45" y2="41" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Walls */}
+    <path d="M6 23 L6 41 L42 41 L42 23" stroke="currentColor" strokeWidth="2"/>
+    {/* Roof */}
+    <path d="M4 24 L24 8 L44 24" stroke="currentColor" strokeWidth="2"/>
+    {/* Chimney */}
+    <path d="M31 15 L31 8 L36 8 L36 18" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Door */}
+    <rect x="19" y="31" width="10" height="10" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <circle cx="27.5" cy="36" r="0.9" fill="currentColor"/>
+    {/* Left window */}
+    <rect x="8" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="12" y1="26" x2="12" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    <line x1="8" y1="29.5" x2="16" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    {/* Right window */}
+    <rect x="32" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="36" y1="26" x2="36" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    <line x1="32" y1="29.5" x2="40" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    {/* Wrench circle badge — top right, yellow */}
+    <circle cx="40" cy="7.5" r="7" fill="#eab308" fillOpacity="0.15" stroke="#eab308" strokeWidth="1.8"/>
+    {/* Wrench: open circle head + diagonal handle */}
+    <circle cx="38.5" cy="5.5" r="2.5" fill="none" stroke="#eab308" strokeWidth="2" strokeOpacity="0.85"/>
+    <line x1="40.2" y1="7.3" x2="44" y2="11.5" stroke="#eab308" strokeWidth="2.2" strokeLinecap="round" strokeOpacity="0.85"/>
+  </svg>
 );
 
-// C-4: Worn but Adequate — bold lightning-bolt crack running full height of left wall
+// C-4: Worn but Adequate — house + orange warning triangle badge + left wall crack
 export const ConditionC4Icon: React.FC<{className?: string}> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className={className}>
-        {/* Ground */}
-        <line x1="4" y1="40" x2="44" y2="40" />
-        {/* Walls */}
-        <polyline points="6,22 6,40 42,40 42,22" />
-        {/* Roof */}
-        <polyline points="4,23 24,8 44,23" />
-        {/* Chimney */}
-        <polyline points="31,14 31,7 36,7 36,17" />
-        {/* Door */}
-        <rect x="19" y="30" width="10" height="10" />
-        {/* Left window */}
-        <rect x="8" y="24" width="8" height="7" />
-        <line x1="12" y1="24" x2="12" y2="31" />
-        <line x1="8" y1="27.5" x2="16" y2="27.5" />
-        {/* Right window */}
-        <rect x="32" y="24" width="8" height="7" />
-        <line x1="36" y1="24" x2="36" y2="31" />
-        <line x1="32" y1="27.5" x2="40" y2="27.5" />
-        {/* Bold full-height crack on left wall — unmissable zigzag from roof to ground */}
-        <polyline points="11,22 8,27 13,32 9,37 12,40" strokeWidth={3} />
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Ground */}
+    <line x1="3" y1="41" x2="45" y2="41" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Walls */}
+    <path d="M6 23 L6 41 L42 41 L42 23" stroke="currentColor" strokeWidth="2"/>
+    {/* Roof */}
+    <path d="M4 24 L24 8 L44 24" stroke="currentColor" strokeWidth="2"/>
+    {/* Chimney */}
+    <path d="M31 15 L31 8 L36 8 L36 18" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Door */}
+    <rect x="19" y="31" width="10" height="10" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <circle cx="27.5" cy="36" r="0.9" fill="currentColor"/>
+    {/* Left window */}
+    <rect x="8" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="12" y1="26" x2="12" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    <line x1="8" y1="29.5" x2="16" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    {/* Right window */}
+    <rect x="32" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="36" y1="26" x2="36" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    <line x1="32" y1="29.5" x2="40" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
+    {/* Warning triangle badge — top right, orange */}
+    <path d="M40 1.5 L47 13.5 L33 13.5 Z" fill="#f97316" fillOpacity="0.2" stroke="#f97316" strokeWidth="1.8" strokeLinejoin="round"/>
+    <line x1="40" y1="5" x2="40" y2="9.5" stroke="#f97316" strokeWidth="2" strokeLinecap="round" strokeOpacity="0.9"/>
+    <circle cx="40" cy="12" r="1" fill="#f97316" strokeOpacity="0.9"/>
+    {/* Left wall crack — orange zigzag */}
+    <path d="M11 23 L8 28 L13 33 L9 38 L12 41" stroke="#f97316" strokeWidth="2.5" strokeOpacity="0.75" fill="none"/>
+  </svg>
 );
 
-// C-5: Significant Repairs — wide roof gap, two bold wall cracks, broken right window
+// C-5: Significant Repairs — house + red warning badge + broken window + roof gap + two cracks
 export const ConditionC5Icon: React.FC<{className?: string}> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className={className}>
-        {/* Ground */}
-        <line x1="4" y1="40" x2="44" y2="40" />
-        {/* Walls */}
-        <polyline points="6,22 6,40 42,40 42,22" />
-        {/* Roof with wide gap at peak */}
-        <polyline points="4,23 21,9" />
-        <polyline points="27,9 44,23" />
-        {/* Chimney */}
-        <polyline points="31,14 31,7 36,7 36,17" />
-        {/* Door */}
-        <rect x="19" y="30" width="10" height="10" />
-        {/* Left window (intact) */}
-        <rect x="8" y="24" width="8" height="7" />
-        <line x1="12" y1="24" x2="12" y2="31" />
-        <line x1="8" y1="27.5" x2="16" y2="27.5" />
-        {/* Right window — broken X */}
-        <rect x="32" y="24" width="8" height="7" />
-        <line x1="32" y1="24" x2="40" y2="31" strokeWidth={2.5} />
-        <line x1="40" y1="24" x2="32" y2="31" strokeWidth={2.5} />
-        {/* Bold left wall crack — full height */}
-        <polyline points="10,22 7,28 12,33 8,38 11,40" strokeWidth={3} />
-        {/* Second crack — right wall */}
-        <polyline points="40,30 43,35 40,39" strokeWidth={2.5} />
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Ground */}
+    <line x1="3" y1="41" x2="45" y2="41" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Walls */}
+    <path d="M6 23 L6 41 L42 41 L42 23" stroke="currentColor" strokeWidth="2"/>
+    {/* Roof with gap at peak */}
+    <path d="M4 24 L20 10" stroke="currentColor" strokeWidth="2"/>
+    <path d="M28 10 L44 24" stroke="currentColor" strokeWidth="2"/>
+    {/* Chimney (leaning slightly) */}
+    <path d="M31 15 L31 8 L36 8 L36 17" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Door */}
+    <rect x="19" y="31" width="10" height="10" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Left window — intact */}
+    <rect x="8" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="12" y1="26" x2="12" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.5"/>
+    <line x1="8" y1="29.5" x2="16" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.5"/>
+    {/* Right window — broken diagonal crack */}
+    <rect x="32" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="32" y1="26" x2="40" y2="33" stroke="#ef4444" strokeWidth="2" strokeOpacity="0.75"/>
+    <line x1="36" y1="26" x2="32" y2="30" stroke="#ef4444" strokeWidth="1.2" strokeOpacity="0.5"/>
+    {/* Two wall cracks — red */}
+    <path d="M10 23 L7 28 L12 33 L8 38 L11 41" stroke="#ef4444" strokeWidth="2.5" strokeOpacity="0.75" fill="none"/>
+    <path d="M39 27 L42 32 L39 37" stroke="#ef4444" strokeWidth="2" strokeOpacity="0.6" fill="none"/>
+    {/* Red circle-warning badge — top right */}
+    <circle cx="40" cy="7.5" r="7" fill="#ef4444" fillOpacity="0.15" stroke="#ef4444" strokeWidth="2"/>
+    <line x1="40" y1="4.5" x2="40" y2="8.5" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round"/>
+    <circle cx="40" cy="11" r="1.1" fill="#ef4444"/>
+  </svg>
 );
 
-// C-6: Uninhabitable — dramatically jagged collapsed roof, both windows X'd, massive wall crack + foundation crack
+// C-6: Uninhabitable — collapsed jagged roof + Xd windows + massive cracks + red X badge
 export const ConditionC6Icon: React.FC<{className?: string}> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className={className}>
-        {/* Ground */}
-        <line x1="4" y1="40" x2="44" y2="40" />
-        {/* Walls */}
-        <polyline points="6,22 6,40 42,40 42,22" />
-        {/* Dramatically collapsed/jagged roof — multiple dips */}
-        <polyline points="4,23 16,14 19,19 24,11 29,19 32,14 44,23" strokeWidth={2} />
-        {/* Left window — bold X, no dividers */}
-        <rect x="8" y="24" width="8" height="7" />
-        <line x1="8" y1="24" x2="16" y2="31" strokeWidth={2.5} />
-        <line x1="16" y1="24" x2="8" y2="31" strokeWidth={2.5} />
-        {/* Right window — bold X */}
-        <rect x="32" y="24" width="8" height="7" />
-        <line x1="32" y1="24" x2="40" y2="31" strokeWidth={2.5} />
-        <line x1="40" y1="24" x2="32" y2="31" strokeWidth={2.5} />
-        {/* Massive left wall crack — full height */}
-        <polyline points="9,22 6,27 11,32 7,37 10,40" strokeWidth={3.5} />
-        {/* Foundation/base crack running along bottom */}
-        <polyline points="16,40 19,37 23,39 27,36 31,39" strokeWidth={2.5} />
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Ground */}
+    <line x1="3" y1="41" x2="45" y2="41" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Walls */}
+    <path d="M6 23 L6 41 L42 41 L42 23" stroke="currentColor" strokeWidth="2"/>
+    {/* Dramatically collapsed/jagged roof */}
+    <path d="M4 24 L14 15 L18 20 L24 11 L30 20 L34 15 L44 24" stroke="currentColor" strokeWidth="2"/>
+    {/* Both windows — Xd out with red */}
+    <rect x="8" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="8" y1="26" x2="16" y2="33" stroke="#dc2626" strokeWidth="2" strokeOpacity="0.8"/>
+    <line x1="16" y1="26" x2="8" y2="33" stroke="#dc2626" strokeWidth="2" strokeOpacity="0.8"/>
+    <rect x="32" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="32" y1="26" x2="40" y2="33" stroke="#dc2626" strokeWidth="2" strokeOpacity="0.8"/>
+    <line x1="40" y1="26" x2="32" y2="33" stroke="#dc2626" strokeWidth="2" strokeOpacity="0.8"/>
+    {/* Massive left wall crack */}
+    <path d="M9 23 L5 29 L11 34 L6 39 L9 41" stroke="#dc2626" strokeWidth="3" strokeOpacity="0.75" fill="none"/>
+    {/* Foundation crack */}
+    <path d="M15 41 L19 38 L23 40 L27 37 L31 40 L35 37" stroke="#dc2626" strokeWidth="1.8" strokeOpacity="0.65" fill="none"/>
+    {/* Red circle-X badge — top right */}
+    <circle cx="40" cy="7.5" r="7" fill="#dc2626" fillOpacity="0.2" stroke="#dc2626" strokeWidth="2"/>
+    <line x1="36.5" y1="4.5" x2="43.5" y2="10.5" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round"/>
+    <line x1="43.5" y1="4.5" x2="36.5" y2="10.5" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round"/>
+  </svg>
+);
+
+// ── Material Quality Icons — premium 48×48, unique metaphors per tier ────────
+
+// Q1 Luxury — faceted diamond gem with purple glow + sparkle
+export const MaterialQ1Icon: React.FC<{className?: string}> = ({className}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Outer glow */}
+    <ellipse cx="24" cy="36" rx="12" ry="4" fill="#7e22ce" fillOpacity="0.12"/>
+    {/* Diamond body fill */}
+    <path d="M24 5 L38 17 L24 44 L10 17 Z" fill="#7e22ce" fillOpacity="0.14"/>
+    {/* Diamond outline */}
+    <path d="M24 5 L38 17 L24 44 L10 17 Z" stroke="currentColor" strokeWidth="2"/>
+    {/* Belt line */}
+    <line x1="10" y1="17" x2="38" y2="17" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Top-left facet */}
+    <line x1="24" y1="5" x2="17" y2="17" stroke="#a855f7" strokeWidth="1" strokeOpacity="0.55"/>
+    {/* Top-right facet */}
+    <line x1="24" y1="5" x2="31" y2="17" stroke="#a855f7" strokeWidth="1" strokeOpacity="0.55"/>
+    {/* Center bottom facet — main pavilion */}
+    <line x1="17" y1="17" x2="24" y2="44" stroke="#a855f7" strokeWidth="0.8" strokeOpacity="0.4"/>
+    <line x1="31" y1="17" x2="24" y2="44" stroke="#a855f7" strokeWidth="0.8" strokeOpacity="0.4"/>
+    {/* Table facet highlight */}
+    <path d="M17 17 L24 22 L31 17" fill="#a855f7" fillOpacity="0.18" stroke="#a855f7" strokeWidth="0.8" strokeOpacity="0.4"/>
+    {/* Sparkle at peak */}
+    <path d="M24 5 L25 2.5 L26 5 L28.5 6 L26 7 L25 9.5 L24 7 L21.5 6 Z" fill="#c084fc" fillOpacity="0.9" stroke="#c084fc" strokeWidth="0.5"/>
+  </svg>
+);
+
+// Q2 Custom — drafting compass with purple arc (custom-designed)
+export const MaterialQ2Icon: React.FC<{className?: string}> = ({className}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Blueprint circle backdrop */}
+    <circle cx="24" cy="24" r="20" fill="#a855f7" fillOpacity="0.05" stroke="#a855f7" strokeWidth="1" strokeOpacity="0.25" strokeDasharray="3,3"/>
+    {/* Compass arc drawn by the tool */}
+    <path d="M17 38 Q24 43 31 38" stroke="#a855f7" strokeWidth="2" strokeOpacity="0.75" fill="none" strokeDasharray="2,2"/>
+    {/* Left leg */}
+    <line x1="24" y1="13" x2="15" y2="38" stroke="currentColor" strokeWidth="2.5"/>
+    {/* Right leg */}
+    <line x1="24" y1="13" x2="33" y2="38" stroke="currentColor" strokeWidth="2.5"/>
+    {/* Hinge assembly */}
+    <circle cx="24" cy="13" r="3.5" fill="#a855f7" fillOpacity="0.25" stroke="currentColor" strokeWidth="2"/>
+    <circle cx="24" cy="13" r="1.2" fill="#a855f7" fillOpacity="0.8"/>
+    {/* Sharp metal point — left */}
+    <path d="M13.5 36.5 L15 38 L16.5 36.5 L15 33 Z" fill="#a855f7" fillOpacity="0.55" stroke="#a855f7" strokeWidth="1" strokeLinejoin="round"/>
+    {/* Pencil tip — right */}
+    <path d="M31.5 36.5 L33 38 L34.5 36.5 L33 33 Z" fill="#a855f7" fillOpacity="0.55" stroke="#a855f7" strokeWidth="1" strokeLinejoin="round"/>
+    {/* Top cap */}
+    <rect x="21.5" y="5" width="5" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="21.5" y1="8.5" x2="26.5" y2="8.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.4"/>
+  </svg>
+);
+
+// Q3 Upscale — award medal with blue star
+export const MaterialQ3Icon: React.FC<{className?: string}> = ({className}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Ribbon tails */}
+    <path d="M17 29 L13 45 L24 38 L35 45 L31 29" fill="#3b82f6" fillOpacity="0.13" stroke="#3b82f6" strokeWidth="1.5" strokeLinejoin="round" strokeOpacity="0.7"/>
+    {/* Medal ring */}
+    <circle cx="24" cy="22" r="14" fill="#3b82f6" fillOpacity="0.1" stroke="currentColor" strokeWidth="2.5"/>
+    {/* Inner ring */}
+    <circle cx="24" cy="22" r="10" fill="#3b82f6" fillOpacity="0.07" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.5"/>
+    {/* 5-point star */}
+    <path d="M24 13 L26 19 L32.5 19 L27.5 23 L29.5 29.5 L24 25.5 L18.5 29.5 L20.5 23 L15.5 19 L22 19 Z" fill="#3b82f6" fillOpacity="0.55" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.7"/>
+    {/* Ribbon connector bar */}
+    <rect x="20" y="7" width="8" height="5" rx="1.5" fill="#3b82f6" fillOpacity="0.3" stroke="currentColor" strokeWidth="1.5"/>
+  </svg>
+);
+
+// Q4 Standard — clean house with green center checkmark
+export const MaterialQ4Icon: React.FC<{className?: string}> = ({className}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Ground */}
+    <line x1="3" y1="41" x2="45" y2="41" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Walls */}
+    <path d="M8 24 L8 41 L40 41 L40 24" stroke="currentColor" strokeWidth="2"/>
+    {/* Roof */}
+    <path d="M4 24 L24 8 L44 24" stroke="currentColor" strokeWidth="2.5"/>
+    {/* Door */}
+    <rect x="20" y="31" width="8" height="10" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Windows */}
+    <rect x="10" y="27" width="7" height="6" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <rect x="31" y="27" width="7" height="6" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Green check badge over center of house */}
+    <circle cx="24" cy="20" r="8.5" fill="#22c55e" fillOpacity="0.18" stroke="#22c55e" strokeWidth="1.8"/>
+    <path d="M19.5 20 L22.5 23 L28.5 16.5" stroke="#22c55e" strokeWidth="2.5" fill="none"/>
+  </svg>
+);
+
+// Q5 Functional — 8-tooth gear cog with yellow accent
+export const MaterialQ5Icon: React.FC<{className?: string}> = ({className}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Gear body — 8-tooth polygon (r=19 tips, r=13 roots) */}
+    <polygon
+      points="24,5 28.6,12.9 36.7,11.3 35.1,19.4 43,24 35.1,28.6 36.7,36.7 28.6,35.1 24,43 19.4,35.1 11.3,36.7 12.9,28.6 5,24 12.9,19.4 11.3,11.3 19.4,12.9"
+      fill="#eab308" fillOpacity="0.12" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"
+    />
+    {/* Inner bore ring */}
+    <circle cx="24" cy="24" r="8" fill="#eab308" fillOpacity="0.18" stroke="currentColor" strokeWidth="2"/>
+    {/* Center axle */}
+    <circle cx="24" cy="24" r="3" fill="#eab308" fillOpacity="0.75"/>
+    {/* Radial keyway spokes */}
+    <line x1="24" y1="16" x2="24" y2="11" stroke="#eab308" strokeWidth="1.2" strokeOpacity="0.5"/>
+    <line x1="24" y1="32" x2="24" y2="37" stroke="#eab308" strokeWidth="1.2" strokeOpacity="0.5"/>
+    <line x1="16" y1="24" x2="11" y2="24" stroke="#eab308" strokeWidth="1.2" strokeOpacity="0.5"/>
+    <line x1="32" y1="24" x2="37" y2="24" stroke="#eab308" strokeWidth="1.2" strokeOpacity="0.5"/>
+  </svg>
+);
+
+// Q6 Substandard — deteriorated house fragment with red warning
+export const MaterialQ6Icon: React.FC<{className?: string}> = ({className}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Red hazard glow at base */}
+    <ellipse cx="24" cy="43" rx="16" ry="3" fill="#ef4444" fillOpacity="0.12"/>
+    {/* Ground */}
+    <line x1="3" y1="41" x2="45" y2="41" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Tilted/leaning walls */}
+    <path d="M7 25 L5 41 L38 41 L40 25" stroke="currentColor" strokeWidth="2"/>
+    {/* Collapsed/jagged roof */}
+    <path d="M4 25 L13 16 L17 22 L24 12 L31 22 L35 16 L44 25" stroke="currentColor" strokeWidth="2"/>
+    {/* Both windows — Xd */}
+    <rect x="8" y="28" width="7" height="6" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="8" y1="28" x2="15" y2="34" stroke="#ef4444" strokeWidth="1.8" strokeOpacity="0.8"/>
+    <line x1="15" y1="28" x2="8" y2="34" stroke="#ef4444" strokeWidth="1.8" strokeOpacity="0.8"/>
+    <rect x="33" y="28" width="7" height="6" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    <line x1="33" y1="28" x2="40" y2="34" stroke="#ef4444" strokeWidth="1.8" strokeOpacity="0.8"/>
+    <line x1="40" y1="28" x2="33" y2="34" stroke="#ef4444" strokeWidth="1.8" strokeOpacity="0.8"/>
+    {/* Large wall crack */}
+    <path d="M10 25 L7 30 L12 35 L8 41" stroke="#ef4444" strokeWidth="2.5" strokeOpacity="0.7" fill="none"/>
+    {/* Rubble pile at base */}
+    <path d="M14 41 L17 38 L20 40 L23 37 L26 40 L29 37 L32 40 L35 38 L38 41" stroke="#ef4444" strokeWidth="1.5" strokeOpacity="0.55" fill="none"/>
+  </svg>
 );
