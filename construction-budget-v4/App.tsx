@@ -125,7 +125,6 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
   // Safety Check & Missing Fields State
   const [isSafetyCheckModalOpen, setIsSafetyCheckModalOpen] = useState(false);
   const [missingSafetyItems, setMissingSafetyItems] = useState<string[]>([]);
-  const [isWalkthroughCompleteModalOpen, setIsWalkthroughCompleteModalOpen] = useState(false);
   const [highlightMissingFields, setHighlightMissingFields] = useState(false);
 
   // Estimator Modal State
@@ -849,7 +848,7 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
         }
 
         const response = await ai.models.generateContent({
-          model: 'gemini-3-flash-preview',
+          model: 'gemini-2.5-flash-lite-preview',
           contents: { parts },
           config: {
             systemInstruction: ESTIMATOR_SYSTEM_INSTRUCTION,
@@ -1051,12 +1050,12 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
         setHighlightMissingFields(true);
         setWalkthroughState(prev => ({ ...prev, isActive: false, currentRoomId: null }));
         setIsStarted(true);
-        
-        // Ensure reset to Step 1 with forward animation
+
+        // Navigate to Step 1 so user completes property details
         setDirection('forward');
-        setCurrentWizardStep(1); 
-        
-        setTimeout(() => setIsWalkthroughCompleteModalOpen(true), 500);
+        setCurrentWizardStep(1);
+
+        showToast('Walkthrough synced! Your budget has been updated. Complete the property details below.', 'success');
     };
 
     const handleAddCustomRoom = (roomName: string, templateType: string) => {
@@ -1176,7 +1175,7 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
             const topologyPart = { text: `**VALID_BUDGET_ITEMS (Topology Map):**\n${targetTopology}` };
 
             const response = await ai.models.generateContent({
-                model: 'gemini-3-flash-preview',
+                model: 'gemini-2.5-flash-lite-preview',
                 contents: { parts: [topologyPart, contentPart] },
                 config: {
                     systemInstruction: BUDGET_PARSER_SYSTEM_INSTRUCTION,
@@ -1806,7 +1805,6 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
             </div>
             <div className="pt-8 h-full">
                 <WalkthroughDashboard
-                    rooms={WALKTHROUGH_TEMPLATE}
                     walkthroughState={walkthroughState}
                     onRoomSelect={(roomId) => setWalkthroughState(prev => ({ ...prev, currentRoomId: roomId }))}
                     onFinish={handleSyncWalkthrough}
@@ -1852,6 +1850,7 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
           onStartTutorial={handleStartTutorial}
           onProcessBudgetFile={handleProcessBudgetFile}
           isProcessing={isParsingBudget || isAnalyzingBudget}
+          budgetParsingError={budgetParsingError}
         />
         
         {isEstimatorModalOpen && (
@@ -1909,22 +1908,36 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
   }
 
   return (
-    <div className="app-shell bg-[#eef2f7] text-slate-800 min-h-screen relative overflow-hidden flex flex-col">
+    <div className="app-shell bg-gradient-to-br from-slate-900 to-[#1E2E5C] text-white min-h-screen relative overflow-hidden flex flex-col">
 
-      <header className="app-shell-nav flex items-center justify-between bg-[#1a1d23] border-b border-black/20 px-6 py-3 shadow-md z-20 relative">
-        <div className="flex items-center space-x-4">
-            <img src="https://www.limaone.com/wp-content/uploads/lima-one-logo-light-250x66.webp" alt="Lima One Capital" width={150} height={40} className="object-contain" />
-            <div className="hidden md:flex items-center space-x-1 text-sm text-slate-400">
-                <span>/</span>
-                <span>Construction Budget Tool</span>
+      <header className="app-shell-nav flex items-center justify-between bg-black/30 border-b border-white/10 px-6 py-3 shadow-lg z-20 relative backdrop-blur-md">
+        <div className="flex items-center gap-4">
+            <img src="https://www.limaone.com/wp-content/uploads/lima-one-logo-light-250x66.webp" alt="Lima One Capital" width={140} height={37} className="object-contain" />
+            <div className="hidden md:flex items-center gap-2 text-sm">
+                <span className="text-white/20">/</span>
+                <span className="text-slate-300 font-medium">
+                  {propertyAddressDisplay || (projectTypeMode === 'new_construction' ? 'New Construction' : projectTypeMode === 'renovation' ? 'Renovation' : 'Construction Budget')}
+                </span>
+                {propertyAddressDisplay && (
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-500/20 border border-brand-400/30 text-brand-300">
+                    {projectTypeMode === 'new_construction' ? 'New Construction' : 'Renovation'}
+                  </span>
+                )}
             </div>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-4">
             <div className="role-switcher-container">
-                <button onClick={() => setCurrentUserRole('borrower')} className={`role-switcher-option ${currentUserRole === 'borrower' ? 'active bg-[#32373c] !text-white shadow-md' : ''}`}>Borrower</button>
-                <button onClick={() => setCurrentUserRole('analyst')} className={`role-switcher-option ${currentUserRole === 'analyst' ? 'active bg-[#32373c] !text-white shadow-md' : ''}`}>Analyst</button>
+                <button onClick={() => setCurrentUserRole('borrower')} className={`role-switcher-option ${currentUserRole === 'borrower' ? 'active bg-brand-600/80 !text-white shadow-md border border-brand-400/40' : ''}`}>Borrower</button>
+                <button onClick={() => setCurrentUserRole('analyst')} className={`role-switcher-option ${currentUserRole === 'analyst' ? 'active bg-brand-600/80 !text-white shadow-md border border-brand-400/40' : ''}`}>Analyst</button>
             </div>
-            <button onClick={handleClearAll} className="text-xs text-slate-400 hover:text-red-400 transition-colors underline">Clear All Data</button>
+            <button
+              onClick={() => { if (window.confirm('Are you sure you want to clear all data? This cannot be undone.')) handleClearAll(); }}
+              className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-red-400 transition-colors px-2 py-1 rounded border border-transparent hover:border-red-500/30"
+              title="Clear all entered data"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+              Clear
+            </button>
         </div>
       </header>
 
@@ -2094,12 +2107,12 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
                 </div>
               </div>
 
-              <footer className="app-shell-footer flex justify-between items-center bg-[#eef2f7] px-6 py-5">
+              <footer className="app-shell-footer flex justify-between items-center bg-black/20 border-t border-white/10 backdrop-blur-sm px-6 py-5">
                 <div>
                   <button
                     onClick={handlePrevStep}
                     disabled={false}
-                    className={`button-base py-2.5 px-7 font-semibold transition-all ${currentWizardStep === 1 && !projectTypeMode ? 'invisible pointer-events-none' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-300 shadow-sm hover:border-slate-400'}`}
+                    className={`button-base py-2.5 px-7 font-semibold transition-all ${currentWizardStep === 1 && !projectTypeMode ? 'invisible pointer-events-none' : 'bg-white/10 text-white hover:bg-white/20 border border-white/20 shadow-sm hover:border-white/40 backdrop-blur-sm'}`}
                   >
                     ← Back
                   </button>

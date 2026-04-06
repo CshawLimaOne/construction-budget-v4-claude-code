@@ -1,7 +1,7 @@
 // vite.config.ts
 // Dev mode:    npm run dev           → standard Vite SPA on localhost:5173
 // Widget build: BUILD_TARGET=widget npm run build  → UMD bundle in dist/
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -49,36 +49,39 @@ const cssInjectedByJsPlugin = () => {
 
 const isWidget = process.env.BUILD_TARGET === 'widget';
 
-export default defineConfig({
-  plugins: [
-    react(),
-    ...(isWidget ? [cssInjectedByJsPlugin()] : []),
-  ],
-  resolve: {
-    alias: { '@': resolve(__dirname, '.') },
-  },
-  server: {
-    port: 5173,
-    open: true,
-  },
-  define: {
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-    // Reads GEMINI_API_KEY from .env.local and exposes it as process.env.API_KEY
-    'process.env.API_KEY': JSON.stringify(process.env.GEMINI_API_KEY || ''),
-  },
-  build: isWidget
-    ? {
-        lib: {
-          entry: resolve(__dirname, 'index.tsx'),
-          name: 'ConstructionBudget',
-          fileName: 'construction-budget-widget',
-          formats: ['umd'],
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  return {
+    plugins: [
+      react(),
+      ...(isWidget ? [cssInjectedByJsPlugin()] : []),
+    ],
+    resolve: {
+      alias: { '@': resolve(__dirname, '.') },
+    },
+    server: {
+      port: 5173,
+      open: true,
+    },
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      // Reads GEMINI_API_KEY from .env.local and exposes it as process.env.API_KEY
+      'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY || ''),
+    },
+    build: isWidget
+      ? {
+          lib: {
+            entry: resolve(__dirname, 'index.tsx'),
+            name: 'ConstructionBudget',
+            fileName: 'construction-budget-widget',
+            formats: ['umd'],
+          },
+          rollupOptions: { external: [] },
+          cssCodeSplit: false,
+        }
+      : {
+          outDir: 'dist',
+          sourcemap: true,
         },
-        rollupOptions: { external: [] },
-        cssCodeSplit: false,
-      }
-    : {
-        outDir: 'dist',
-        sourcemap: true,
-      },
+  };
 });
