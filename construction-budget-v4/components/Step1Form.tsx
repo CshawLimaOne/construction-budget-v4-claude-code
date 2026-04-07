@@ -127,26 +127,26 @@ const VisualSelector: React.FC<{
 
   const getIcon = (option: SelectOption) => {
     // Condition of Property
-    if (option.value === 'C-1') return <ConditionC1Icon className="w-9 h-9" />;
-    if (option.value === 'C-2') return <ConditionC2Icon className="w-9 h-9" />;
-    if (option.value === 'C-3') return <ConditionC3Icon className="w-9 h-9" />;
-    if (option.value === 'C-4') return <ConditionC4Icon className="w-9 h-9" />;
-    if (option.value === 'C-5') return <ConditionC5Icon className="w-9 h-9" />;
-    if (option.value === 'C-6') return <ConditionC6Icon className="w-9 h-9" />;
+    if (option.value === 'C-1') return <ConditionC1Icon className="w-12 h-12" />;
+    if (option.value === 'C-2') return <ConditionC2Icon className="w-12 h-12" />;
+    if (option.value === 'C-3') return <ConditionC3Icon className="w-12 h-12" />;
+    if (option.value === 'C-4') return <ConditionC4Icon className="w-12 h-12" />;
+    if (option.value === 'C-5') return <ConditionC5Icon className="w-12 h-12" />;
+    if (option.value === 'C-6') return <ConditionC6Icon className="w-12 h-12" />;
     // Material Quality
-    if (option.value === 'Q1') return <MaterialQ1Icon className="w-9 h-9" />;
-    if (option.value === 'Q2') return <MaterialQ2Icon className="w-9 h-9" />;
-    if (option.value === 'Q3') return <MaterialQ3Icon className="w-9 h-9" />;
-    if (option.value === 'Q4') return <MaterialQ4Icon className="w-9 h-9" />;
-    if (option.value === 'Q5') return <MaterialQ5Icon className="w-9 h-9" />;
-    if (option.value === 'Q6') return <MaterialQ6Icon className="w-9 h-9" />;
+    if (option.value === 'Q1') return <MaterialQ1Icon className="w-12 h-12" />;
+    if (option.value === 'Q2') return <MaterialQ2Icon className="w-12 h-12" />;
+    if (option.value === 'Q3') return <MaterialQ3Icon className="w-12 h-12" />;
+    if (option.value === 'Q4') return <MaterialQ4Icon className="w-12 h-12" />;
+    if (option.value === 'Q5') return <MaterialQ5Icon className="w-12 h-12" />;
+    if (option.value === 'Q6') return <MaterialQ6Icon className="w-12 h-12" />;
     // Rehab Classification
     const l = option.label.toLowerCase();
-    if (l.includes('new construction')) return <TractorIcon className="w-9 h-9" />;
-    if (l.includes('heavy')) return <RehabHeavyIcon className="w-9 h-9" />;
-    if (l.includes('standard')) return <RehabStandardIcon className="w-9 h-9" />;
-    if (l.includes('light') || l.includes('cosmetic')) return <RehabLightIcon className="w-9 h-9" />;
-    return <HomeModernIcon className="w-8 h-8" />;
+    if (l.includes('new construction')) return <TractorIcon className="w-12 h-12" />;
+    if (l.includes('heavy')) return <RehabHeavyIcon className="w-12 h-12" />;
+    if (l.includes('standard')) return <RehabStandardIcon className="w-12 h-12" />;
+    if (l.includes('light') || l.includes('cosmetic')) return <RehabLightIcon className="w-12 h-12" />;
+    return <HomeModernIcon className="w-12 h-12" />;
   };
 
   // Derive top-border accent color from option colorClass
@@ -188,7 +188,7 @@ const VisualSelector: React.FC<{
               disabled={isOptDisabled}
               aria-pressed={isSelected}
               aria-label={`Select ${opt.label}`}
-              className={`vs-card relative flex flex-col items-start p-4 rounded-xl border-2 text-left transition-all duration-200 min-h-[140px] backdrop-blur-sm
+              className={`vs-card relative flex flex-col items-center p-4 rounded-xl border-2 text-center transition-all duration-200 min-h-[160px] backdrop-blur-sm
                 ${isSelected
                   ? 'border-brand-400 bg-brand-500/10 ring-2 ring-brand-400/30 vs-card-selected'
                   : 'border-white/10 bg-white/[0.03] hover:border-white/30 hover:bg-white/[0.06]'}
@@ -199,18 +199,19 @@ const VisualSelector: React.FC<{
               <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl transition-opacity duration-200"
                 style={{ background: `linear-gradient(90deg, ${accentColor}, transparent)`, opacity: isSelected ? 1 : 0.4 }} />
 
-              <div className="flex justify-between w-full mb-3">
-                <div className={`p-2.5 rounded-xl transition-all duration-200 ${isSelected ? 'bg-brand-500/25' : 'bg-white/8'}`}
-                  style={isSelected ? { boxShadow: `0 0 16px ${accentColor}40` } : {}}>
-                  <div className={`transition-colors duration-200 ${isSelected ? 'text-brand-300' : 'text-slate-400'}`}>
-                    {getIcon(opt)}
-                  </div>
+              {/* Selected check badge — absolute top-right */}
+              {isSelected && (
+                <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/40 vs-check-badge">
+                  <CheckCircleIcon className="w-3.5 h-3.5 text-white" />
                 </div>
-                {isSelected && (
-                  <div className="w-5 h-5 rounded-full bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/40 vs-check-badge">
-                    <CheckCircleIcon className="w-3.5 h-3.5 text-white" />
-                  </div>
-                )}
+              )}
+
+              {/* Icon — centered */}
+              <div className={`p-3 rounded-xl transition-all duration-200 mb-3 ${isSelected ? 'bg-brand-500/25' : 'bg-white/8'}`}
+                style={isSelected ? { boxShadow: `0 0 16px ${accentColor}40` } : {}}>
+                <div className={`transition-colors duration-200 ${isSelected ? 'text-brand-300' : 'text-slate-400'}`}>
+                  {getIcon(opt)}
+                </div>
               </div>
               <h4 className={`font-bold text-sm leading-tight mb-1 transition-colors ${isSelected ? 'text-white' : 'text-slate-200'}`}>{opt.label}</h4>
               <p className="text-xs text-slate-400 leading-relaxed line-clamp-3">{opt.description}</p>
@@ -709,7 +710,6 @@ export const Step1Form: React.FC<Step1FormProps> = ({
           onSelect={onSelectedConditionChange}
           disabled={isLocked}
           requiredHighlight={highlightMissingFields && !selectedCondition}
-          layout="spectrum"
         />
       )}
 

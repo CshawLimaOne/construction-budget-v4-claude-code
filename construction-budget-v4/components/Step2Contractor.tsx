@@ -51,7 +51,7 @@ const GcDocUploadRow: React.FC<GcDocUploadRowProps> = ({ docType, label, doc, is
     };
 
     return (
-        <div className={`flex flex-col sm:flex-row items-center justify-between py-4 px-3 rounded-lg border border-white/5 bg-white/5 mb-2 hover:border-white/10 transition-colors ${highlight && !doc && isRequired ? 'border-red-500/50 bg-red-900/10' : ''}`}>
+        <div className={`flex flex-col sm:flex-row items-center justify-between py-4 px-3 rounded-xl border border-white/5 bg-white/5 mb-2 hover:border-white/10 transition-colors ${highlight && !doc && isRequired ? 'border-red-500/50 bg-red-900/10' : ''}`}>
             <span className="font-medium text-slate-200 mb-2 sm:mb-0 flex items-center">
                 {label}
                 {!isRequired && <span className="ml-2 text-xs font-normal text-slate-500 italic">(Optional)</span>}
@@ -190,10 +190,26 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
     
     return (
         <>
+            {/* ── Step Hero ── */}
+            <div className="step1-hero mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest bg-brand-500/15 border border-brand-400/25 text-brand-300">
+                        <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
+                        GC &amp; Documents
+                    </span>
+                    <span className="text-xs text-slate-500">·</span>
+                    <span className="text-xs text-slate-400 font-medium">Step 2 of 4</span>
+                </div>
+                <h1 className="text-2xl font-black text-white tracking-tight">General Contractor &amp; Documents</h1>
+                <p className="text-sm text-slate-400 mt-1 max-w-xl">
+                    Add your GC information and upload required project documents for review.
+                </p>
+            </div>
+
             {/* Quick Confirm Card for Repeat Users */}
             {isRepeatUser && isGcRequired && (
                 <div className="section-container mb-6 bg-brand-900/20 border-brand-500/30 backdrop-blur-sm">
-                    <div className="p-6 flex flex-col md:flex-row items-center justify-between">
+                    <div className="p-5 flex flex-col md:flex-row items-center justify-between">
                         <div className="mb-4 md:mb-0">
                             <h4 className="font-bold text-lg text-brand-100 flex items-center">
                                 Welcome back!
@@ -251,12 +267,12 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                         </span>
                     )}
                 </h3>
-                <div className="p-6 bg-transparent space-y-6">
+                <div className="p-5 bg-transparent space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label htmlFor="gc-performer-type" className="block text-sm font-semibold text-slate-300 mb-2">Who is performing the construction work?</label>
                             {usingSavedProfile ? (
-                                <div className="p-3 bg-white/5 rounded-lg border border-white/10 text-sm font-semibold text-slate-200">
+                                <div className="p-3 bg-white/5 rounded-xl border border-white/10 text-sm font-semibold text-slate-200">
                                     General Contractor
                                 </div>
                             ) : (
@@ -270,7 +286,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                                             onGeneralContractorChange('businessName', '');
                                         }
                                     }}
-                                    className={`spreadsheet-input w-full ${highlightMissingFields && isGcRequired && !generalContractor.performerType ? 'border-red-500 ring-1 ring-red-500' : ''}`}
+                                    className={`form-input-premium w-full ${highlightMissingFields && isGcRequired && !generalContractor.performerType ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''}`}
                                     disabled={isLocked}
                                 >
                                     <option value="">Select...</option>
@@ -287,7 +303,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                                     id="gc-business-name"
                                     value={generalContractor.businessName}
                                     onChange={(e) => onGeneralContractorChange('businessName', e.target.value)}
-                                    className={`spreadsheet-input w-full ${highlightMissingFields && isGcRequired && !generalContractor.businessName ? 'border-red-500 ring-1 ring-red-500' : ''} ${usingSavedProfile ? 'opacity-70' : ''}`}
+                                    className={`form-input-premium w-full ${highlightMissingFields && isGcRequired && !generalContractor.businessName ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''} ${usingSavedProfile ? 'opacity-70' : ''}`}
                                     placeholder="ABC Construction, LLC"
                                     disabled={isLocked || usingSavedProfile}
                                 />
@@ -299,8 +315,8 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                         <>
                             {/* GC Onboarding Dual Options - Hide if using Saved Profile */}
                             {!usingSavedProfile && (
-                                <div className="p-6 bg-white/5 rounded-xl border border-white/10">
-                                    <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
+                                <div className="p-5 bg-white/5 rounded-xl border border-white/10">
+                                    <div className="flex items-center justify-between mb-5 border-b border-white/10 pb-4">
                                         <h4 className="font-bold text-slate-100 text-lg flex items-center">
                                             <ClipboardUserIcon className="w-6 h-6 mr-3 text-brand-400" />
                                             GC Onboarding
@@ -310,33 +326,38 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                                                 <CheckCircleIcon className="w-4 h-4 mr-1"/> Profile Complete
                                             </span>
                                         ) : (
-                                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${isGcRequired ? 'bg-yellow-500/20 text-yellow-200 border border-yellow-500/30' : 'bg-slate-700 text-slate-300'}`}>
+                                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${isGcRequired ? 'bg-yellow-500/20 text-yellow-200 border border-yellow-500/30' : 'bg-slate-700/60 text-slate-300 border border-white/10'}`}>
                                                 {isGcRequired ? 'Action Required' : 'Optional Step'}
                                             </span>
                                         )}
                                     </div>
-                                    
+
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {/* Option 1: Invite */}
-                                        <div className="relative flex flex-col p-5 rounded-xl border-2 border-white/10 bg-brand-900/10 hover:border-brand-500/50 transition-all duration-300">
-                                            <div className="absolute top-0 right-0 bg-brand-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl rounded-tr-lg">
-                                                Option 1
-                                            </div>
+                                        <div className="relative flex flex-col p-5 rounded-xl border-2 border-white/10 bg-brand-900/10 hover:border-brand-500/40 transition-all duration-300 overflow-hidden">
+                                            {/* Top-border accent — brand blue */}
+                                            <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, rgba(6,147,227,0.8), transparent)' }} />
                                             <div className="mb-4">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-widest uppercase px-2.5 py-0.5 rounded-full bg-brand-500/15 border border-brand-400/25 text-brand-300">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-brand-400" />
+                                                        Option 1
+                                                    </span>
+                                                </div>
                                                 <h5 className="font-bold text-brand-300 text-lg mb-2">Invite Contractor</h5>
                                                 <p className="text-xs text-slate-400 leading-relaxed">
                                                     Copy and send this secure link to your GC. They can upload licenses, insurance, and complete their profile independently.
                                                 </p>
                                             </div>
                                             <div className="mt-auto space-y-3">
-                                                <div className="flex items-center gap-2 bg-black/20 p-2 rounded-lg border border-white/5">
-                                                    <input 
-                                                        type="text" 
-                                                        readOnly 
+                                                <div className="flex items-center gap-2 bg-black/20 p-2 rounded-xl border border-white/5">
+                                                    <input
+                                                        type="text"
+                                                        readOnly
                                                         value={inviteLink}
                                                         className="w-full bg-transparent border-none text-xs text-slate-300 focus:ring-0"
                                                     />
-                                                    <button 
+                                                    <button
                                                         onClick={handleCopyLink}
                                                         disabled={isLocked}
                                                         className={`flex-shrink-0 button-base text-xs py-1.5 px-3 flex items-center justify-center transition-all duration-200 min-w-[80px] h-8 ${
@@ -355,23 +376,28 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                                         </div>
 
                                         {/* Option 2: Manual Entry */}
-                                        <div className="relative flex flex-col p-5 rounded-xl border-2 border-white/10 bg-white/5 hover:border-white/20 transition-all duration-300">
-                                            <div className="absolute top-0 right-0 bg-slate-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl rounded-tr-lg">
-                                                Option 2
-                                            </div>
+                                        <div className="relative flex flex-col p-5 rounded-xl border-2 border-white/10 bg-white/5 hover:border-white/20 transition-all duration-300 overflow-hidden">
+                                            {/* Top-border accent — neutral */}
+                                            <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, rgba(100,116,139,0.6), transparent)' }} />
                                             <div className="mb-4">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-widest uppercase px-2.5 py-0.5 rounded-full bg-white/10 border border-white/15 text-slate-400">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                                                        Option 2
+                                                    </span>
+                                                </div>
                                                 <h5 className="font-bold text-slate-200 text-lg mb-2">Fill Out Manually</h5>
                                                 <p className="text-xs text-slate-400 leading-relaxed">
                                                     If you are the GC or have the information ready (Licenses, Insurance, Bio), you can complete the onboarding form right now.
                                                 </p>
                                             </div>
                                             <div className="mt-auto">
-                                                <button 
-                                                    onClick={() => onOpenGcOnboarding()} 
+                                                <button
+                                                    onClick={() => onOpenGcOnboarding()}
                                                     disabled={isLocked}
                                                     className="w-full button-base text-sm py-3 bg-[#0693e3] text-white hover:bg-[#0578c5] transition-colors flex items-center justify-center shadow-lg"
                                                 >
-                                                    <span className="mr-2">📝</span> Complete Profile Now
+                                                    <ClipboardCheckIcon className="w-5 h-5 mr-2" /> Complete Profile Now
                                                 </button>
                                             </div>
                                         </div>
@@ -381,7 +407,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
 
                             {/* Saved Profile View */}
                             {usingSavedProfile ? (
-                                <div className="p-6 bg-green-900/20 rounded-xl border border-green-500/30">
+                                <div className="p-5 bg-green-900/20 rounded-xl border border-green-500/30">
                                     <h4 className="font-bold text-green-300 mb-3 flex items-center text-lg">
                                         <CheckCircleIcon className="w-6 h-6 mr-2" />
                                         Profile Validated
@@ -401,7 +427,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                                     </div>
                                 </div>
                             ) : (
-                                <div className="p-6 bg-white/5 rounded-xl border border-white/10">
+                                <div className="p-5 bg-white/5 rounded-xl border border-white/10">
                                     <h4 className="font-bold text-slate-100 mb-4 text-lg">Required Documents (Upload here or via Link)</h4>
                                     <div className="space-y-2">
                                         <GcDocUploadRow
@@ -456,7 +482,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
             </div>
 
             <div id="project-documents-section" className="section-container mt-6">
-                <h3 className="section-title text-center flex justify-between items-center">
+                <h3 className="section-title flex justify-between items-center">
                     <span>Project Documents (Plans & Permits)</span>
                     {selectedRehabType && (
                         <span
@@ -470,18 +496,34 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                         </span>
                     )}
                 </h3>
-                <div className="p-6 bg-transparent space-y-6">
+                <div className="p-5 bg-transparent space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end p-4 border border-white/10 rounded-xl bg-white/5">
                     <div className="md:col-span-2">
-                    <label htmlFor="doc-file-input" className="block text-sm font-semibold text-slate-300 mb-2">Document File</label>
+                    <label className="block text-sm font-semibold text-slate-300 mb-2">Document File</label>
                     <input
                         ref={fileInputRef}
                         id="doc-file-input"
                         type="file"
                         onChange={(e) => setNewDocFile(e.target.files ? e.target.files[0] : null)}
-                        className="mt-1 block w-full text-sm text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#0693e3] file:text-white hover:file:bg-[#0578c5] file:cursor-pointer file:transition-colors transition-colors cursor-pointer"
+                        className="hidden"
                         disabled={isLocked}
                     />
+                    <label
+                        htmlFor="doc-file-input"
+                        className={`flex items-center gap-3 p-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all ${isLocked ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+                    >
+                        <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-brand-500/20 border border-brand-400/20 flex items-center justify-center">
+                            <CloudUploadIcon className="w-5 h-5 text-brand-400" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            {newDocFile ? (
+                                <span className="text-sm font-medium text-brand-200 truncate block">{newDocFile.name}</span>
+                            ) : (
+                                <span className="text-sm text-slate-400">Click to choose a file&hellip;</span>
+                            )}
+                            <span className="text-[10px] text-slate-500 mt-0.5 block">PDF, DWG, XLSX, DOC accepted</span>
+                        </div>
+                    </label>
                     </div>
                     <div>
                     <label htmlFor="doc-type-select" className="block text-sm font-semibold text-slate-300 mb-2">Document Type</label>
@@ -489,7 +531,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                         id="doc-type-select"
                         value={newDocType}
                         onChange={(e) => setNewDocType(e.target.value as ProjectDocument['type'])}
-                        className="mt-1 spreadsheet-input w-full"
+                        className="mt-1 form-input-premium w-full"
                         disabled={isLocked}
                     >
                         <option>Architectural Plan</option>
@@ -513,7 +555,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                             textarea.style.height = `${textarea.scrollHeight}px`;
                         }}
                         placeholder="e.g., 'Approved kitchen remodel permit'"
-                        className="mt-1 spreadsheet-input w-full resize-none overflow-hidden"
+                        className="mt-1 form-input-premium w-full resize-none overflow-hidden"
                         disabled={isLocked}
                     />
                     </div>
@@ -534,7 +576,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                     <h4 className="text-sm font-bold mb-4 text-slate-200">Uploaded Documents</h4>
                     <ul className="space-y-2">
                         {projectDocuments.map((doc, index) => (
-                        <li key={index} className="p-4 bg-white/5 rounded-lg border border-white/5 flex items-center justify-between hover:bg-white/10 transition-colors">
+                        <li key={index} className="p-4 bg-white/5 rounded-xl border border-white/5 flex items-center justify-between hover:bg-white/10 transition-colors">
                             <div className="flex items-center">
                                 <div className="p-2 bg-brand-500/20 rounded-lg mr-4">
                                     <ClipboardCheckIcon className="w-6 h-6 text-brand-400" />
@@ -542,7 +584,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                                 <div>
                                     <p className="font-bold text-slate-100">{doc.name}</p>
                                     <div className="flex items-center gap-2 mt-1">
-                                        <span className="text-xs px-2 py-0.5 rounded bg-slate-700 text-slate-300">{doc.type}</span>
+                                        <span className="text-xs px-2 py-0.5 rounded-full bg-brand-500/15 border border-brand-400/25 text-brand-300">{doc.type}</span>
                                         {doc.description && <span className="text-xs text-slate-500 italic">"{doc.description}"</span>}
                                     </div>
                                 </div>

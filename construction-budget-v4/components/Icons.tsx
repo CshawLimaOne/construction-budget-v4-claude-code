@@ -470,14 +470,13 @@ export const ConditionC1Icon: React.FC<{className?: string}> = ({className}) => 
     <rect x="32" y="26" width="8" height="7" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
     <line x1="36" y1="26" x2="36" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
     <line x1="32" y1="29.5" x2="40" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
-    {/* Sparkle star badge — top right, emerald */}
-    <path d="M40 3 L41.5 7 L45.5 8.5 L41.5 10 L40 14 L38.5 10 L34.5 8.5 L38.5 7 Z" fill="#22c55e" fillOpacity="0.85" stroke="#22c55e" strokeWidth="0.5"/>
-    {/* Small secondary sparkle */}
-    <line x1="46" y1="3" x2="46" y2="6" stroke="#22c55e" strokeWidth="1.3" strokeOpacity="0.7"/>
-    <line x1="44.5" y1="4.5" x2="47.5" y2="4.5" stroke="#22c55e" strokeWidth="1.3" strokeOpacity="0.7"/>
+    {/* Emerald circle badge — top right — matches sibling icons */}
+    <circle cx="40" cy="8" r="7.5" fill="#22c55e" fillOpacity="0.30" stroke="#22c55e" strokeWidth="2"/>
+    {/* 4-point sparkle star inside badge */}
+    <path d="M40 3 L41.3 7 L45 8 L41.3 9 L40 13 L38.7 9 L35 8 L38.7 7 Z" fill="#22c55e" fillOpacity="0.95" stroke="#22c55e" strokeWidth="0.5"/>
     {/* Wall shine marks */}
-    <line x1="10" y1="24" x2="10" y2="22" stroke="#22c55e" strokeWidth="1.3" strokeOpacity="0.6"/>
-    <line x1="38" y1="24" x2="38" y2="22" stroke="#22c55e" strokeWidth="1.3" strokeOpacity="0.6"/>
+    <line x1="10" y1="24" x2="10" y2="22" stroke="#22c55e" strokeWidth="1.5" strokeOpacity="0.7"/>
+    <line x1="38" y1="24" x2="38" y2="22" stroke="#22c55e" strokeWidth="1.5" strokeOpacity="0.7"/>
   </svg>
 );
 
@@ -504,7 +503,7 @@ export const ConditionC2Icon: React.FC<{className?: string}> = ({className}) => 
     <line x1="36" y1="26" x2="36" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
     <line x1="32" y1="29.5" x2="40" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
     {/* Circle-check badge — top right, light green */}
-    <circle cx="40" cy="7.5" r="7" fill="#4ade80" fillOpacity="0.18" stroke="#4ade80" strokeWidth="2"/>
+    <circle cx="40" cy="7.5" r="7" fill="#4ade80" fillOpacity="0.30" stroke="#4ade80" strokeWidth="2"/>
     <path d="M36 7.5 L39 10.5 L44 5" stroke="#4ade80" strokeWidth="2.5" fill="none"/>
   </svg>
 );
@@ -532,10 +531,10 @@ export const ConditionC3Icon: React.FC<{className?: string}> = ({className}) => 
     <line x1="36" y1="26" x2="36" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
     <line x1="32" y1="29.5" x2="40" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
     {/* Wrench circle badge — top right, yellow */}
-    <circle cx="40" cy="7.5" r="7" fill="#eab308" fillOpacity="0.15" stroke="#eab308" strokeWidth="1.8"/>
+    <circle cx="40" cy="7.5" r="7" fill="#eab308" fillOpacity="0.28" stroke="#eab308" strokeWidth="1.8"/>
     {/* Wrench: open circle head + diagonal handle */}
-    <circle cx="38.5" cy="5.5" r="2.5" fill="none" stroke="#eab308" strokeWidth="2" strokeOpacity="0.85"/>
-    <line x1="40.2" y1="7.3" x2="44" y2="11.5" stroke="#eab308" strokeWidth="2.2" strokeLinecap="round" strokeOpacity="0.85"/>
+    <circle cx="38.5" cy="5.5" r="2.5" fill="none" stroke="#eab308" strokeWidth="2" strokeOpacity="0.95"/>
+    <line x1="40.2" y1="7.3" x2="44" y2="11.5" stroke="#eab308" strokeWidth="2.2" strokeLinecap="round" strokeOpacity="0.95"/>
   </svg>
 );
 
@@ -562,9 +561,9 @@ export const ConditionC4Icon: React.FC<{className?: string}> = ({className}) => 
     <line x1="36" y1="26" x2="36" y2="33" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
     <line x1="32" y1="29.5" x2="40" y2="29.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.55"/>
     {/* Warning triangle badge — top right, orange */}
-    <path d="M40 1.5 L47 13.5 L33 13.5 Z" fill="#f97316" fillOpacity="0.2" stroke="#f97316" strokeWidth="1.8" strokeLinejoin="round"/>
-    <line x1="40" y1="5" x2="40" y2="9.5" stroke="#f97316" strokeWidth="2" strokeLinecap="round" strokeOpacity="0.9"/>
-    <circle cx="40" cy="12" r="1" fill="#f97316" strokeOpacity="0.9"/>
+    <path d="M40 1.5 L47 13.5 L33 13.5 Z" fill="#f97316" fillOpacity="0.30" stroke="#f97316" strokeWidth="1.8" strokeLinejoin="round"/>
+    <line x1="40" y1="5" x2="40" y2="9.5" stroke="#f97316" strokeWidth="2" strokeLinecap="round" strokeOpacity="1"/>
+    <circle cx="40" cy="12" r="1" fill="#f97316"/>
     {/* Left wall crack — orange zigzag */}
     <path d="M11 23 L8 28 L13 33 L9 38 L12 41" stroke="#f97316" strokeWidth="2.5" strokeOpacity="0.75" fill="none"/>
   </svg>
@@ -596,7 +595,7 @@ export const ConditionC5Icon: React.FC<{className?: string}> = ({className}) => 
     <path d="M10 23 L7 28 L12 33 L8 38 L11 41" stroke="#ef4444" strokeWidth="2.5" strokeOpacity="0.75" fill="none"/>
     <path d="M39 27 L42 32 L39 37" stroke="#ef4444" strokeWidth="2" strokeOpacity="0.6" fill="none"/>
     {/* Red circle-warning badge — top right */}
-    <circle cx="40" cy="7.5" r="7" fill="#ef4444" fillOpacity="0.15" stroke="#ef4444" strokeWidth="2"/>
+    <circle cx="40" cy="7.5" r="7" fill="#ef4444" fillOpacity="0.30" stroke="#ef4444" strokeWidth="2"/>
     <line x1="40" y1="4.5" x2="40" y2="8.5" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round"/>
     <circle cx="40" cy="11" r="1.1" fill="#ef4444"/>
   </svg>
@@ -623,7 +622,7 @@ export const ConditionC6Icon: React.FC<{className?: string}> = ({className}) => 
     {/* Foundation crack */}
     <path d="M15 41 L19 38 L23 40 L27 37 L31 40 L35 37" stroke="#dc2626" strokeWidth="1.8" strokeOpacity="0.65" fill="none"/>
     {/* Red circle-X badge — top right */}
-    <circle cx="40" cy="7.5" r="7" fill="#dc2626" fillOpacity="0.2" stroke="#dc2626" strokeWidth="2"/>
+    <circle cx="40" cy="7.5" r="7" fill="#dc2626" fillOpacity="0.32" stroke="#dc2626" strokeWidth="2"/>
     <line x1="36.5" y1="4.5" x2="43.5" y2="10.5" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round"/>
     <line x1="43.5" y1="4.5" x2="36.5" y2="10.5" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round"/>
   </svg>
@@ -716,23 +715,27 @@ export const MaterialQ4Icon: React.FC<{className?: string}> = ({className}) => (
   </svg>
 );
 
-// Q5 Functional — 8-tooth gear cog with yellow accent
+// Q5 Functional — house with centered wrench badge (practical, meets minimum standards)
 export const MaterialQ5Icon: React.FC<{className?: string}> = ({className}) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    {/* Gear body — 8-tooth polygon (r=19 tips, r=13 roots) */}
-    <polygon
-      points="24,5 28.6,12.9 36.7,11.3 35.1,19.4 43,24 35.1,28.6 36.7,36.7 28.6,35.1 24,43 19.4,35.1 11.3,36.7 12.9,28.6 5,24 12.9,19.4 11.3,11.3 19.4,12.9"
-      fill="#eab308" fillOpacity="0.12" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"
-    />
-    {/* Inner bore ring */}
-    <circle cx="24" cy="24" r="8" fill="#eab308" fillOpacity="0.18" stroke="currentColor" strokeWidth="2"/>
-    {/* Center axle */}
-    <circle cx="24" cy="24" r="3" fill="#eab308" fillOpacity="0.75"/>
-    {/* Radial keyway spokes */}
-    <line x1="24" y1="16" x2="24" y2="11" stroke="#eab308" strokeWidth="1.2" strokeOpacity="0.5"/>
-    <line x1="24" y1="32" x2="24" y2="37" stroke="#eab308" strokeWidth="1.2" strokeOpacity="0.5"/>
-    <line x1="16" y1="24" x2="11" y2="24" stroke="#eab308" strokeWidth="1.2" strokeOpacity="0.5"/>
-    <line x1="32" y1="24" x2="37" y2="24" stroke="#eab308" strokeWidth="1.2" strokeOpacity="0.5"/>
+    {/* Yellow base glow */}
+    <ellipse cx="24" cy="43" rx="14" ry="2.5" fill="#eab308" fillOpacity="0.12"/>
+    {/* Ground */}
+    <line x1="3" y1="41" x2="45" y2="41" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Walls */}
+    <path d="M8 24 L8 41 L40 41 L40 24" stroke="currentColor" strokeWidth="2"/>
+    {/* Roof */}
+    <path d="M4 24 L24 8 L44 24" stroke="currentColor" strokeWidth="2.5"/>
+    {/* Door */}
+    <rect x="20" y="32" width="8" height="9" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Yellow circle badge — center of house (mirrors Q4's green check badge) */}
+    <circle cx="24" cy="21" r="9" fill="#eab308" fillOpacity="0.20" stroke="#eab308" strokeWidth="1.8"/>
+    {/* Wrench head */}
+    <circle cx="20.5" cy="17.5" r="3.5" fill="none" stroke="#eab308" strokeWidth="2.3" strokeOpacity="0.95"/>
+    {/* Wrench handle */}
+    <line x1="23" y1="20" x2="30" y2="27" stroke="#eab308" strokeWidth="3" strokeLinecap="round" strokeOpacity="0.9"/>
+    {/* Wrench handle end nub */}
+    <circle cx="30.5" cy="27.5" r="1.8" fill="#eab308" fillOpacity="0.7"/>
   </svg>
 );
 

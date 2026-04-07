@@ -91,7 +91,7 @@ const DrawItemRow: React.FC<DrawItemRowProps> = ({ item, categoryName, onMoveIte
         <div 
             draggable 
             onDragStart={handleDragStart}
-            className="flex items-center justify-between p-2 mb-1.5 bg-slate-800/60 border border-white/10 text-slate-200 rounded-lg shadow-sm hover:border-[#0693e3]/40 hover:bg-slate-700/60 cursor-grab active:cursor-grabbing text-sm transition-colors"
+            className="flex items-center justify-between p-2 mb-1.5 bg-slate-800/60 border border-white/10 text-slate-200 rounded-xl shadow-sm hover:border-[#0693e3]/40 hover:bg-slate-700/60 cursor-grab active:cursor-grabbing text-sm transition-colors"
         >
             <div className="flex flex-col">
                 <span className="font-medium text-slate-100">{item.drawItem || "Unnamed Item"}</span>
@@ -455,7 +455,7 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
                         />
                         {/* Inline Whisper Guidance */}
                         {showWhisper && (
-                            <div className={`absolute top-full right-0 mt-1 z-20 text-[10px] font-semibold whitespace-nowrap bg-slate-800 px-2 py-1 rounded shadow border border-slate-600 ${whisperColor}`}>
+                            <div className={`absolute top-full right-0 mt-1 z-20 text-[10px] font-semibold whitespace-nowrap bg-slate-800 px-2 py-1 rounded-lg shadow border border-slate-600 ${whisperColor}`}>
                                 {whisperText}
                             </div>
                         )}
@@ -710,7 +710,7 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
                         e.target.style.height = `${e.target.scrollHeight}px`;
                     }}
                     placeholder="Add a high-level description for this category..."
-                    className="spreadsheet-input text-xs bg-white text-slate-800 w-full resize-none overflow-hidden min-h-[38px] leading-tight"
+                    className="form-input-premium text-xs w-full resize-none overflow-hidden min-h-[38px] leading-tight"
                     rows={1}
                     disabled={isLocked}
                 />
@@ -751,8 +751,8 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
                                 
                                 {/* Inline Popover for Bulk Adjust */}
                                 {isBulkAdjustOpen && (
-                                    <div 
-                                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-slate-800 shadow-xl rounded-lg p-3 z-50 border border-slate-600 animate-in fade-in zoom-in-95 duration-200"
+                                    <div
+                                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-slate-800 shadow-xl rounded-xl p-3 z-50 border border-slate-600 animate-in fade-in zoom-in-95 duration-200"
                                         onClick={(e) => e.stopPropagation()}
                                     >
                                         <div className="text-xs text-slate-400 mb-2 font-normal text-left">Adjust Category Budget</div>
@@ -792,7 +792,7 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
                         <button
                             id={addItemButtonId}
                             onClick={(e) => { e.stopPropagation(); onAddCustomBudgetItem(category.name); }}
-                            className="text-xs bg-sky-600 hover:bg-sky-700 text-white py-1 px-2 rounded-md transition-colors text-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="text-xs bg-[#0693e3] hover:bg-[#0578c5] text-white py-1 px-2 rounded-md transition-colors text-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                             aria-label={`Add custom item to ${category.name}`}
                             disabled={isLocked}
                         >
@@ -949,12 +949,12 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
     };
 
     const GuidanceBanner = () => (
-        <div className="relative flex items-center justify-between bg-white/5 border border-white/10 p-3 rounded-lg mb-4 backdrop-blur-sm">
+        <div className="relative flex items-center justify-between bg-white/5 border border-white/10 p-3 rounded-xl mb-4 backdrop-blur-sm">
             {/* Left Side */}
             <div className="flex items-center space-x-4">
                 <button
                     onClick={() => setIsLogicPopoverOpen(!isLogicPopoverOpen)}
-                    className="flex items-center space-x-2 bg-white/10 hover:bg-[#0693e3]/20 text-slate-200 hover:text-white px-3 py-1.5 rounded-lg transition-colors border border-white/20 hover:border-[#0693e3]/50 group"
+                    className="flex items-center space-x-2 bg-white/10 hover:bg-[#0693e3]/20 text-slate-200 hover:text-white px-3 py-1.5 rounded-xl transition-colors border border-white/20 hover:border-[#0693e3]/50 group"
                 >
                     <LightBulbIcon className="w-4 h-4 group-hover:text-white transition-colors" />
                     <span className="text-xs font-bold uppercase tracking-wide group-hover:text-white transition-colors">Guidance Logic</span>
@@ -985,7 +985,7 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
 
             {/* Logic Popover - Absolute positioned */}
             {isLogicPopoverOpen && (
-                <div className="absolute top-full left-0 mt-2 z-50 w-80 bg-slate-800 border border-slate-600 rounded-lg shadow-xl p-4 text-left animate-in fade-in zoom-in-95 duration-200">
+                <div className="absolute top-full left-0 mt-2 z-50 w-80 bg-slate-800 border border-slate-600 rounded-xl shadow-xl p-4 text-left animate-in fade-in zoom-in-95 duration-200">
                     {/* Content matches screenshot logic */}
                     <h4 className="text-xs font-bold text-slate-400 uppercase mb-2 border-b border-slate-700 pb-1">How It Works</h4>
                     <div className="bg-slate-900 p-2 rounded text-center text-xs font-mono text-brand-300 mb-3 border border-slate-700 shadow-inner">
@@ -1005,7 +1005,7 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                     <h4 className="text-xs font-bold text-slate-400 uppercase mb-2 border-b border-slate-700 pb-1">Monitored Items</h4>
                     <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pr-1 custom-scrollbar">
                         {SUPPORTED_BENCHMARKS.map(item => (
-                            <span key={item} className="text-[10px] bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-600">{item}</span>
+                            <span key={item} className="text-[10px] bg-brand-500/15 border border-brand-400/25 text-brand-300 px-2 py-0.5 rounded-full">{item}</span>
                         ))}
                     </div>
                 </div>
@@ -1049,14 +1049,12 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
         const totalBudget = scopeSummary.borrowerTotal;
 
         return (
-            <div className="section-container p-6 animate-in fade-in duration-300">
-                <div className="flex justify-between items-center mb-6">
-                    <h3 className="section-title mb-0">Draw Schedule Configuration</h3>
-                    <div className="flex gap-2">
-                        <button onClick={() => onSetBudgetViewMode('detailed')} className="flex items-center text-xs font-bold px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200 border border-white/20 transition-all">
-                            ← Back to Budget
-                        </button>
-                    </div>
+            <div className="section-container p-5 animate-in fade-in duration-300">
+                <h3 className="section-title">Draw Schedule Configuration</h3>
+                <div className="flex justify-end mb-6">
+                    <button onClick={() => onSetBudgetViewMode('detailed')} className="flex items-center text-xs font-bold px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 border border-white/20 transition-all">
+                        ← Back to Budget
+                    </button>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -1103,6 +1101,22 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
 
     return (
         <div className="space-y-6">
+            {/* ── Step Hero ── */}
+            <div className="step1-hero">
+                <div className="flex items-center gap-2 mb-2">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest bg-brand-500/15 border border-brand-400/25 text-brand-300">
+                        <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
+                        Detailed Budget
+                    </span>
+                    <span className="text-xs text-slate-500">·</span>
+                    <span className="text-xs text-slate-400 font-medium">Step 3 of 4</span>
+                </div>
+                <h1 className="text-2xl font-black text-white tracking-tight">Project Budget</h1>
+                <p className="text-sm text-slate-400 mt-1 max-w-xl">
+                    Enter line-item costs for each trade. AI estimates and guidance benchmarks update as you type.
+                </p>
+            </div>
+
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/10 backdrop-blur-sm">
                 <div className="flex items-center gap-2">
                     <h3 className="text-xl font-bold text-white">Project Budget</h3>
@@ -1161,15 +1175,17 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
             </div>
 
             {/* Scope & Summary Dashboard (Replaces old bottom section) */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 section-container p-6">
+            <div className="section-container p-5">
+                <h3 className="section-title">Scope &amp; Summary</h3>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Left: Scope of Work */}
                 <div className="lg:col-span-2 flex flex-col gap-4">
-                    <h3 className="font-bold text-white text-lg">Scope of Work</h3>
+                    <h4 className="font-bold text-white text-sm uppercase tracking-wide text-slate-300">Scope of Work</h4>
                     <textarea
                         value={projectScopeStatement}
                         onChange={onProjectScopeStatementChange}
                         rows={8}
-                        className="spreadsheet-input w-full resize-none p-3 text-sm h-full"
+                        className="form-input-premium w-full resize-none p-3 text-sm h-full"
                         placeholder="Enter detailed project description, work to be performed, and any specific considerations..."
                         disabled={isLocked}
                     />
@@ -1197,7 +1213,7 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                         <CameraIcon className="w-5 h-5 mr-2" /> Upload Project Photos
                     </button>
 
-                    <div className="bg-white/5 rounded-lg p-4 border border-white/10 space-y-3 shadow-inner">
+                    <div className="bg-white/5 rounded-xl p-4 border border-white/10 space-y-3 shadow-inner">
                         <div className="flex justify-between items-center">
                             <span className="text-slate-400 text-sm font-semibold">Borrower Total:</span>
                             <span className="font-bold text-white text-lg">{formatCurrency(scopeSummary.borrowerTotal)}</span>
@@ -1219,7 +1235,7 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                         </div>
                     </div>
 
-                    <div className="bg-white/5 rounded-lg p-4 border border-white/10 space-y-3 shadow-inner">
+                    <div className="bg-white/5 rounded-xl p-4 border border-white/10 space-y-3 shadow-inner">
                         <div>
                             <label className="block text-xs font-bold text-slate-400 uppercase mb-1 flex items-center">
                                 Start Date <InfoIcon className="text-slate-500 ml-1 w-3 h-3" />
@@ -1228,7 +1244,7 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                                 type="date" 
                                 value={scopeSummary.startDate} 
                                 onChange={(e) => onScopeSummaryChange('startDate', e.target.value)} 
-                                className="spreadsheet-input w-full text-sm py-2" 
+                                className="form-input-premium w-full text-sm py-2"
                                 disabled={isLocked}
                             />
                         </div>
@@ -1236,16 +1252,17 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                             <label className="block text-xs font-bold text-slate-400 uppercase mb-1 flex items-center">
                                 Projected Completion <InfoIcon className="text-slate-500 ml-1 w-3 h-3" />
                             </label>
-                            <input 
-                                type="date" 
-                                value={scopeSummary.projectedCompletionDate} 
-                                onChange={(e) => onScopeSummaryChange('projectedCompletionDate', e.target.value)} 
-                                className="spreadsheet-input w-full text-sm py-2" 
+                            <input
+                                type="date"
+                                value={scopeSummary.projectedCompletionDate}
+                                onChange={(e) => onScopeSummaryChange('projectedCompletionDate', e.target.value)}
+                                className="form-input-premium w-full text-sm py-2" 
                                 disabled={isLocked}
                             />
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
 
             {/* Guidance Banner */}

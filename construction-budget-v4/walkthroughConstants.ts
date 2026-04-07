@@ -5,7 +5,7 @@ export const WALKTHROUGH_TEMPLATE: WalkthroughRoomDef[] = [
   {
     id: 'kitchen',
     label: 'Kitchen',
-    icon: '🍽️',
+    icon: 'kitchen',
     items: [
       { id: 'cabinets', label: 'Cabinets', targetCategory: 'Finishes', targetItemName: 'Cabinets (Kitchen & Bath)', defaultCostCode: 'Kitchen_Cabinets' },
       { id: 'countertops', label: 'Countertops', targetCategory: 'Finishes', targetItemName: 'Countertops (Kitchen & Bath)', defaultCostCode: 'Kitchen_Countertops' },
@@ -19,7 +19,7 @@ export const WALKTHROUGH_TEMPLATE: WalkthroughRoomDef[] = [
   {
     id: 'master_bath',
     label: 'Master Bath',
-    icon: '🛁',
+    icon: 'bathroom',
     items: [
       { id: 'vanity', label: 'Vanity/Cabinets', targetCategory: 'Finishes', targetItemName: 'Cabinets (Kitchen & Bath)', defaultCostCode: 'Bath_Vanity' },
       { id: 'toilet', label: 'Toilet', targetCategory: 'Systems', targetItemName: 'Plumbing - Fixtures', defaultCostCode: 'Bath_Toilet' },
@@ -31,7 +31,7 @@ export const WALKTHROUGH_TEMPLATE: WalkthroughRoomDef[] = [
   {
     id: 'bath_secondary', // Template for extra baths
     label: 'Bathroom',
-    icon: '🚽',
+    icon: 'bathroom',
     items: [
       { id: 'vanity', label: 'Vanity', targetCategory: 'Finishes', targetItemName: 'Cabinets (Kitchen & Bath)', defaultCostCode: 'Bath_Vanity' },
       { id: 'toilet', label: 'Toilet', targetCategory: 'Systems', targetItemName: 'Plumbing - Fixtures', defaultCostCode: 'Bath_Toilet' },
@@ -42,7 +42,7 @@ export const WALKTHROUGH_TEMPLATE: WalkthroughRoomDef[] = [
   {
     id: 'living_room',
     label: 'Living Room',
-    icon: '🛋️',
+    icon: 'living_room',
     items: [
       { id: 'flooring', label: 'Flooring', targetCategory: 'Flooring', targetItemName: 'LVP (Vinyl Plank Flooring)', defaultCostCode: 'Flooring_Room' },
       { id: 'paint', label: 'Paint', targetCategory: 'Interior', targetItemName: 'Painting - Interior', defaultCostCode: 'Paint_Room' },
@@ -53,7 +53,7 @@ export const WALKTHROUGH_TEMPLATE: WalkthroughRoomDef[] = [
   {
     id: 'bedroom', // Template for extra bedrooms
     label: 'Bedroom',
-    icon: '🛏️',
+    icon: 'bedroom',
     items: [
       { id: 'flooring', label: 'Flooring', targetCategory: 'Flooring', targetItemName: 'LVP (Vinyl Plank Flooring)', defaultCostCode: 'Flooring_Room' },
       { id: 'paint', label: 'Paint', targetCategory: 'Interior', targetItemName: 'Painting - Interior', defaultCostCode: 'Paint_Room' },
@@ -64,7 +64,7 @@ export const WALKTHROUGH_TEMPLATE: WalkthroughRoomDef[] = [
   {
     id: 'basement',
     label: 'Basement',
-    icon: '🧱',
+    icon: 'basement',
     items: [
         { id: 'framing', label: 'Framing', targetCategory: 'Structure', targetItemName: 'Framing *(L & M)', defaultCostCode: 'Trim_Baseboards' }, // Using Trim as proxy cost or need new code
         { id: 'drywall', label: 'Drywall', targetCategory: 'Interior', targetItemName: 'Drywall', defaultCostCode: 'Paint_Interior' },
@@ -76,7 +76,7 @@ export const WALKTHROUGH_TEMPLATE: WalkthroughRoomDef[] = [
   {
     id: 'exterior',
     label: 'Exterior',
-    icon: '🏠',
+    icon: 'exterior',
     items: [
       { id: 'roof', label: 'Roof', targetCategory: 'Exterior', targetItemName: 'Roofing*', defaultCostCode: 'Ext_Roof' },
       { id: 'siding', label: 'Siding', targetCategory: 'Exterior', targetItemName: 'Siding', defaultCostCode: 'Ext_Siding' },
@@ -89,7 +89,7 @@ export const WALKTHROUGH_TEMPLATE: WalkthroughRoomDef[] = [
   {
     id: 'systems',
     label: 'Systems',
-    icon: '⚙️',
+    icon: 'systems',
     items: [
       { id: 'hvac', label: 'HVAC Unit', targetCategory: 'Systems', targetItemName: 'Rough HVAC* (Ductwork)', defaultCostCode: 'Sys_HVAC' },
       { id: 'water_heater', label: 'Water Heater', targetCategory: 'Systems', targetItemName: 'Water Heaters', defaultCostCode: 'Sys_WaterHeater' },
