@@ -848,7 +848,7 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
         }
 
         const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash-lite-preview',
+          model: 'gemini-2.5-flash',
           contents: { parts },
           config: {
             systemInstruction: ESTIMATOR_SYSTEM_INSTRUCTION,
@@ -1175,14 +1175,14 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
             const topologyPart = { text: `**VALID_BUDGET_ITEMS (Topology Map):**\n${targetTopology}` };
 
             const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash-lite-preview',
+                model: 'gemini-2.5-flash',
                 contents: { parts: [topologyPart, contentPart] },
                 config: {
                     systemInstruction: BUDGET_PARSER_SYSTEM_INSTRUCTION,
                     responseMimeType: "application/json",
                     responseSchema: BUDGET_PARSER_SCHEMA,
-                    temperature: 0.0, 
-                    topK: 1
+                    temperature: 0.0,
+                    thinkingConfig: { thinkingBudget: 0 },
                 },
             });
 
@@ -1199,11 +1199,16 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
                 totalBudgetFromFile: calculatedTotal,
                 projectDetails: parsedResult.projectDetails
             });
-            setIsReviewModalOpen(true);
+            setTimeout(() => setIsReviewModalOpen(true), 100);
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Budget parsing failed:", error);
-            setBudgetParsingError("Failed to process the file. Please ensure it is a valid budget document.");
+            const detail = error?.message || error?.toString() || '';
+            setBudgetParsingError(
+                detail
+                    ? `Failed to process file: ${detail}`
+                    : "Failed to process the file. Please ensure it is a valid budget document."
+            );
         } finally {
             setIsParsingBudget(false);
         }
@@ -1673,11 +1678,41 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
         if (details) {
             setPropertyDetails(prev => ({
                 ...prev,
-                ...details
+                ...(details.street   ? { street: details.street }   : {}),
+                ...(details.city     ? { city:   details.city }     : {}),
+                ...(details.state    ? { state:  details.state }    : {}),
+                ...(details.zip      ? { zip:    details.zip }      : {}),
             }));
-            
+
             if (details.asIsSqft) {
                 handleAsIsProjectedChangeWithAudit('totalBuildingSqFeet', 'asIs', String(details.asIsSqft));
+            }
+            if (details.projectedSqft) {
+                handleAsIsProjectedChangeWithAudit('totalBuildingSqFeet', 'projected', String(details.projectedSqft));
+            }
+            if (details.asIsBedrooms) {
+                handleAsIsProjectedChangeWithAudit('bedroomCount', 'asIs', String(details.asIsBedrooms));
+            }
+            if (details.projectedBedrooms) {
+                handleAsIsProjectedChangeWithAudit('bedroomCount', 'projected', String(details.projectedBedrooms));
+            }
+            if (details.asIsBathrooms) {
+                handleAsIsProjectedChangeWithAudit('bathroomCount', 'asIs', String(details.asIsBathrooms));
+            }
+            if (details.projectedBathrooms) {
+                handleAsIsProjectedChangeWithAudit('bathroomCount', 'projected', String(details.projectedBathrooms));
+            }
+            if (details.typeOfRehab) {
+                handleSelectedRehabTypeChangeWithAudit(details.typeOfRehab);
+            }
+            if (details.conditionOfProperty) {
+                handleSelectedConditionChangeWithAudit(details.conditionOfProperty);
+            }
+            if (details.materialQuality) {
+                handleSelectedMaterialQualityChangeWithAudit(details.materialQuality);
+            }
+            if (details.projectScopeStatement) {
+                setProjectScopeStatement(details.projectScopeStatement);
             }
         }
 

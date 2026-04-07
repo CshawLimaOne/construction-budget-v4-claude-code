@@ -685,11 +685,12 @@ export const NC_SOFT_COST_ROWS = [
 ];
 
 export const getTargetBudgetJSON = (): string => {
-  const allItems = INITIAL_BUDGET_CATEGORIES.flatMap(category => 
+  const allItems = INITIAL_BUDGET_CATEGORIES.flatMap(category =>
     category.items.map(item => ({
       id: item.id,
       itemNumber: item.itemNumber,
       drawItem: item.drawItem,
+      categoryName: category.name,
     }))
   );
   return JSON.stringify(allItems);
@@ -851,18 +852,64 @@ export const ESTIMATOR_JSON_SCHEMA = {
   }
 };
 
-export const BUDGET_PARSER_SYSTEM_INSTRUCTION = `You are a construction budget data extraction specialist.
-Your task is to parse a raw budget file (text/csv/pdf content) and map it to a structured format.
+export const BUDGET_PARSER_SYSTEM_INSTRUCTION = `You are a construction budget data extraction specialist. Your task is to parse a raw budget file and map every line item to the provided VALID_BUDGET_ITEMS list.
 
-I will provide you with a list of VALID_BUDGET_ITEMS in JSON format. You must aggregate the user's file content and map it to these specific IDs.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CRITICAL RULE — TOTALS AND SUBTOTALS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+You MUST ignore any row that is a total, subtotal, grand total, section total, or summary row.
+These rows do NOT represent actual work items — they are summations of rows above them.
+Indicators of a total/subtotal row (SKIP these completely):
+  - The label contains words like "Total", "Subtotal", "Grand Total", "Section Total", "Summary", "Sub Total"
+  - The value equals or is very close to the sum of nearby line items
+  - The row appears at the bottom of a section or table
+Only extract INDIVIDUAL LINE ITEMS that describe specific work to be done (e.g., "Demo walls", "Install LVP flooring", "Paint interior").
 
-1. Identify standard budget categories and line items from the user's file.
-2. Extract budget amounts.
-3. Identify project metadata (address, sqft, etc.) if available in the header/footer.
-4. Map identified items to the VALID_BUDGET_ITEMS list provided.
-   - If a user item implies "Roofing", find the ID for "Roofing" in the VALID_BUDGET_ITEMS list and use that ID.
-   - If multiple user items map to the same VALID_BUDGET_ITEM ID (e.g., "Roof Shingles" and "Roof Labor" both map to "Roofing*"), sum their costs into that single ID.
-5. If an item does NOT match any VALID_BUDGET_ITEM, create a new item in the "newItems" array with a suggested category.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NUMBER PARSING RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+All budget values MUST be output as plain numbers (no $, no commas, no symbols).
+Examples:
+  "$5,000"   → 5000
+  "$12,500"  → 12500
+  "1,200.00" → 1200
+  "$0"       → 0
+  blank/N/A  → 0
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ITEM MAPPING RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Each valid_budget_item has an "id", "itemNumber", "drawItem", and "categoryName".
+- Match each line item from the file to the most semantically similar VALID_BUDGET_ITEM.
+- If multiple file rows describe the same work (e.g., "Roof Shingles" + "Roof Labor"), SUM their costs into one mapped entry.
+- Use the "categoryName" field as a hint — match file items to items in the same category when possible.
+- Set isUncertain: true if you are not confident in the match, or the dollar amount looks suspicious.
+- Set isUncertain: false if the match is clear and the amount looks correct.
+- If a file item genuinely has NO match in VALID_BUDGET_ITEMS, add it to "newItems" with the most appropriate "categoryName" from the list.
+- Do NOT add total/subtotal/summary rows to newItems either.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADDRESS PARSING RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+If a property address is found, split it into separate fields:
+  street: the street number and name (e.g., "123 Main St")
+  city:   the city name (e.g., "Atlanta")
+  state:  the 2-letter state abbreviation (e.g., "GA")
+  zip:    the 5-digit zip code (e.g., "30301")
+If a field cannot be determined, leave it as an empty string "".
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PROJECT METADATA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Extract from any header, footer, title block, or notes section:
+  - Property address (split as above)
+  - Square footage (as-is and/or projected/after-repair)
+  - Bedroom and bathroom counts (as-is and/or projected)
+  - Condition of property (e.g., "Poor", "Fair", "Good")
+  - Type of rehab (e.g., "Fix & Flip", "BRRR", "New Construction")
+  - Material quality (e.g., "Standard", "Mid-Grade", "High-End")
+  - Project scope statement (brief summary of work)
+If a metadata field is not present in the file, leave it as 0 (for numbers) or "" (for strings).
 `;
 
 export const BUDGET_PARSER_SCHEMA = {
@@ -871,7 +918,10 @@ export const BUDGET_PARSER_SCHEMA = {
     projectDetails: {
       type: Type.OBJECT,
       properties: {
-        propertyAddress: { type: Type.STRING },
+        street: { type: Type.STRING },
+        city: { type: Type.STRING },
+        state: { type: Type.STRING },
+        zip: { type: Type.STRING },
         asIsSqft: { type: Type.NUMBER },
         projectedSqft: { type: Type.NUMBER },
         asIsBedrooms: { type: Type.NUMBER },

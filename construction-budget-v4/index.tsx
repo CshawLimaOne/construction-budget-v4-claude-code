@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { InitializationData } from './types';
 import './styles.css'; // Import isolated styles for bundling
 
@@ -96,7 +97,9 @@ const mount = (config: { selector?: string; data?: InitializationData } = {}) =>
   root = ReactDOM.createRoot(container);
   root.render(
     <React.StrictMode>
-      <App initialData={config.data} />
+      <ErrorBoundary>
+        <App initialData={config.data} />
+      </ErrorBoundary>
     </React.StrictMode>
   );
 };

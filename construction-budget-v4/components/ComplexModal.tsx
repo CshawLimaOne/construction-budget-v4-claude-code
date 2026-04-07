@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import ReactDOM from 'react-dom';
 import { XIcon } from './Icons';
 
 interface ComplexModalProps {
@@ -21,7 +22,7 @@ export const ComplexModal: React.FC<ComplexModalProps> = ({ isOpen, onClose, tit
     xl: 'max-w-5xl',
   };
 
-  return (
+  return ReactDOM.createPortal(
     <div
       className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-start justify-center z-[999] px-4 pt-20 pb-4 overflow-y-auto"
       aria-labelledby="modal-title"
@@ -54,6 +55,7 @@ export const ComplexModal: React.FC<ComplexModalProps> = ({ isOpen, onClose, tit
           {footer}
         </footer>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

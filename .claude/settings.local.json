@@ -10,7 +10,9 @@
       "WebFetch(domain:www.limaone.com)",
       "Bash(find '/c/Users/cshaw/OneDrive - Lima One Capital/Desktop/construction-budget-v4-claude-code' -maxdepth 2 \\\\\\(-name *.png -o -name *.jpg -o -name *.jpeg -o -name *.webp \\\\\\))",
       "Bash(npm run:*)",
-      "Bash(grep -r \"generateContent\\\\|generateObject\" construction-budget-v4/*.tsx)"
+      "Bash(grep -r \"generateContent\\\\|generateObject\" construction-budget-v4/*.tsx)",
+      "Bash(node -e \"const pkg = require\\(''./node_modules/@google/genai/package.json''\\); console.log\\(pkg.version\\)\")",
+      "Bash(node -e \":*)"
     ]
   }
 }
