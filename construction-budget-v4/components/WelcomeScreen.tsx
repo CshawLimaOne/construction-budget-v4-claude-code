@@ -240,7 +240,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             {/* Secondary Card — Template Library */}
             <div className={`welcome-fade-up welcome-delay-4 ${cardsVisible ? 'visible' : ''}`}>
               <button
-                onClick={() => handleAction(onStartWithTemplate)}
+                onClick={() => onStartWithTemplate()}
                 className="welcome-card-secondary group relative w-full flex items-start gap-5 p-5 rounded-2xl text-left transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#F6F7F9] border border-[#DFE1E5] flex items-center justify-center group-hover:bg-brand-50 group-hover:border-brand-200 transition-all duration-300">

@@ -1975,13 +1975,8 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
   // ... (Main Render Logic) ...
   if (!isStarted) {
     return (
-      <div className="h-full bg-gradient-to-br from-slate-900 to-[#1E2E5C] relative overflow-hidden">
-        {/* Ambient Blobs */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-            <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-brand-600/20 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-brand-600/10 rounded-full blur-3xl"></div>
-        </div>
-        <WelcomeScreen 
+      <div className="h-full bg-[#F4F5F7] relative overflow-hidden">
+        <WelcomeScreen
           onGetStarted={(type) => { 
               setIsStarted(true); 
               if (type === 'repeat') {
@@ -2041,15 +2036,10 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
 
   if (isStarted && !projectTypeMode && !isTutorialActive) {
       return (
-          <div className="h-full bg-gradient-to-br from-slate-900 to-[#1E2E5C] relative overflow-hidden">
-                {/* Ambient Blobs */}
-                <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                    <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-brand-600/20 rounded-full blur-3xl"></div>
-                    <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-brand-600/10 rounded-full blur-3xl"></div>
-                </div>
-              <ProjectTypeSelectionScreen 
-                onSelect={handleProjectTypeSelect} 
-                onBack={() => setIsStarted(false)} 
+          <div className="h-full bg-[#F4F5F7] relative overflow-hidden">
+              <ProjectTypeSelectionScreen
+                onSelect={handleProjectTypeSelect}
+                onBack={() => setIsStarted(false)}
               />
           </div>
       );
