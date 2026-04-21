@@ -792,6 +792,16 @@
 #construction-budget-app .vs-card-selected {
   animation: vsSelectPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+/* Modal window shadow — Retail 2.0 5-layer token */
+#construction-budget-app .modal-window-shadow {
+  box-shadow:
+    0 1px 2px rgba(30, 45, 92, 0.04),
+    0 4px 8px rgba(30, 45, 92, 0.06),
+    0 12px 24px rgba(30, 45, 92, 0.08),
+    0 24px 48px rgba(30, 45, 92, 0.07),
+    0 48px 96px rgba(30, 45, 92, 0.05);
+}
+
 @keyframes modalIn {
   from { opacity: 0; transform: scale(0.96) translateY(8px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }

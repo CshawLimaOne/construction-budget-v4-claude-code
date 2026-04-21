@@ -22,12 +22,12 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }
       onClick={onClose} // Close on overlay click
     >
       <div
-        className="bg-white p-6 rounded-lg w-full max-w-md transform transition-all border border-[#DFE1E5]"
-        style={{ boxShadow: '0 2.12px 19.86px rgba(30,45,92,0.05), 0 9.48px 45.88px rgba(30,45,92,0.036), 0 23.59px 104.77px rgba(30,45,92,0.028)' }}
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal content
+        className="modal-window-shadow bg-white p-6 rounded-2xl w-full max-w-md border border-[#DFE1E5]"
+        style={{ animation: 'modalIn 0.2s ease-out both' }}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 id="modal-title" className="text-xl font-semibold text-[#1E2D5C]">
+          <h2 id="modal-title" className="text-2xl font-bold text-[#1E2D5C] tracking-tight">
             {title}
           </h2>
           <button

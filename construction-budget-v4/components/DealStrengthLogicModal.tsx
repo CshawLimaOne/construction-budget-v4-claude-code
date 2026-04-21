@@ -65,10 +65,10 @@ export const DealStrengthLogicModal: React.FC<DealStrengthLogicModalProps> = ({ 
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col bg-white"
+        className="modal-window-shadow relative w-full max-w-2xl rounded-2xl flex flex-col bg-white"
         style={{
           border: '1px solid #DFE1E5',
-          borderTop: '2px solid #0693e3',
+          borderTop: '3px solid #1C39D8',
           animation: 'modalIn 0.2s ease-out both',
           maxHeight: 'calc(100vh - 4rem)',
         }}

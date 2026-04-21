@@ -32,12 +32,12 @@ export const ComplexModal: React.FC<ComplexModalProps> = ({ isOpen, onClose, tit
       onClick={onClose}
     >
       <div
-        className={`bg-white border border-[#DFE1E5] rounded-2xl w-full ${sizeClasses[size]} flex flex-col max-h-[calc(100vh-6rem)] transform transition-all`}
-        style={{ boxShadow: '0 2.12px 19.86px rgba(30,45,92,0.05), 0 9.48px 45.88px rgba(30,45,92,0.036), 0 23.59px 104.77px rgba(30,45,92,0.028)' }}
+        className={`modal-window-shadow bg-white border border-[#DFE1E5] rounded-2xl w-full ${sizeClasses[size]} flex flex-col max-h-[calc(100vh-6rem)]`}
+        style={{ animation: 'modalIn 0.2s ease-out both' }}
         onClick={(e) => e.stopPropagation()}
       >
         <header className="flex justify-between items-center p-5 border-b border-[#DFE1E5] flex-shrink-0">
-          <h2 id="modal-title" className="text-lg font-bold text-[#1E2D5C] tracking-tight">
+          <h2 id="modal-title" className="text-2xl font-bold text-[#1E2D5C] tracking-tight">
             {title}
           </h2>
           <button
