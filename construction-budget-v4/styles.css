@@ -423,6 +423,91 @@
 #construction-budget-app .help-link { font-size: 0.75rem; text-decoration: none; opacity: 0.6; transition: opacity 0.2s; }
 #construction-budget-app .help-link:hover { opacity: 1; text-decoration: underline; }
 
+/* Sidebar logo header — navy brand strip */
+#construction-budget-app .sidebar-logo-header {
+  background: #1E2D5C;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+#construction-budget-app .sidebar-logo-header img {
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+}
+#construction-budget-app .sidebar-logo-header .sidebar-logo-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+
+/* Loan pipeline strip */
+#construction-budget-app .loan-pipeline {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #F6F7F9;
+  border: 1px solid #DFE1E5;
+  border-radius: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  overflow: hidden;
+}
+#construction-budget-app .pipeline-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  gap: 0.2rem;
+}
+#construction-budget-app .pipeline-stage:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 60%;
+  background: #DFE1E5;
+}
+#construction-budget-app .pipeline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #DFE1E5;
+  border: 1.5px solid #DFE1E5;
+  transition: all 0.2s;
+}
+#construction-budget-app .pipeline-stage.active .pipeline-dot {
+  background: #1C39D8;
+  border-color: #1C39D8;
+  box-shadow: 0 0 0 3px rgba(28,57,216,0.15);
+}
+#construction-budget-app .pipeline-stage.done .pipeline-dot {
+  background: #139B23;
+  border-color: #139B23;
+}
+#construction-budget-app .pipeline-stage.alert .pipeline-dot {
+  background: #EAA800;
+  border-color: #EAA800;
+}
+#construction-budget-app .pipeline-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #BCBFC7;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+#construction-budget-app .pipeline-stage.active .pipeline-label { color: #1C39D8; }
+#construction-budget-app .pipeline-stage.done .pipeline-label { color: #139B23; }
+#construction-budget-app .pipeline-stage.alert .pipeline-label { color: #EAA800; }
+
 /* ═══════════════════════════════════════════════
    WELCOME SCREEN — Retail 2.0
    ═══════════════════════════════════════════════ */

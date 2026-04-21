@@ -33,6 +33,24 @@ const steps = [
   { number: 4, label: 'Review & Submit', icon: <PaperAirplaneIcon className="step-icon" /> },
 ];
 
+const PIPELINE_STAGES = [
+  { key: 'quote',    label: 'Quote' },
+  { key: 'applied',  label: 'Applied' },
+  { key: 'review',   label: 'In Review' },
+  { key: 'approved', label: 'Approved' },
+] as const;
+
+type PipelineKey = typeof PIPELINE_STAGES[number]['key'];
+
+function getPipelineState(status: ApplicationStatus): { active: PipelineKey; alert: boolean } {
+  switch (status) {
+    case 'under_review':       return { active: 'review',   alert: false };
+    case 'needs_borrower_action': return { active: 'review', alert: true };
+    case 'approved':           return { active: 'approved', alert: false };
+    default:                   return { active: 'quote',    alert: false };
+  }
+}
+
 const RiskMonitorWidget: React.FC<{ riskAnalysis: RiskAnalysisResult }> = ({ riskAnalysis }) => {
     const { score, factors } = riskAnalysis;
     
@@ -80,12 +98,40 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentStep, propertyAddress, 
       </button>
   );
 
+  const pipeline = getPipelineState(applicationStatus);
+  const activeIdx = PIPELINE_STAGES.findIndex(s => s.key === pipeline.active);
+
   return (
     <>
     <aside className="sidebar">
       {/* Floating Glass Panel */}
       <div className="sidebar-glass-panel">
-          
+
+          {/* Lima One logo header */}
+          <div className="sidebar-logo-header">
+            <img
+              src="https://www.limaone.com/wp-content/uploads/lima-one-logo-light-250x66.webp"
+              alt="Lima One Capital"
+            />
+            <span className="sidebar-logo-tag">Construction Finance Platform</span>
+          </div>
+
+          {/* Loan pipeline strip */}
+          <div className="loan-pipeline">
+            {PIPELINE_STAGES.map((stage, i) => {
+              const isDone   = i < activeIdx;
+              const isActive = i === activeIdx;
+              const isAlert  = isActive && pipeline.alert;
+              const stageClass = isAlert ? 'alert' : isDone ? 'done' : isActive ? 'active' : '';
+              return (
+                <div key={stage.key} className={`pipeline-stage ${stageClass}`}>
+                  <div className="pipeline-dot" />
+                  <span className="pipeline-label">{stage.label}</span>
+                </div>
+              );
+            })}
+          </div>
+
           {/* Property Context Header (Compact) */}
           <div className="sidebar-header">
             <div className="property-address">
