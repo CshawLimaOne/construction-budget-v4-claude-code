@@ -176,15 +176,39 @@
   border-color: #DFE1E5 !important;
 }
 
+/* Checkboxes & radios — Retail 2.0 brand accent */
+#construction-budget-app input[type="checkbox"],
+#construction-budget-app input[type="radio"] {
+  accent-color: #1C39D8;
+  min-height: unset;
+  border-radius: 0.25rem;
+}
+
+/* Select — custom chevron arrow */
+#construction-budget-app select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 4L6 8L10 4' stroke='%2378819D' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.25rem;
+}
+#construction-budget-app select:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 4L6 8L10 4' stroke='%231C39D8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
 #construction-budget-app select option {
     background-color: #ffffff;
     color: #1E2D5C;
 }
 
+/* Spreadsheet table inputs — compact, inherits global colors */
 #construction-budget-app .spreadsheet-input {
   width: 100%;
-  font-size: 1rem;
-  padding: 8px 10px;
+  font-size: 0.875rem;
+  padding: 5px 8px;
+  min-height: 32px;
+  border-radius: 0.375rem;
 }
 
 #construction-budget-app input[placeholder='(your description)'] {

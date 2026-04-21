@@ -856,7 +856,7 @@ const ClosingConditionsCard: React.FC<{ feasibilityData: FeasibilityData; onChan
                                     type="checkbox" 
                                     checked={(feasibilityData.conditions || []).includes(option)} 
                                     onChange={() => handleConditionToggle(option)}
-                                    className="h-4 w-4 accent-[#0693e3] border-gray-300 rounded"
+                                    className="h-4 w-4 accent-brand-500 border-[#DFE1E5] rounded"
                                 />
                                 <span className="ml-2 text-xs font-medium text-[#1E2D5C]">{option}</span>
                             </label>

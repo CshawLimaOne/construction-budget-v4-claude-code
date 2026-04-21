@@ -42,34 +42,34 @@ export const GcOnboardingForm: React.FC<GcOnboardingFormProps> = ({ data, onChan
             <FormSection title="General Information">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormRow label="Full Name">
-                        <input type="text" value={data.generalInfo.fullName} onChange={e => onChange('generalInfo.fullName', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.generalInfo.fullName} onChange={e => onChange('generalInfo.fullName', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                     <FormRow label="Address">
-                        <input type="text" value={data.generalInfo.address} onChange={e => onChange('generalInfo.address', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.generalInfo.address} onChange={e => onChange('generalInfo.address', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                     <FormRow label="Business Phone">
-                        <input type="tel" value={data.generalInfo.businessPhone} onChange={e => onChange('generalInfo.businessPhone', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="tel" value={data.generalInfo.businessPhone} onChange={e => onChange('generalInfo.businessPhone', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                     <FormRow label="Personal Email">
-                        <input type="email" value={data.generalInfo.personalEmail} onChange={e => onChange('generalInfo.personalEmail', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="email" value={data.generalInfo.personalEmail} onChange={e => onChange('generalInfo.personalEmail', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="SSN or EIN">
-                        <input type="text" value={data.generalInfo.ssnOrEin} onChange={e => onChange('generalInfo.ssnOrEin', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.generalInfo.ssnOrEin} onChange={e => onChange('generalInfo.ssnOrEin', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                     <FormRow label="Birthdate">
-                        <input type="date" value={data.generalInfo.birthdate} onChange={e => onChange('generalInfo.birthdate', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="date" value={data.generalInfo.birthdate} onChange={e => onChange('generalInfo.birthdate', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                     <FormRow label="Entity Name and Type">
-                        <input type="text" value={data.generalInfo.entityNameAndType} onChange={e => onChange('generalInfo.entityNameAndType', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.generalInfo.entityNameAndType} onChange={e => onChange('generalInfo.entityNameAndType', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="GC License Number">
-                        <input type="text" value={data.generalInfo.gcLicenseNumber} onChange={e => onChange('generalInfo.gcLicenseNumber', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.generalInfo.gcLicenseNumber} onChange={e => onChange('generalInfo.gcLicenseNumber', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                     <FormRow label="Entity Email">
-                        <input type="email" value={data.generalInfo.entityEmail} onChange={e => onChange('generalInfo.entityEmail', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="email" value={data.generalInfo.entityEmail} onChange={e => onChange('generalInfo.entityEmail', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                     <FormRow label="Number of Employees">
-                        <input type="number" value={data.generalInfo.numberOfEmployees} onChange={e => onChange('generalInfo.numberOfEmployees', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="number" value={data.generalInfo.numberOfEmployees} onChange={e => onChange('generalInfo.numberOfEmployees', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                 </div>
             </FormSection>
@@ -82,7 +82,7 @@ export const GcOnboardingForm: React.FC<GcOnboardingFormProps> = ({ data, onChan
                 {data.previousExperience.map((exp, index) => (
                     <div key={exp.id} className="grid grid-cols-1 md:grid-cols-3 gap-3 p-3 border border-[#DFE1E5] rounded-md">
                         <FormRow label={`Project ${index + 1} Address`}>
-                            <input type="text" value={exp.address} onChange={e => handleExperienceChange(exp.id, 'address', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                            <input type="text" value={exp.address} onChange={e => handleExperienceChange(exp.id, 'address', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                         </FormRow>
                         <FormRow label="Scope of Work / Rehab Type">
                             <textarea
@@ -96,12 +96,12 @@ export const GcOnboardingForm: React.FC<GcOnboardingFormProps> = ({ data, onChan
                                         textarea.style.height = `${textarea.scrollHeight}px`;
                                     }
                                 }}
-                                className="spreadsheet-input w-full resize-none overflow-hidden"
+                                className="form-input-premium w-full resize-none overflow-hidden"
                                 readOnly={isReadOnly}
                             />
                         </FormRow>
                          <FormRow label="Construction Budget">
-                            <input type="text" value={exp.constructionBudget} onChange={e => handleExperienceChange(exp.id, 'constructionBudget', e.target.value)} className="spreadsheet-input w-full" placeholder="$" readOnly={isReadOnly} />
+                            <input type="text" value={exp.constructionBudget} onChange={e => handleExperienceChange(exp.id, 'constructionBudget', e.target.value)} className="form-input-premium w-full" placeholder="$" readOnly={isReadOnly} />
                         </FormRow>
                     </div>
                 ))}
@@ -111,28 +111,28 @@ export const GcOnboardingForm: React.FC<GcOnboardingFormProps> = ({ data, onChan
             <FormSection title="Statement of Capabilities">
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                     <FormRow label="# of projects forecasted – next 12 mos.">
-                        <input type="text" value={data.capabilities.projectsForecasted} onChange={e => onChange('capabilities.projectsForecasted', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.capabilities.projectsForecasted} onChange={e => onChange('capabilities.projectsForecasted', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="# of dedicated field supervisors">
-                        <input type="text" value={data.capabilities.dedicatedFieldSupervisors} onChange={e => onChange('capabilities.dedicatedFieldSupervisors', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.capabilities.dedicatedFieldSupervisors} onChange={e => onChange('capabilities.dedicatedFieldSupervisors', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="# of dedicated production admin">
-                        <input type="text" value={data.capabilities.dedicatedProductionAdmin} onChange={e => onChange('capabilities.dedicatedProductionAdmin', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.capabilities.dedicatedProductionAdmin} onChange={e => onChange('capabilities.dedicatedProductionAdmin', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="# of in-house crews available">
-                        <input type="text" value={data.capabilities.inHouseCrewsAvailable} onChange={e => onChange('capabilities.inHouseCrewsAvailable', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.capabilities.inHouseCrewsAvailable} onChange={e => onChange('capabilities.inHouseCrewsAvailable', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="# of foundation subs">
-                        <input type="text" value={data.capabilities.foundationSubs} onChange={e => onChange('capabilities.foundationSubs', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.capabilities.foundationSubs} onChange={e => onChange('capabilities.foundationSubs', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="# of framing subs">
-                        <input type="text" value={data.capabilities.framingSubs} onChange={e => onChange('capabilities.framingSubs', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.capabilities.framingSubs} onChange={e => onChange('capabilities.framingSubs', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="# of MEP subs">
-                        <input type="text" value={data.capabilities.mepSubs} onChange={e => onChange('capabilities.mepSubs', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.capabilities.mepSubs} onChange={e => onChange('capabilities.mepSubs', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="# of 'other' subs">
-                        <input type="text" value={data.capabilities.otherSubs} onChange={e => onChange('capabilities.otherSubs', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.capabilities.otherSubs} onChange={e => onChange('capabilities.otherSubs', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                  </div>
             </FormSection>
@@ -160,16 +160,16 @@ export const GcOnboardingForm: React.FC<GcOnboardingFormProps> = ({ data, onChan
 
                  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-[#DFE1E5]">
                      <FormRow label="Signature (Type Full Name)">
-                        <input type="text" value={data.authorization.signature} onChange={e => onChange('authorization.signature', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.authorization.signature} onChange={e => onChange('authorization.signature', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="Print Name">
-                        <input type="text" value={data.authorization.printName} onChange={e => onChange('authorization.printName', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.authorization.printName} onChange={e => onChange('authorization.printName', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="Title">
-                        <input type="text" value={data.authorization.title} onChange={e => onChange('authorization.title', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="text" value={data.authorization.title} onChange={e => onChange('authorization.title', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                      <FormRow label="Date">
-                        <input type="date" value={data.authorization.date} onChange={e => onChange('authorization.date', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
+                        <input type="date" value={data.authorization.date} onChange={e => onChange('authorization.date', e.target.value)} className="form-input-premium w-full" readOnly={isReadOnly} />
                     </FormRow>
                  </div>
             </FormSection>

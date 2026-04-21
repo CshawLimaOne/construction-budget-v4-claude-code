@@ -223,7 +223,7 @@ export const BulkPhotoUploader: React.FC<BulkPhotoUploaderProps> = ({
           <select
             value={photo.assignment || ''}
             onChange={(e) => onAssignPhoto(index, e.target.value || null, false)} // Manual override clears AI flag
-            className="spreadsheet-input w-full text-xs"
+            className="form-input-premium w-full text-xs"
             aria-label={`Assign photo ${index + 1}`}
           >
             <option value="">Assign to...</option>

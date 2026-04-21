@@ -216,7 +216,7 @@ export const EstimatorModal: React.FC<EstimatorModalProps> = ({
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
                         placeholder="e.g. Dallas, TX or 75201"
-                        className="spreadsheet-input w-full !text-[#1E2D5C] !bg-white border-[#DFE1E5]"
+                        className="form-input-premium w-full"
                     />
                     <p className="text-xs text-[#78819D] mt-1">
                         Used to apply standard regional pricing multipliers.
@@ -233,7 +233,7 @@ export const EstimatorModal: React.FC<EstimatorModalProps> = ({
                 value={userPlan}
                 onChange={(e) => setUserPlan(e.target.value)}
                 rows={12}
-                className="spreadsheet-input w-full resize-none p-3 h-full !text-[#1E2D5C] !bg-white border-[#DFE1E5]"
+                className="form-input-premium w-full resize-none p-3 h-full"
                 placeholder="Describe your renovation goals. The AI will check this text against the visual evidence."
               />
             </div>
