@@ -59,7 +59,7 @@ const SectionHeader: React.FC<{ number: string; title: string; subtitle: string 
 
 // ─── Inline Error ───────────────────────────────────────────────────────────
 const FieldError: React.FC<{ show?: boolean; message?: string }> = ({ show, message = 'This field is required to continue.' }) =>
-  show ? <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1"><ExclamationCircleIcon className="w-3.5 h-3.5 flex-shrink-0" />{message}</p> : null;
+  show ? <p className="text-xs text-[#B92814] mt-1.5 flex items-center gap-1"><ExclamationCircleIcon className="w-3.5 h-3.5 flex-shrink-0" />{message}</p> : null;
 
 // ─── Verification badge ─────────────────────────────────────────────────────
 const VerificationStatusIndicator: React.FC<{ status: 'idle' | 'verifying' | 'verified' | 'mismatch' }> = ({ status }) => {
@@ -108,7 +108,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({ name, value, onChange, pl
       onFocus={() => { setIsFocused(true); setDisplayValue(parseCurrencyForStorage(value)); }}
       onBlur={() => { setIsFocused(false); setDisplayValue(value ? formatCurrencyForDisplay(value) : ''); }}
       placeholder={placeholder}
-      className={`form-input-premium w-full font-bold text-lg ${requiredHighlight ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''} ${className || ''}`}
+      className={`form-input-premium w-full font-bold text-lg ${requiredHighlight ? 'border-[#B92814] ring-1 ring-[#B92814] bg-[#FFF0EE]' : ''} ${className || ''}`}
       step={isFocused ? '1' : undefined}
       aria-label="Purchase Price"
       disabled={disabled}
@@ -166,11 +166,11 @@ const VisualSelector: React.FC<{
   };
 
   return (
-    <div id={id} className={`section-container overflow-hidden ${requiredHighlight ? 'border-red-500/60 shadow-[0_0_20px_rgba(239,68,68,0.15)]' : ''}`}>
+    <div id={id} className={`section-container overflow-hidden ${requiredHighlight ? 'border-[#B92814]/60 shadow-[0_0_20px_rgba(239,68,68,0.15)]' : ''}`}>
       <div className="p-5 border-b border-[#DFE1E5] bg-white">
         <SectionHeader number={sectionNumber} title={title} subtitle={subtitle} />
         {requiredHighlight && (
-          <p className="text-xs text-red-400 mt-2 flex items-center gap-1.5 ml-10">
+          <p className="text-xs text-[#B92814] mt-2 flex items-center gap-1.5 ml-10">
             <ExclamationCircleIcon className="w-3.5 h-3.5" /> Please make a selection to continue.
           </p>
         )}
@@ -411,7 +411,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
               <VerificationStatusIndicator status={verificationStatus} />
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="step1-street-input" className="step1-label">Street Address <span className="text-red-400">*</span></label>
+                  <label htmlFor="step1-street-input" className="step1-label">Street Address <span className="text-[#B92814]">*</span></label>
                   <div className="relative">
                     <MapPinIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78819D] pointer-events-none" />
                     <input
@@ -421,7 +421,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                       onChange={e => onPropertyDetailChange('street', e.target.value)}
                       placeholder="123 Main St"
                       autoComplete="street-address"
-                      className={`form-input-premium w-full pl-10 ${getInputError(propertyDetails.street) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
+                      className={`form-input-premium w-full pl-10 ${getInputError(propertyDetails.street) ? 'border-[#B92814] ring-1 ring-[#B92814] bg-[#FFF0EE]' : ''}`}
                       disabled={isLocked}
                     />
                   </div>
@@ -430,20 +430,20 @@ export const Step1Form: React.FC<Step1FormProps> = ({
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <div className="sm:col-span-2">
-                    <label htmlFor="step1-city-input" className="step1-label">City <span className="text-red-400">*</span></label>
+                    <label htmlFor="step1-city-input" className="step1-label">City <span className="text-[#B92814]">*</span></label>
                     <input
                       id="step1-city-input" type="text" name="city"
                       value={propertyDetails.city}
                       onChange={e => onPropertyDetailChange('city', e.target.value)}
                       placeholder="City"
                       autoComplete="address-level2"
-                      className={`form-input-premium w-full ${getInputError(propertyDetails.city) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
+                      className={`form-input-premium w-full ${getInputError(propertyDetails.city) ? 'border-[#B92814] ring-1 ring-[#B92814] bg-[#FFF0EE]' : ''}`}
                       disabled={isLocked}
                     />
                     <FieldError show={getInputError(propertyDetails.city)} />
                   </div>
                   <div>
-                    <label htmlFor="step1-state-input" className="step1-label">State <span className="text-red-400">*</span></label>
+                    <label htmlFor="step1-state-input" className="step1-label">State <span className="text-[#B92814]">*</span></label>
                     <input
                       id="step1-state-input" type="text" name="state"
                       value={propertyDetails.state}
@@ -451,13 +451,13 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                       placeholder="ST"
                       autoComplete="address-level1"
                       maxLength={2}
-                      className={`form-input-premium w-full uppercase ${getInputError(propertyDetails.state) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
+                      className={`form-input-premium w-full uppercase ${getInputError(propertyDetails.state) ? 'border-[#B92814] ring-1 ring-[#B92814] bg-[#FFF0EE]' : ''}`}
                       disabled={isLocked}
                     />
                     <FieldError show={getInputError(propertyDetails.state)} />
                   </div>
                   <div>
-                    <label htmlFor="step1-zip-input" className="step1-label">Zip <span className="text-red-400">*</span></label>
+                    <label htmlFor="step1-zip-input" className="step1-label">Zip <span className="text-[#B92814]">*</span></label>
                     <input
                       id="step1-zip-input" type="text" name="zip"
                       inputMode="numeric"
@@ -465,7 +465,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                       onChange={e => onPropertyDetailChange('zip', e.target.value)}
                       placeholder="12345"
                       autoComplete="postal-code"
-                      className={`form-input-premium w-full ${getInputError(propertyDetails.zip) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
+                      className={`form-input-premium w-full ${getInputError(propertyDetails.zip) ? 'border-[#B92814] ring-1 ring-[#B92814] bg-[#FFF0EE]' : ''}`}
                       disabled={isLocked}
                     />
                     <FieldError show={getInputError(propertyDetails.zip)} />
@@ -474,7 +474,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
 
                 <div>
                   <label htmlFor="step1-price-input" className="step1-label">
-                    Purchase Price <span className="text-red-400">*</span>
+                    Purchase Price <span className="text-[#B92814]">*</span>
                     <span className="ml-2 text-[10px] font-normal text-[#78819D]">— Contract price including concessions</span>
                   </label>
                   <CurrencyInput
@@ -511,35 +511,35 @@ export const Step1Form: React.FC<Step1FormProps> = ({
           </div>
           <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="step1-label">Lot Size <span className="text-red-400">*</span></label>
+              <label className="step1-label">Lot Size <span className="text-[#B92814]">*</span></label>
               <input
                 type="text"
                 value={landDetails.lotSize}
                 onChange={e => onLandDetailsChange('lotSize', e.target.value)}
                 placeholder="e.g. 0.5 Acres or 5,000 sqft"
-                className={`form-input-premium w-full ${getInputError(landDetails.lotSize) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
+                className={`form-input-premium w-full ${getInputError(landDetails.lotSize) ? 'border-[#B92814] ring-1 ring-[#B92814] bg-[#FFF0EE]' : ''}`}
                 disabled={isLocked}
               />
               <FieldError show={getInputError(landDetails.lotSize)} />
             </div>
             <div>
-              <label className="step1-label">Current Zoning <span className="text-red-400">*</span></label>
+              <label className="step1-label">Current Zoning <span className="text-[#B92814]">*</span></label>
               <input
                 type="text"
                 value={landDetails.zoning}
                 onChange={e => onLandDetailsChange('zoning', e.target.value)}
                 placeholder="e.g. Residential, R-1"
-                className={`form-input-premium w-full ${getInputError(landDetails.zoning) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
+                className={`form-input-premium w-full ${getInputError(landDetails.zoning) ? 'border-[#B92814] ring-1 ring-[#B92814] bg-[#FFF0EE]' : ''}`}
                 disabled={isLocked}
               />
               <FieldError show={getInputError(landDetails.zoning)} />
             </div>
             <div>
-              <label className="step1-label">Land Status <span className="text-red-400">*</span></label>
+              <label className="step1-label">Land Status <span className="text-[#B92814]">*</span></label>
               <select
                 value={landDetails.entitlementStatus}
                 onChange={e => onLandDetailsChange('entitlementStatus', e.target.value)}
-                className={`form-input-premium w-full ${getInputError(landDetails.entitlementStatus) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
+                className={`form-input-premium w-full ${getInputError(landDetails.entitlementStatus) ? 'border-[#B92814] ring-1 ring-[#B92814] bg-[#FFF0EE]' : ''}`}
                 disabled={isLocked}
               >
                 <option value="">Select status...</option>

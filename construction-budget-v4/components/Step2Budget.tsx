@@ -321,12 +321,12 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
                     <span>{item.itemNumber}</span>
                     {item.isUncertain && (
                         <Tooltip text="AI match uncertain. Please verify this line item." position="top">
-                            <FlagIcon className="text-yellow-500" />
+                            <FlagIcon className="text-[#EAA800]" />
                         </Tooltip>
                     )}
                     {itemRisk && (
                         <Tooltip text={`Risk Alert: ${itemRisk.message}`} position="right">
-                            <WarningTriangleIcon className="text-red-500 w-4 h-4 cursor-pointer" />
+                            <WarningTriangleIcon className="text-[#B92814] w-4 h-4 cursor-pointer" />
                         </Tooltip>
                     )}
                 </div>
@@ -446,7 +446,7 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
                             className={`spreadsheet-input text-right font-bold text-brand-500 bg-brand-50 border-brand-200
                                 ${budgetInputReadOnly ? 'bg-[#F6F7F9] cursor-not-allowed text-[#78819D]' : ''}
                                 ${item.isGcBuilderFeeItem ? 'border-orange-500' : ''}
-                                ${isWarning && !isBudgetFocused ? 'border-yellow-400 text-yellow-400' : ''}
+                                ${isWarning && !isBudgetFocused ? 'border-[#EAA800] text-[#EAA800]' : ''}
                             `}
                             placeholder="$0"
                             step={(isBudgetFocused && !budgetInputReadOnly) ? "1" : undefined}
@@ -680,7 +680,7 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
             )}
             {shouldHighlight && (
                 <Tooltip text={missingReason} position="top">
-                    <span className="ml-3 text-xs bg-white text-red-600 px-2 py-1 rounded font-bold uppercase flex items-center shadow-md cursor-help">
+                    <span className="ml-3 text-xs bg-white text-[#B92814] px-2 py-1 rounded font-bold uppercase flex items-center shadow-md cursor-help">
                         <WarningTriangleIcon className="w-3 h-3 mr-1" />
                         Review Needed
                     </span>
@@ -806,7 +806,7 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
                             <div key={index} className="relative group">
                                 <img src={photo.preview} alt={`category preview ${index}`} className="h-20 w-20 object-cover rounded-md" />
                                 {!isLocked && (
-                                <button onClick={() => onRemoveCategoryPhoto(category.name, index)} className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onClick={() => onRemoveCategoryPhoto(category.name, index)} className="absolute -top-1 -right-1 bg-[#B92814] text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <XCircleIcon className="w-4 h-4" />
                                 </button>
                                 )}
@@ -954,7 +954,7 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                     <p className="text-xs text-[#1E2D5C] mb-3">Compare your input against historical data.</p>
                     <ul className="text-xs space-y-2 mb-4">
                         <li className="flex items-center">
-                            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 mr-2 shadow-[0_0_8px_rgba(234,179,8,0.6)]"></span>
+                            <span className="w-2.5 h-2.5 rounded-full bg-[#FFF8E6]0 mr-2 shadow-[0_0_8px_rgba(234,179,8,0.6)]"></span>
                             <span className="text-[#1E2D5C]">Low Warning (&lt;50% of avg)</span>
                         </li>
                         <li className="flex items-center">

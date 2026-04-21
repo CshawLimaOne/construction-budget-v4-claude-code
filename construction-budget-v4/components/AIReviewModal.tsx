@@ -650,7 +650,7 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                             'bg-pink-50 text-pink-700 border-pink-200',
                             'bg-teal-50 text-teal-700 border-teal-200',
                             'bg-[#FFF5DB] text-[#EAA800] border-[#EDDDB1]',
-                            'bg-red-50 text-[#B92814] border-red-200',
+                            'bg-[#FFF0EE] text-[#B92814] border-[#F2C0BA]',
                             'bg-indigo-50 text-indigo-700 border-indigo-200',
                             'bg-cyan-50 text-cyan-700 border-cyan-200',
                         ];

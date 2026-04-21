@@ -73,7 +73,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplet
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
       {isRecording && (
-        <div className="absolute inset-0 rounded-full animate-ping bg-red-400 opacity-75"></div>
+        <div className="absolute inset-0 rounded-full animate-ping bg-[#B92814] opacity-75"></div>
       )}
       <button
         onMouseDown={handleStart}
@@ -83,8 +83,8 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplet
         onTouchEnd={handleStop}
         className={`relative z-10 flex items-center justify-center p-4 rounded-full transition-all duration-200 focus:outline-none shadow-lg ${
           isRecording 
-            ? 'bg-red-600 text-white scale-110' 
-            : 'bg-white text-red-500 border-2 border-red-500 hover:bg-red-50'
+            ? 'bg-[#B92814] text-white scale-110' 
+            : 'bg-white text-[#B92814] border-2 border-[#B92814] hover:bg-[#FFF0EE]'
         }`}
         aria-label={isRecording ? "Release to stop recording" : "Press and hold to record"}
         title="Press and hold to record"

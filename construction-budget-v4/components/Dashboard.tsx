@@ -57,11 +57,11 @@ export const DealGradeWidget: React.FC<{ dealGrade: DealGrade, variant?: 'defaul
     const [showPopover, setShowPopover] = useState(false);
 
     const getGradeColor = (grade: string) => {
-        if (grade.startsWith('A')) return 'bg-green-500 text-white';
+        if (grade.startsWith('A')) return 'bg-[#139B23] text-white';
         if (grade.startsWith('B')) return 'bg-brand-500 text-white';
-        if (grade.startsWith('C')) return 'bg-yellow-400 text-black';
+        if (grade.startsWith('C')) return 'bg-[#EAA800] text-black';
         if (grade.startsWith('D')) return 'bg-orange-500 text-white';
-        return 'bg-red-600 text-white animate-pulse';
+        return 'bg-[#B92814] text-white animate-pulse';
     };
 
     const getGradeGlow = (grade: string) => {
@@ -73,11 +73,11 @@ export const DealGradeWidget: React.FC<{ dealGrade: DealGrade, variant?: 'defaul
     };
 
     const getScoreColor = (score: number) => {
-        if (score >= 90) return 'text-green-600';
+        if (score >= 90) return 'text-[#139B23]';
         if (score >= 80) return 'text-[#0693e3]';
-        if (score >= 70) return 'text-yellow-600';
+        if (score >= 70) return 'text-[#EAA800]';
         if (score >= 60) return 'text-orange-600';
-        return 'text-red-600';
+        return 'text-[#B92814]';
     };
 
     const isHeader = variant === 'header';
@@ -157,7 +157,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
       <h2 className="text-xl font-semibold text-white text-center mb-4">Project Overview</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-7 gap-3">
         <DashboardItem label="Borrower Total" value={borrowerTotal} valueClass="text-[#0693e3] " isCurrency/>
-        <DashboardItem label="Lima One Approved" value={limaOneApprovedTotal} valueClass="text-green-600 " isCurrency/>
+        <DashboardItem label="Lima One Approved" value={limaOneApprovedTotal} valueClass="text-[#139B23] " isCurrency/>
         <DashboardItem label="Total Sq Ft" value={totalSqFt || '0'} valueClass="text-slate-700" />
         
         <QualitativeItem label="Condition" selectedValue={selectedConditionValue} options={conditions} />

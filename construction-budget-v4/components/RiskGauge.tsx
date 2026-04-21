@@ -55,10 +55,10 @@ export const RiskGauge: React.FC<RiskGaugeProps> = ({ score, size = 'md', showLa
     }
 
     const legendSegments = [
-        { label: 'Low', range: '0–25', color: 'bg-green-500', active: displayScore <= 25 },
-        { label: 'Mod', range: '26–50', color: 'bg-yellow-500', active: displayScore > 25 && displayScore <= 50 },
+        { label: 'Low', range: '0–25', color: 'bg-[#139B23]', active: displayScore <= 25 },
+        { label: 'Mod', range: '26–50', color: 'bg-[#FFF8E6]0', active: displayScore > 25 && displayScore <= 50 },
         { label: 'High', range: '51–75', color: 'bg-orange-500', active: displayScore > 50 && displayScore <= 75 },
-        { label: 'Crit', range: '76–100', color: 'bg-red-500', active: displayScore > 75 },
+        { label: 'Crit', range: '76–100', color: 'bg-[#B92814]', active: displayScore > 75 },
     ];
 
     return (

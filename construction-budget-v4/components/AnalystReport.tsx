@@ -317,7 +317,7 @@ const MarketHealthCard: React.FC<{
                                 type="checkbox" 
                                 checked={marketMetrics.femaDisasterZone} 
                                 onChange={e => onChange('femaDisasterZone', e.target.checked)}
-                                className="mr-2 h-4 w-4 text-red-600 rounded border-slate-300 focus:ring-red-500" 
+                                className="mr-2 h-4 w-4 text-[#B92814] rounded border-[#DFE1E5] focus:ring-[#B92814]" 
                             />
                             <span className="text-sm font-medium text-[#1E2D5C]">FEMA Disaster Zone?</span>
                         </label>
@@ -342,14 +342,14 @@ const DecisionConsole: React.FC<{
     
     // Style for the mitigating factors box based on risk context
     const mitigantsBoxStyle = isApprovingHighRisk
-        ? "border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]"
+        ? "border-[#B92814] ring-1 ring-[#B92814] bg-[#FFF0EE]"
         : "border-[#DFE1E5] bg-[#F6F7F9]";
 
     const getRecommendationStyle = (rec: RecommendationType) => {
         switch(rec) {
-            case 'Recommended': return '!text-green-600 bg-green-50 border-green-200';
-            case 'Recommended with Conditions': return '!text-yellow-600 bg-yellow-50 border-yellow-200';
-            case 'Not Recommended': return '!text-red-600 bg-red-50 border-red-200';
+            case 'Recommended': return '!text-[#139B23] bg-[#E1F7E4] border-[#ADDEB4]';
+            case 'Recommended with Conditions': return '!text-[#EAA800] bg-[#FFF8E6] border-[#F5DFA0]';
+            case 'Not Recommended': return '!text-[#B92814] bg-[#FFF0EE] border-[#F2C0BA]';
             default: return '!text-[#78819D] bg-[#F6F7F9] border-[#DFE1E5]';
         }
     };
@@ -363,7 +363,7 @@ const DecisionConsole: React.FC<{
                     <div className="flex justify-between items-center mb-2">
                         <label className="text-xs font-bold text-[#78819D] uppercase">Mitigating Factors / Analysis</label>
                         {isApprovingHighRisk && (
-                            <span className="text-xs font-bold text-red-600 animate-pulse">Required for {dealGrade.grade} Grade Approval</span>
+                            <span className="text-xs font-bold text-[#B92814] animate-pulse">Required for {dealGrade.grade} Grade Approval</span>
                         )}
                     </div>
                     <textarea 
@@ -656,8 +656,8 @@ const StickyActionHeader: React.FC<{
             case 'Rapidly Appreciating': return { icon: '🔥', label: 'Hot Market', color: 'bg-[#E1F7E4] text-[#139B23] border-[#ADDEB4]' };
             case 'Stable': return { icon: '⚖️', label: 'Stable Market', color: 'bg-brand-50 text-brand-500 border-brand-200' };
             case 'Softening': return { icon: '☁️', label: 'Cooling', color: 'bg-[#FFF5DB] text-[#EAA800] border-[#EDDDB1]' };
-            case 'Declining': return { icon: '📉', label: 'Declining', color: 'bg-[#FFF0EE] text-[#B92814] border-red-200' };
-            case 'Crash': return { icon: '💥', label: 'Crash Mode', color: 'bg-red-600 text-white border-red-700' };
+            case 'Declining': return { icon: '📉', label: 'Declining', color: 'bg-[#FFF0EE] text-[#B92814] border-[#F2C0BA]' };
+            case 'Crash': return { icon: '💥', label: 'Crash Mode', color: 'bg-[#B92814] text-white border-[#8B1B0E]' };
             default: return { icon: '❓', label: 'Unknown', color: 'bg-gray-100 text-gray-800' };
         }
     };
@@ -770,7 +770,7 @@ const StickyActionHeader: React.FC<{
                 {!isNewConstruction && (
                     <button
                         onClick={onOpenScopeAudit}
-                        className="rounded-full text-sm py-1.5 px-4 shadow-sm h-fit bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition-all duration-200 font-semibold"
+                        className="rounded-full text-sm py-1.5 px-4 shadow-sm h-fit bg-[#B92814] hover:bg-[#8B1B0E] text-white flex items-center justify-center transition-all duration-200 font-semibold"
                         title="Run AI Scope Audit against photos"
                     >
                         <CameraIcon className="w-4 h-4 mr-2" />
@@ -782,7 +782,7 @@ const StickyActionHeader: React.FC<{
                     disabled={saveStatus !== 'idle'}
                     className={`rounded-full text-sm py-1.5 px-4 shadow-sm h-fit min-w-[100px] flex items-center justify-center transition-all duration-200 font-semibold
                         ${saveStatus === 'saved'
-                            ? 'bg-[#139B23] hover:bg-green-700 text-white'
+                            ? 'bg-[#139B23] hover:bg-[#0E7B19] text-white'
                             : 'bg-brand-500 hover:bg-brand-600 text-white'
                         }`}
                 >
@@ -904,7 +904,7 @@ const ClosingConditionsCard: React.FC<{ feasibilityData: FeasibilityData; onChan
                         </label>
                         {feasibilityData.hoa.required && (
                             <label className="flex items-center space-x-2">
-                                <input type="checkbox" checked={feasibilityData.hoa.approved} onChange={e => onChange('hoa.approved', e.target.checked)} className="h-4 w-4 text-green-600 rounded" />
+                                <input type="checkbox" checked={feasibilityData.hoa.approved} onChange={e => onChange('hoa.approved', e.target.checked)} className="h-4 w-4 text-[#139B23] rounded" />
                                 <span className="text-xs font-bold text-[#139B23]">Approved?</span>
                             </label>
                         )}
@@ -1011,15 +1011,15 @@ const BudgetNotesTable: React.FC<{
         let styleClass;
         
         if (value === 'Pass' || value === 'Yes') {
-            icon = <CheckCircleIcon className="w-5 h-5 text-green-600" />;
-            styleClass = "bg-green-50 border-green-200 text-green-700";
+            icon = <CheckCircleIcon className="w-5 h-5 text-[#139B23]" />;
+            styleClass = "bg-[#E1F7E4] border-[#ADDEB4] text-[#0E7B19]";
         } else if (value === 'Fail' || value === 'No') {
-            icon = <XCircleIcon className="w-5 h-5 text-red-600" />;
-            styleClass = "bg-red-50 border-red-200 text-red-700";
+            icon = <XCircleIcon className="w-5 h-5 text-[#B92814]" />;
+            styleClass = "bg-[#FFF0EE] border-[#F2C0BA] text-[#8B1B0E]";
         } else {
             // Pending, Partial, etc.
-            icon = <FlagIcon className="w-5 h-5 text-yellow-500" />; // Using flag for attention
-            styleClass = "bg-yellow-50 border-yellow-200 text-yellow-700";
+            icon = <FlagIcon className="w-5 h-5 text-[#EAA800]" />; // Using flag for attention
+            styleClass = "bg-[#FFF8E6] border-[#F5DFA0] text-[#8A6500]";
         }
 
         return (
@@ -1185,7 +1185,7 @@ const ConstructionManagementNotes: React.FC<{ budgetData: BudgetCategoryData[]; 
                     <div>
                         <div className="flex justify-between text-xs mb-1">
                             <span className="font-semibold text-[#1E2D5C]">Soft Costs %</span>
-                            <span className={`font-bold ${softCostPercent > 15 ? 'text-red-600' : 'text-green-600'}`}>
+                            <span className={`font-bold ${softCostPercent > 15 ? 'text-[#B92814]' : 'text-[#139B23]'}`}>
                                 {softCostPercent.toFixed(1)}% <span className="text-[10px] font-normal text-[#78819D]">({formatCurrency(softCosts)})</span>
                             </span>
                         </div>
@@ -1195,13 +1195,13 @@ const ConstructionManagementNotes: React.FC<{ budgetData: BudgetCategoryData[]; 
                                 style={{ width: `${Math.min(softCostPercent, 100)}%` }}
                             ></div>
                         </div>
-                        {softCostPercent > 15 && <p className="text-[10px] text-red-500 mt-0.5">Exceeds 15% threshold</p>}
+                        {softCostPercent > 15 && <p className="text-[10px] text-[#B92814] mt-0.5">Exceeds 15% threshold</p>}
                     </div>
 
                     <div>
                         <div className="flex justify-between text-xs mb-1">
                             <span className="font-semibold text-[#1E2D5C]">Contingency %</span>
-                            <span className={`font-bold ${contingencyPercent < 5 ? 'text-red-600' : 'text-green-600'}`}>
+                            <span className={`font-bold ${contingencyPercent < 5 ? 'text-[#B92814]' : 'text-[#139B23]'}`}>
                                 {contingencyPercent.toFixed(1)}% <span className="text-[10px] font-normal text-[#78819D]">({formatCurrency(contingencyAmount)})</span>
                             </span>
                         </div>
@@ -1211,7 +1211,7 @@ const ConstructionManagementNotes: React.FC<{ budgetData: BudgetCategoryData[]; 
                                 style={{ width: `${Math.min(contingencyPercent * 5, 100)}%` }} 
                             ></div>
                         </div>
-                        {contingencyPercent < 5 && <p className="text-[10px] text-red-500 mt-0.5">Below 5% recommended</p>}
+                        {contingencyPercent < 5 && <p className="text-[10px] text-[#B92814] mt-0.5">Below 5% recommended</p>}
                     </div>
 
                     <div className="flex justify-between items-center pt-2 border-t border-[#DFE1E5]">
@@ -1271,7 +1271,7 @@ const AlertsPanel: React.FC<{ riskAnalysis: RiskAnalysisResult }> = ({ riskAnaly
                 </div>
             )}
             {factors.length === 0 ? (
-                <div className="flex items-center justify-center p-4 text-green-600 text-sm"><CheckCircleIcon className="w-6 h-6 mr-2" /><span>No automated flags.</span></div>
+                <div className="flex items-center justify-center p-4 text-[#139B23] text-sm"><CheckCircleIcon className="w-6 h-6 mr-2" /><span>No automated flags.</span></div>
             ) : (
                 <ul className="space-y-2">
                     {factors.map((item, index) => {
@@ -1280,7 +1280,7 @@ const AlertsPanel: React.FC<{ riskAnalysis: RiskAnalysisResult }> = ({ riskAnaly
                             <li key={index} className={`p-2 rounded-md border-l-4 transition-all duration-300 ${isDismissed ? 'bg-[#F4F5F7] border-[#BCBFC7] opacity-60' : 'bg-[#FFF5DB] border-[#EAA800]'}`}>
                                 <div className="flex items-start justify-between group">
                                     <div className="flex items-start">
-                                        <WarningTriangleIcon className={`w-4 h-4 ${isDismissed ? 'text-gray-400' : (item.severity === 'critical' ? 'text-red-600' : 'text-yellow-600')} mr-2 mt-0.5`} />
+                                        <WarningTriangleIcon className={`w-4 h-4 ${isDismissed ? 'text-gray-400' : (item.severity === 'critical' ? 'text-[#B92814]' : 'text-[#EAA800]')} mr-2 mt-0.5`} />
                                         <div className={`text-xs ${isDismissed ? 'text-[#BCBFC7] line-through' : 'text-[#1E2D5C]'}`}>{item.message}</div>
                                     </div>
                                     <button 
@@ -1409,9 +1409,9 @@ const AutomatedDueDiligenceDashboard = () => {
             btn: 'bg-white border-[#DFE1E5] text-brand-500 hover:bg-brand-500 hover:text-white hover:border-brand-500',
         },
         fail: {
-            row: 'border-red-200 bg-[#FFF0EE]',
+            row: 'border-[#F2C0BA] bg-[#FFF0EE]',
             dot: 'bg-[#B92814] animate-pulse',
-            badge: 'bg-[#FFF0EE] text-[#B92814] border border-red-200',
+            badge: 'bg-[#FFF0EE] text-[#B92814] border border-[#F2C0BA]',
             btn: 'bg-white border-[#DFE1E5] text-[#B92814] hover:bg-[#B92814] hover:text-white hover:border-[#B92814]',
         },
         info: {
@@ -1477,9 +1477,9 @@ const VisualVerification = () => {
                         <div className="flex justify-between text-sm font-bold"><span>{item.name}</span><span>{item.cost}</span></div>
                         <div className="relative h-48 w-full bg-[#F4F5F7]">
                             <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded" />
-                            {item.annotation && <div className="absolute border-2 border-red-500" style={item.annotation}></div>}
+                            {item.annotation && <div className="absolute border-2 border-[#B92814]" style={item.annotation}></div>}
                         </div>
-                        <div className={`p-2 text-xs rounded ${item.status === 'flag' ? 'bg-red-50 text-red-800' : 'bg-green-50 text-green-800'}`}>
+                        <div className={`p-2 text-xs rounded ${item.status === 'flag' ? 'bg-[#FFF0EE] text-[#8B1B0E]' : 'bg-[#E1F7E4] text-[#0E7B19]'}`}>
                             <strong>AI Findings:</strong> {item.findings}
                         </div>
                     </div>
@@ -1579,7 +1579,7 @@ const SmartBudgetValidator: React.FC<{
                                 <span className="font-semibold text-[#1E2D5C]">Total SqFt:</span>
                                 <span className="font-mono">{calculationBreakdown.sqFt} sqft</span>
                             </div>
-                            <div className={`flex justify-between items-center mt-1 pt-1 border-t border-slate-300 font-bold p-1 rounded ${isOverridden ? 'text-purple-700 bg-purple-100' : 'text-green-700 bg-green-50'}`}>
+                            <div className={`flex justify-between items-center mt-1 pt-1 border-t border-[#DFE1E5] font-bold p-1 rounded ${isOverridden ? 'text-purple-700 bg-purple-100' : 'text-[#0E7B19] bg-[#E1F7E4]'}`}>
                                 <span>TARGET BUDGET:</span>
                                 <span>{formatCurrency(targetBudget)}</span>
                             </div>
@@ -1598,11 +1598,11 @@ const SmartBudgetValidator: React.FC<{
                         </div>
                         <div>
                             <div className="flex justify-between text-xs mb-1">
-                                <span className={`font-bold ${isOverridden ? 'text-purple-700' : 'text-green-700'}`}>{isOverridden ? 'Analyst Target (Overridden)' : 'Feasible Target'}</span>
+                                <span className={`font-bold ${isOverridden ? 'text-purple-700' : 'text-[#0E7B19]'}`}>{isOverridden ? 'Analyst Target (Overridden)' : 'Feasible Target'}</span>
                                 <span className="font-mono font-bold">{formatCurrency(targetBudget)}</span>
                             </div>
                             <div className="w-full bg-[#DFE1E5] rounded-full h-2.5 relative overflow-hidden">
-                                <div className={`${isOverridden ? 'bg-purple-500' : 'bg-green-500'} h-2.5 rounded-full opacity-80 transition-all duration-1000 ease-out`} style={{ width: `${targetWidth}%` }}></div>
+                                <div className={`${isOverridden ? 'bg-purple-500' : 'bg-[#139B23]'} h-2.5 rounded-full opacity-80 transition-all duration-1000 ease-out`} style={{ width: `${targetWidth}%` }}></div>
                             </div>
                         </div>
                     </div>
@@ -1708,19 +1708,19 @@ const FeasibilityPrintView: React.FC<any> = ({ feasibilityData, asIsProjectedDat
                         
                         <div className="text-right pr-2 py-1 border-b border-black border-gray-200">Total Sqft:</div>
                         <div className="text-center border-l border-b border-black py-1 bg-brand-50">{asIsProjectedData.totalBuildingSqFeet.asIs}</div>
-                        <div className="text-center border-l border-b border-black py-1 bg-red-100">{asIsProjectedData.totalBuildingSqFeet.projected}</div>
+                        <div className="text-center border-l border-b border-black py-1 bg-[#FFF0EE]">{asIsProjectedData.totalBuildingSqFeet.projected}</div>
 
                         <div className="text-right pr-2 py-1 border-b border-black border-gray-200">Rooms/Units:</div>
                         <div className="text-center border-l border-b border-black py-1 bg-brand-50">{asIsProjectedData.unitCount.asIs}</div>
-                        <div className="text-center border-l border-b border-black py-1 bg-red-100">{asIsProjectedData.unitCount.projected}</div>
+                        <div className="text-center border-l border-b border-black py-1 bg-[#FFF0EE]">{asIsProjectedData.unitCount.projected}</div>
 
                         <div className="text-right pr-2 py-1 border-b border-black border-gray-200">Bedrooms:</div>
                         <div className="text-center border-l border-b border-black py-1 bg-brand-50">{asIsProjectedData.bedroomCount.asIs}</div>
-                        <div className="text-center border-l border-b border-black py-1 bg-red-100">{asIsProjectedData.bedroomCount.projected}</div>
+                        <div className="text-center border-l border-b border-black py-1 bg-[#FFF0EE]">{asIsProjectedData.bedroomCount.projected}</div>
 
                         <div className="text-right pr-2 py-1">Bathrooms:</div>
                         <div className="text-center border-l border-black py-1 bg-brand-50">{asIsProjectedData.bathroomCount.asIs}</div>
-                        <div className="text-center border-l border-black py-1 bg-red-100">{asIsProjectedData.bathroomCount.projected}</div>
+                        <div className="text-center border-l border-black py-1 bg-[#FFF0EE]">{asIsProjectedData.bathroomCount.projected}</div>
                     </div>
                 </div>
             </div>
@@ -1962,7 +1962,7 @@ export const AnalystReport: React.FC<AnalystReportProps> = ({
               ? { bar: 'bg-[#EAA800]', bg: 'bg-[#FFF5DB]', border: 'border-[#EDDDB1]', text: 'text-[#EAA800]', badge: 'bg-[#EAA800] text-white', chip: 'bg-[#FFF5DB] text-[#EAA800]' }
               : g.startsWith('D')
               ? { bar: 'bg-orange-500', bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700', badge: 'bg-orange-500 text-white', chip: 'bg-orange-100 text-orange-700' }
-              : { bar: 'bg-[#B92814]', bg: 'bg-[#FFF0EE]', border: 'border-red-200', text: 'text-[#B92814]', badge: 'bg-[#B92814] text-white', chip: 'bg-[#FFF0EE] text-[#B92814]' };
+              : { bar: 'bg-[#B92814]', bg: 'bg-[#FFF0EE]', border: 'border-[#F2C0BA]', text: 'text-[#B92814]', badge: 'bg-[#B92814] text-white', chip: 'bg-[#FFF0EE] text-[#B92814]' };
 
           const recColor = rec === 'Recommended'
               ? 'bg-[#E1F7E4] text-[#139B23]'

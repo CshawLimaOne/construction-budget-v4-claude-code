@@ -167,7 +167,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({ isOpen, onClose, onSav
                         <img src={photo.preview} className="w-full h-full object-cover" alt="captured" />
                         <button
                             onClick={() => handleRemovePhoto(idx)}
-                            className="absolute top-0 right-0 bg-red-600 p-0.5"
+                            className="absolute top-0 right-0 bg-[#B92814] p-0.5"
                         >
                             <XIcon className="w-3 h-3 text-white" />
                         </button>

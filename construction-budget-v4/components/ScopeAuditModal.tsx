@@ -123,17 +123,17 @@ export const ScopeAuditModal: React.FC<ScopeAuditModalProps> = ({ isOpen, onClos
 
   const getSeverityBadge = (severity: ScopeAuditFinding['severity']) => {
     switch(severity) {
-      case 'Critical': return <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded font-bold border border-red-200">CRITICAL DISCREPANCY</span>;
+      case 'Critical': return <span className="bg-[#FFF0EE] text-[#8B1B0E] text-xs px-2 py-1 rounded font-bold border border-[#F2C0BA]">CRITICAL DISCREPANCY</span>;
       case 'Medium': return <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded font-bold border border-orange-200">MEDIUM RISK</span>;
-      case 'Low': return <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded font-bold border border-yellow-200">LOW RISK</span>;
-      case 'verified': return <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-bold border border-green-200">VERIFIED SCOPE</span>;
+      case 'Low': return <span className="bg-[#FFF8E6] text-[#8A6500] text-xs px-2 py-1 rounded font-bold border border-[#F5DFA0]">LOW RISK</span>;
+      case 'verified': return <span className="bg-[#E1F7E4] text-[#0E7B19] text-xs px-2 py-1 rounded font-bold border border-[#ADDEB4]">VERIFIED SCOPE</span>;
       default: return null;
     }
   };
 
   const renderFindings = (findings: ScopeAuditFinding[], title: string, emptyMessage: string, isRiskSection: boolean) => (
-      <div className={`rounded-lg border overflow-hidden mb-6 ${isRiskSection ? 'bg-[#FFF0EE] border-red-200' : 'bg-[#E1F7E4] border-[#ADDEB4]'}`}>
-          <div className={`px-4 py-3 font-bold flex items-center ${isRiskSection ? 'text-[#B92814] bg-red-100/50' : 'text-[#139B23] bg-[#E1F7E4]'}`}>
+      <div className={`rounded-lg border overflow-hidden mb-6 ${isRiskSection ? 'bg-[#FFF0EE] border-[#F2C0BA]' : 'bg-[#E1F7E4] border-[#ADDEB4]'}`}>
+          <div className={`px-4 py-3 font-bold flex items-center ${isRiskSection ? 'text-[#B92814] bg-[#FFF0EE]/50' : 'text-[#139B23] bg-[#E1F7E4]'}`}>
               {isRiskSection ? <WarningTriangleIcon className="w-5 h-5 mr-2" /> : <CheckCircleIcon className="w-5 h-5 mr-2" />}
               {title} ({findings.length})
           </div>

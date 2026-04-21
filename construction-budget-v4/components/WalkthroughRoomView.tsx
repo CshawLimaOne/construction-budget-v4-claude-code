@@ -235,8 +235,8 @@ const WalkthroughItemRow: React.FC<{
 
             if (isActive) {
               if (opt === 'Keep')    activeClass = 'bg-brand-600 text-white shadow-lg shadow-brand-900/50';
-              if (opt === 'Repair')  activeClass = 'bg-yellow-600 text-white shadow-lg shadow-yellow-900/50';
-              if (opt === 'Replace') activeClass = 'bg-red-600 text-white shadow-lg shadow-red-900/50';
+              if (opt === 'Repair')  activeClass = 'bg-[#EAA800] text-white shadow-lg shadow-[#b37a00]/50';
+              if (opt === 'Replace') activeClass = 'bg-[#B92814] text-white shadow-lg shadow-red-900/50';
               if (opt === 'N/A')     activeClass = 'bg-slate-600 text-white shadow-lg';
             }
 
@@ -328,7 +328,7 @@ const WalkthroughItemRow: React.FC<{
                   {itemState.photos.map((p, i) => (
                     <div key={i} className="relative flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden border border-[#DFE1E5] group shadow-sm">
                       <img src={p.preview} alt="" className="w-full h-full object-cover" />
-                      <button onClick={() => { const newPhotos = [...(itemState.photos || [])]; newPhotos.splice(i, 1); onUpdate('photos', newPhotos); }} className="absolute top-1 right-1 bg-red-600/90 text-white rounded-full p-1 transition-all active:scale-110 shadow-md">
+                      <button onClick={() => { const newPhotos = [...(itemState.photos || [])]; newPhotos.splice(i, 1); onUpdate('photos', newPhotos); }} className="absolute top-1 right-1 bg-[#B92814]/90 text-white rounded-full p-1 transition-all active:scale-110 shadow-md">
                         <TrashIcon className="w-3 h-3" />
                       </button>
                     </div>

@@ -54,7 +54,7 @@ export const CommentIndicator: React.FC<CommentIndicatorProps> = ({ fieldId, com
         <button
           onClick={(e) => { e.stopPropagation(); onClick(); }}
           className={`relative flex items-center justify-center w-6 h-6 rounded-full transition-all duration-200 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 text-white
-            ${isActionableForMe ? 'bg-red-500 focus:ring-red-500' : ''}
+            ${isActionableForMe ? 'bg-[#B92814] focus:ring-[#B92814]' : ''}
             ${isPendingOther ? 'bg-brand-500 focus:ring-brand-500' : ''}
           `}
           aria-label={isActionableForMe ? "Action required on this item" : "This item is pending review from the other party"}

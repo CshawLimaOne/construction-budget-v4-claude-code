@@ -241,7 +241,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
               </div>
             )}
             {budgetParsingError && (
-              <div className="mt-2 flex items-start gap-2 px-3 py-2 rounded-lg bg-red-900/40 border border-red-500/40 text-red-300 text-xs">
+              <div className="mt-2 flex items-start gap-2 px-3 py-2 rounded-lg bg-[#B92814]/20 border border-[#B92814]/40 text-[#F2C0BA] text-xs">
                 <span className="flex-shrink-0 mt-0.5">⚠</span>
                 <span>{budgetParsingError}</span>
               </div>

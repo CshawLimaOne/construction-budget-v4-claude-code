@@ -597,7 +597,7 @@ export const Step4Review: React.FC<Step4ReviewProps> = ({
                                             <select 
                                                 value={q.answer} 
                                                 onChange={(e) => onProjectQuestionChange(q.id, 'answer', e.target.value)}
-                                                className={`form-input-premium h-full py-2 text-sm ${!q.answer ? 'border-red-500/50 bg-red-900/10' : ''}`}
+                                                className={`form-input-premium h-full py-2 text-sm ${!q.answer ? 'border-[#B92814]/50 bg-[#FFF0EE]' : ''}`}
                                                 aria-label={`Answer for ${q.question}`}
                                                 disabled={isLocked}
                                             >

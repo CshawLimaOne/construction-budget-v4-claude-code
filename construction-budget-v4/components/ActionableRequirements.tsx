@@ -27,7 +27,7 @@ const RequirementItem: React.FC<RequirementItemProps> = ({ requirement, onUpload
   const statusIcon = () => {
     if (requirement.status === 'completed') {
       return (
-        <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white flex-shrink-0">
+        <div className="w-6 h-6 bg-[#139B23] rounded-full flex items-center justify-center text-white flex-shrink-0">
           <CheckIcon className="w-4 h-4" />
         </div>
       );

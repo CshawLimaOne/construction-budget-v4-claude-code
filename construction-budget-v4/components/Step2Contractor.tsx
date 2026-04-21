@@ -51,7 +51,7 @@ const GcDocUploadRow: React.FC<GcDocUploadRowProps> = ({ docType, label, doc, is
     };
 
     return (
-        <div className={`flex flex-col sm:flex-row items-center justify-between py-4 px-3 rounded-xl border border-[#DFE1E5] bg-[#F6F7F9] mb-2 hover:border-[#DFE1E5] transition-colors ${highlight && !doc && isRequired ? 'border-red-500/50 bg-[#FFF0EE]' : ''}`}>
+        <div className={`flex flex-col sm:flex-row items-center justify-between py-4 px-3 rounded-xl border border-[#DFE1E5] bg-[#F6F7F9] mb-2 hover:border-[#DFE1E5] transition-colors ${highlight && !doc && isRequired ? 'border-[#B92814]/50 bg-[#FFF0EE]' : ''}`}>
             <span className="font-medium text-[#1E2D5C] mb-2 sm:mb-0 flex items-center">
                 {label}
                 {!isRequired && <span className="ml-2 text-xs font-normal text-[#78819D] italic">(Optional)</span>}
@@ -66,7 +66,7 @@ const GcDocUploadRow: React.FC<GcDocUploadRowProps> = ({ docType, label, doc, is
                         {!isLocked && (
                             <button 
                                 onClick={handleRemove} 
-                                className="text-red-400 hover:text-red-300 p-2 rounded-full hover:bg-red-900/20 transition-colors"
+                                className="text-[#B92814] hover:text-[#8B1B0E] p-2 rounded-full hover:bg-[#FFF0EE] transition-colors"
                                 aria-label="Remove document"
                             >
                                 <XCircleIcon className="w-6 h-6" />
@@ -286,7 +286,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                                             onGeneralContractorChange('businessName', '');
                                         }
                                     }}
-                                    className={`form-input-premium w-full ${highlightMissingFields && isGcRequired && !generalContractor.performerType ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
+                                    className={`form-input-premium w-full ${highlightMissingFields && isGcRequired && !generalContractor.performerType ? 'border-[#B92814] ring-1 ring-[#B92814] bg-[#FFF0EE]' : ''}`}
                                     disabled={isLocked}
                                 >
                                     <option value="">Select...</option>
@@ -303,7 +303,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                                     id="gc-business-name"
                                     value={generalContractor.businessName}
                                     onChange={(e) => onGeneralContractorChange('businessName', e.target.value)}
-                                    className={`form-input-premium w-full ${highlightMissingFields && isGcRequired && !generalContractor.businessName ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''} ${usingSavedProfile ? 'opacity-70' : ''}`}
+                                    className={`form-input-premium w-full ${highlightMissingFields && isGcRequired && !generalContractor.businessName ? 'border-[#B92814] ring-1 ring-[#B92814] bg-[#FFF0EE]' : ''} ${usingSavedProfile ? 'opacity-70' : ''}`}
                                     placeholder="ABC Construction, LLC"
                                     disabled={isLocked || usingSavedProfile}
                                 />
@@ -592,7 +592,7 @@ export const Step2Contractor: React.FC<Step2ContractorProps> = ({
                             {!isLocked && (
                                 <button 
                                     onClick={() => onRemoveProjectDocument(index)} 
-                                    className="text-red-400 hover:text-red-300 p-2 rounded-full hover:bg-red-900/20 transition-colors"
+                                    className="text-[#B92814] hover:text-[#8B1B0E] p-2 rounded-full hover:bg-[#FFF0EE] transition-colors"
                                     aria-label="Remove document"
                                 >
                                 <XCircleIcon className="w-6 h-6" />

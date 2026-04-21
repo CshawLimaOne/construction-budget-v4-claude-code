@@ -125,7 +125,7 @@ export const ValidatorLogicModal: React.FC<ValidatorLogicModalProps> = ({ isOpen
                             <div key={i} className="grid grid-cols-4 gap-2 text-xs p-2 border-b border-[#DFE1E5] last:border-0">
                                 <div className="col-span-1 font-medium">{row.name}</div>
                                 <div className="col-span-2">{row.cond} <span className="text-[#78819D]">({row.risk})</span></div>
-                                <div className="col-span-1 text-right font-mono text-red-600 font-bold">{row.pts}</div>
+                                <div className="col-span-1 text-right font-mono text-[#B92814] font-bold">{row.pts}</div>
                             </div>
                         ))}
                     </div>
@@ -137,13 +137,13 @@ export const ValidatorLogicModal: React.FC<ValidatorLogicModalProps> = ({ isOpen
                         4. Market Health Overlays
                     </h3>
                     <div className="flex flex-col space-y-2 text-xs">
-                        <div className="flex justify-between items-center p-2 bg-[#FFF0EE] rounded border border-red-100">
+                        <div className="flex justify-between items-center p-2 bg-[#FFF0EE] rounded border border-[#F2C0BA]">
                             <span><strong>Watchlist Zips:</strong> Property in high-risk zone (e.g., Coastal FL)</span>
                             <span className="font-mono text-[#B92814] font-bold">+25 pts</span>
                         </div>
                         <div className="flex justify-between items-center p-2 bg-[#FFF5DB] rounded border border-[#EDDDB1]">
                             <span><strong>Delinquency:</strong> Market delinquency &gt; 5%</span>
-                            <span className="font-mono text-red-600 font-bold">+20 pts</span>
+                            <span className="font-mono text-[#B92814] font-bold">+20 pts</span>
                         </div>
                         <div className="p-3 bg-[#FFF5DB] rounded border border-[#EDDDB1]">
                             <strong className="text-[#EAA800]">⚠️ Market Trend Capping Rule</strong>
