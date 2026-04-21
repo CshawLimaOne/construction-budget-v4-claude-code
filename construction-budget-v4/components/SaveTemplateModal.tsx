@@ -23,13 +23,13 @@ export const SaveTemplateModal: React.FC<SaveTemplateModalProps> = ({ isOpen, on
 
     const footer = (
         <>
-            <button onClick={onClose} className="button-base bg-transparent text-slate-600 border border-slate-300 hover:bg-slate-100 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-700">
+            <button onClick={onClose} className="button-base bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC]">
                 Cancel
             </button>
-            <button 
-                onClick={handleSaveClick} 
+            <button
+                onClick={handleSaveClick}
                 disabled={!name.trim()}
-                className="button-base bg-[#32373c] text-white hover:bg-[#4a5056] focus:ring-slate-500 disabled:bg-slate-400 disabled:cursor-not-allowed"
+                className="button-base bg-brand-500 text-white hover:bg-brand-600 focus:ring-brand-500 disabled:bg-[#BCBFC7] disabled:cursor-not-allowed"
             >
                 Save Template
             </button>
@@ -39,20 +39,20 @@ export const SaveTemplateModal: React.FC<SaveTemplateModalProps> = ({ isOpen, on
     return (
         <ComplexModal isOpen={isOpen} onClose={onClose} title="Save as Template" footer={footer} size="md">
             <div className="space-y-4">
-                <div className="bg-brand-50 dark:bg-brand-900/20 p-4 rounded-lg border border-brand-100 dark:border-brand-800 flex items-start">
-                    <div className="bg-brand-100 dark:bg-brand-800 p-2 rounded-full mr-3 text-brand-600 dark:text-brand-300">
+                <div className="bg-brand-50 p-4 rounded-lg border border-brand-200 flex items-start">
+                    <div className="bg-brand-50 p-2 rounded-full mr-3 text-brand-500">
                         <BuildingIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <h4 className="font-bold text-brand-900 dark:text-brand-100">Create New Blueprint</h4>
-                        <p className="text-sm text-brand-700 dark:text-brand-300 mt-1">
+                        <h4 className="font-bold text-[#1E2D5C]">Create New Blueprint</h4>
+                        <p className="text-sm text-brand-500 mt-1">
                             Save your current budget line items, projected specs, and material quality settings as a reusable template for future projects.
                         </p>
                     </div>
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
+                    <label className="block text-sm font-bold text-[#1E2D5C] mb-2">
                         Template Name
                     </label>
                     <input 
@@ -60,13 +60,13 @@ export const SaveTemplateModal: React.FC<SaveTemplateModalProps> = ({ isOpen, on
                         value={name} 
                         onChange={(e) => setName(e.target.value)} 
                         placeholder="e.g. My Standard Flip - 3 Bed" 
-                        className="spreadsheet-input w-full"
+                        className="form-input-premium w-full"
                         autoFocus
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
+                    <label className="block text-sm font-bold text-[#1E2D5C] mb-2">
                         Description (Optional)
                     </label>
                     <textarea 
@@ -74,7 +74,7 @@ export const SaveTemplateModal: React.FC<SaveTemplateModalProps> = ({ isOpen, on
                         onChange={(e) => setDescription(e.target.value)} 
                         rows={3}
                         placeholder="Briefly describe what this template is best used for..." 
-                        className="spreadsheet-input w-full resize-none"
+                        className="form-input-premium w-full resize-none"
                     />
                 </div>
             </div>

@@ -87,6 +87,10 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentThreads, setCommentThreads] = useState<CommentThread[]>([]);
   const [auditLog, setAuditLog] = useState<AuditLogEntry[]>([]);
+  const [pendingAnalystEdit, setPendingAnalystEdit] = useState<{
+    categoryName: string; itemId: string; itemLabel: string; oldValue: number; newValue: number;
+  } | null>(null);
+  const [pendingAnalystEditComment, setPendingAnalystEditComment] = useState('');
   const [pendingChange, setPendingChange] = useState<{ fieldId: string; fieldLabel: string; oldValue: any; newValue: any; updateStateCallback: () => void; } | null>(null);
   const [activeCommentThread, setActiveCommentThread] = useState<{ fieldId: string; fieldLabel: string } | null>(null);
   const [isRequirementsModalOpen, setIsRequirementsModalOpen] = useState(false);
@@ -1150,7 +1154,20 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
         
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            const targetTopology = getTargetBudgetJSON();
+            // Use current budgetData (not static INITIAL_BUDGET_CATEGORIES) so NC soft cost
+            // items injected by injectNcSoftCosts() are included in the valid items list.
+            const targetTopology = JSON.stringify(
+                budgetData.flatMap(category =>
+                    category.items
+                        .filter(item => !item.isCustomDescription && item.drawItem)
+                        .map(item => ({
+                            id: item.id,
+                            itemNumber: item.itemNumber,
+                            drawItem: item.drawItem,
+                            categoryName: category.name,
+                        }))
+                )
+            );
             
             let contentPart: any;
 
@@ -1348,6 +1365,23 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
     };
 
     const handleUpdateBudgetItem = (categoryName: string, itemId: string, field: keyof BudgetItem, value: any, originalValue?: any, fieldLabel?: string) => {
+        // Item 1 & 2: Intercept analyst edits to 'actual' (Lima Approved) and prompt for a comment
+        if (currentUserRole === 'analyst' && field === 'actual') {
+            const category = budgetData.find(c => c.name === categoryName);
+            const item = category?.items.find(i => i.id === itemId);
+            const parsedValue = typeof value === 'string' ? (parseFloat(value) || 0) : (value ?? 0);
+            if (item && parsedValue !== item.actual) {
+                setPendingAnalystEdit({
+                    categoryName,
+                    itemId,
+                    itemLabel: item.drawItem || 'Budget Item',
+                    oldValue: item.actual,
+                    newValue: parsedValue,
+                });
+                setPendingAnalystEditComment('');
+                return; // Hold — don't save until analyst adds a comment
+            }
+        }
         setBudgetData(prev => prev.map(cat => {
             if (cat.name !== categoryName) return cat;
             return {
@@ -1358,6 +1392,71 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
                 })
             };
         }));
+    };
+
+    // Item 1 & 2: Confirm analyst edit — save value and auto-create comment thread for borrower
+    const handleConfirmAnalystEdit = () => {
+        if (!pendingAnalystEdit || !pendingAnalystEditComment.trim()) return;
+        const { categoryName, itemId, itemLabel, newValue } = pendingAnalystEdit;
+
+        // Apply the approved amount
+        setBudgetData(prev => prev.map(cat => {
+            if (cat.name !== categoryName) return cat;
+            return { ...cat, items: cat.items.map(item => item.id === itemId ? { ...item, actual: newValue } : item) };
+        }));
+
+        // Auto-create thread + comment so borrower sees it in Action Center
+        const threadId = `analyst-edit-${itemId}`;
+        const threadLabel = `Analyst Correction: ${itemLabel} (${categoryName})`;
+        const newComment: Comment = {
+            id: `comment-${Date.now()}`,
+            fieldId: threadId,
+            threadId,
+            authorRole: 'analyst',
+            authorName: 'Analyst',
+            text: pendingAnalystEditComment.trim(),
+            timestamp: new Date().toISOString(),
+        };
+        setComments(prev => [...prev, newComment]);
+        setCommentThreads(prev => {
+            const existing = prev.find(t => t.id === threadId);
+            if (existing) {
+                return prev.map(t => t.id === threadId ? { ...t, status: 'needs_borrower_action' as const, assignee: 'borrower' as const } : t);
+            }
+            return [...prev, { id: threadId, label: threadLabel, status: 'needs_borrower_action' as const, assignee: 'borrower' as const }];
+        });
+
+        setPendingAnalystEdit(null);
+        setPendingAnalystEditComment('');
+    };
+
+    const handleCancelAnalystEdit = () => {
+        setPendingAnalystEdit(null);
+        setPendingAnalystEditComment('');
+    };
+
+    // Item 5: Borrower accepts analyst's corrected amount (budget = actual)
+    const handleAcceptAnalystChange = (categoryName: string, itemId: string) => {
+        setBudgetData(prev => prev.map(cat => {
+            if (cat.name !== categoryName) return cat;
+            return { ...cat, items: cat.items.map(item => {
+                if (item.id !== itemId) return item;
+                return { ...item, budget: item.actual };
+            })};
+        }));
+        handleResolveThread(`analyst-edit-${itemId}`);
+    };
+
+    // Item 5: Borrower keeps their original value (actual reverts to budget)
+    const handleKeepBorrowerValue = (categoryName: string, itemId: string) => {
+        setBudgetData(prev => prev.map(cat => {
+            if (cat.name !== categoryName) return cat;
+            return { ...cat, items: cat.items.map(item => {
+                if (item.id !== itemId) return item;
+                return { ...item, actual: item.budget };
+            })};
+        }));
+        handleResolveThread(`analyst-edit-${itemId}`);
     };
 
     const handleScopeSummaryChange = (field: keyof ScopeOfWorkSummary, value: any) => {
@@ -1572,7 +1671,7 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
     };
 
     const gcModalFooter = (
-        <button onClick={() => setIsGcOnboardingModalOpen(false)} className="button-base bg-[#32373c] text-white hover:bg-[#4a5056]">Done</button>
+        <button onClick={() => setIsGcOnboardingModalOpen(false)} className="button-base bg-brand-500 text-white hover:bg-brand-600">Done</button>
     );
 
     const handleSubmitAuditEntry = (text: string, threadId: string, label: string) => {
@@ -1625,13 +1724,27 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
 
         const updatedBudgetData = currentBudgetData.map(category => {
             let updatedItems = category.items.map(item => {
-                const mappedMatch = mapped.find((m: any) => m.id === item.id);
-                if (mappedMatch) {
+                // Use filter+reduce instead of find so that if Gemini returns multiple
+                // mapped entries for the same ID (e.g. two NC soft costs both mapping
+                // to sc5), their budgets are SUMMED rather than the later ones silently
+                // dropped by find().
+                const mappedMatches = mapped.filter((m: any) => m.id === item.id);
+                if (mappedMatches.length > 0) {
+                    const totalBudget = mappedMatches.reduce((sum: number, m: any) => sum + (m.budget || 0), 0);
+                    // When multiple file rows map to the same line item (e.g. "Siding Material"
+                    // + "Siding Labor"), combine their original texts into the description so
+                    // both are traceable in the budget detail.
+                    const combinedDescription = mappedMatches.length > 1
+                        ? mappedMatches
+                            .map((m: any) => m.originalText || m.description)
+                            .filter(Boolean)
+                            .join(' + ')
+                        : (mappedMatches[0].description || item.description);
                     return {
                         ...item,
-                        budget: mappedMatch.budget,
-                        description: mappedMatch.description || item.description,
-                        isUncertain: mappedMatch.isUncertain
+                        budget: totalBudget,
+                        description: combinedDescription || item.description,
+                        isUncertain: mappedMatches.some((m: any) => m.isUncertain)
                     };
                 }
                 return item;
@@ -1943,18 +2056,18 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
   }
 
   return (
-    <div className="app-shell bg-gradient-to-br from-slate-900 to-[#1E2E5C] text-white min-h-screen relative overflow-hidden flex flex-col">
+    <div className="app-shell bg-[#F4F5F7] text-[#1E2D5C] min-h-screen relative overflow-hidden flex flex-col">
 
-      <header className="app-shell-nav flex items-center justify-between bg-black/30 border-b border-white/10 px-6 py-3 shadow-lg z-20 relative backdrop-blur-md">
+      <header className="app-shell-nav flex items-center justify-between bg-white border-b border-[#DFE1E5] px-6 py-3 shadow-sm z-20 relative">
         <div className="flex items-center gap-4">
-            <img src="https://www.limaone.com/wp-content/uploads/lima-one-logo-light-250x66.webp" alt="Lima One Capital" width={140} height={37} className="object-contain" />
+            <img src="https://www.limaone.com/wp-content/uploads/lima-one-logo-dark-250x66.webp" alt="Lima One Capital" width={140} height={37} className="object-contain" />
             <div className="hidden md:flex items-center gap-2 text-sm">
-                <span className="text-white/20">/</span>
-                <span className="text-slate-300 font-medium">
+                <span className="text-[#DFE1E5]">/</span>
+                <span className="text-[#78819D] font-medium">
                   {propertyAddressDisplay || (projectTypeMode === 'new_construction' ? 'New Construction' : projectTypeMode === 'renovation' ? 'Renovation' : 'Construction Budget')}
                 </span>
                 {propertyAddressDisplay && (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-500/20 border border-brand-400/30 text-brand-300">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-50 border border-brand-200 text-brand-500">
                     {projectTypeMode === 'new_construction' ? 'New Construction' : 'Renovation'}
                   </span>
                 )}
@@ -1962,12 +2075,12 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
         </div>
         <div className="flex items-center gap-4">
             <div className="role-switcher-container">
-                <button onClick={() => setCurrentUserRole('borrower')} className={`role-switcher-option ${currentUserRole === 'borrower' ? 'active bg-brand-600/80 !text-white shadow-md border border-brand-400/40' : ''}`}>Borrower</button>
-                <button onClick={() => setCurrentUserRole('analyst')} className={`role-switcher-option ${currentUserRole === 'analyst' ? 'active bg-brand-600/80 !text-white shadow-md border border-brand-400/40' : ''}`}>Analyst</button>
+                <button onClick={() => setCurrentUserRole('borrower')} className={`role-switcher-option ${currentUserRole === 'borrower' ? 'active bg-brand-500 text-white shadow-sm border border-brand-600' : ''}`}>Borrower</button>
+                <button onClick={() => setCurrentUserRole('analyst')} className={`role-switcher-option ${currentUserRole === 'analyst' ? 'active bg-brand-500 text-white shadow-sm border border-brand-600' : ''}`}>Analyst</button>
             </div>
             <button
               onClick={() => { if (window.confirm('Are you sure you want to clear all data? This cannot be undone.')) handleClearAll(); }}
-              className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-red-400 transition-colors px-2 py-1 rounded border border-transparent hover:border-red-500/30"
+              className="flex items-center gap-1.5 text-xs text-[#78819D] hover:text-[#B92814] transition-colors px-2 py-1 rounded border border-transparent hover:border-[#B92814]/30"
               title="Clear all entered data"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
@@ -1999,23 +2112,23 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
 
         <main className="content-area flex-grow bg-transparent p-4 md:p-8" ref={tourRef as any}>
           {currentUserRole === 'analyst' && (
-            <div className="mb-6 border-b border-white/10">
+            <div className="mb-6 border-b border-[#DFE1E5]">
               <nav className="-mb-px flex space-x-8" aria-label="Tabs">
                 <button
                   onClick={() => setCurrentView('budget')}
-                  className={`${currentView === 'budget' ? 'border-brand-400 text-brand-400' : 'border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-600'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors`}
+                  className={`${currentView === 'budget' ? 'border-brand-500 text-brand-500' : 'border-transparent text-[#78819D] hover:text-[#1E2D5C] hover:border-[#DFE1E5]'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors`}
                 >
                   Construction Budget
                 </button>
                 <button
                   onClick={() => setCurrentView('analystReport')}
-                  className={`${currentView === 'analystReport' ? 'border-brand-400 text-brand-400' : 'border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-600'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors`}
+                  className={`${currentView === 'analystReport' ? 'border-brand-500 text-brand-500' : 'border-transparent text-[#78819D] hover:text-[#1E2D5C] hover:border-[#DFE1E5]'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors`}
                 >
                   AI Analyst Report
                 </button>
                 <button
                   onClick={() => setCurrentView('revisionReport')}
-                  className={`${currentView === 'revisionReport' ? 'border-brand-400 text-brand-400' : 'border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-600'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors`}
+                  className={`${currentView === 'revisionReport' ? 'border-brand-500 text-brand-500' : 'border-transparent text-[#78819D] hover:text-[#1E2D5C] hover:border-[#DFE1E5]'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors`}
                 >
                   Revision Report
                 </button>
@@ -2026,7 +2139,7 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
           {currentView === 'budget' && (
             <>
               {/* Main Card Container with Dark Glassmorphism and Animated Transition Wrapper */}
-              <div className="main-content-container bg-slate-900/90 backdrop-blur-sm border border-white/10 shadow-2xl rounded-2xl p-4 md:p-6 mb-6 w-full max-w-[95%] xl:max-w-[1800px] mx-auto overflow-hidden">
+              <div className="main-content-container bg-white border border-[#DFE1E5] shadow-sm rounded-2xl p-4 md:p-6 mb-6 w-full max-w-[95%] xl:max-w-[1800px] mx-auto overflow-hidden">
                 <div key={currentWizardStep} className={`step-transition-wrapper ${direction === 'forward' ? 'animate-step-forward' : 'animate-step-backward'}`}>
                     {currentWizardStep === 1 && (
                     <Step1Form
@@ -2137,45 +2250,71 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
                         onAcknowledgementChange={handleAcknowledgementChange}
                         applicationStatus={applicationStatus}
                         onProjectQuestionChange={handleProjectQuestionChangeWithAudit}
+                        currentUserRole={currentUserRole}
+                        comments={comments}
+                        commentThreads={commentThreads}
+                        onRequestChanges={handleRequestChanges}
+                        onApproveBudget={handleApproveBudget}
+                        onAcceptAnalystChange={handleAcceptAnalystChange}
+                        onKeepBorrowerValue={handleKeepBorrowerValue}
                     />
                     )}
                 </div>
               </div>
 
-              <footer className="app-shell-footer flex justify-between items-center bg-black/20 border-t border-white/10 backdrop-blur-sm px-6 py-5">
+              <footer className="app-shell-footer flex justify-between items-center bg-white border-t border-[#DFE1E5] px-6 py-5">
                 <div>
                   <button
                     onClick={handlePrevStep}
                     disabled={false}
-                    className={`button-base py-2.5 px-7 font-semibold transition-all ${currentWizardStep === 1 && !projectTypeMode ? 'invisible pointer-events-none' : 'bg-white/10 text-white hover:bg-white/20 border border-white/20 shadow-sm hover:border-white/40 backdrop-blur-sm'}`}
+                    className={`button-base py-2.5 px-7 font-semibold transition-all ${currentWizardStep === 1 && !projectTypeMode ? 'invisible pointer-events-none' : 'bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC] shadow-sm'}`}
                   >
                     ← Back
                   </button>
                 </div>
-                <div>
+                <div className="flex items-center gap-3">
                   {currentWizardStep < 4 ? (
                     <button
                       onClick={handleNextStep}
                       disabled={isNextDisabled}
                       className={`button-base py-2.5 px-8 font-bold transition-all
                         ${isNextDisabled
-                          ? 'bg-slate-300 text-slate-400 cursor-not-allowed shadow-none'
-                          : 'bg-[#0693e3] text-white shadow-lg hover:bg-[#0578c5]'}`}
-                      style={!isNextDisabled ? { boxShadow: '0 4px 20px rgba(6,147,227,0.35)' } : {}}
+                          ? 'bg-[#BCBFC7] text-white cursor-not-allowed shadow-none'
+                          : 'bg-brand-500 text-white hover:bg-brand-600'}`}
                     >
                       Next Step →
+                    </button>
+                  ) : currentUserRole === 'analyst' ? null
+                    : applicationStatus === 'needs_borrower_action' ? (
+                    /* Item 6: Borrower resubmit after reviewing analyst changes */
+                    <button
+                      onClick={handleResubmit}
+                      disabled={!isReimbursementAcknowledged}
+                      className={`button-base py-2.5 px-8 font-bold transition-all
+                        ${!isReimbursementAcknowledged
+                          ? 'bg-[#BCBFC7] text-white cursor-not-allowed shadow-none'
+                          : 'bg-[#EAA800] text-white hover:bg-[#D49700]'}`}
+                    >
+                      Resubmit Application →
                     </button>
                   ) : (
                     <button
                       onClick={isRequirementsModalOpen ? handleProceedWithSubmit : () => setIsRequirementsModalOpen(true)}
                       disabled={!isReimbursementAcknowledged || isFormLocked}
-                      className={`button-base py-2.5 px-8 font-bold text-white transition-all
+                      className={`button-base py-2.5 px-8 font-bold transition-all
                         ${(!isReimbursementAcknowledged || isFormLocked)
-                          ? 'bg-slate-300 text-slate-400 cursor-not-allowed shadow-none'
-                          : 'bg-[#0693e3] text-white shadow-lg hover:bg-[#0578c5]'}`}
-                      style={(!isReimbursementAcknowledged || isFormLocked) ? {} : { boxShadow: '0 4px 20px rgba(6,147,227,0.35)' }}
+                          ? 'bg-[#BCBFC7] text-white cursor-not-allowed shadow-none'
+                          : 'bg-brand-500 text-white hover:bg-brand-600'}`}
                     >
                       {applicationStatus === 'approved' ? 'Approved ✓' : (applicationStatus === 'under_review' ? 'Under Review' : 'Submit Application →')}
+                    </button>
+                  )}
+                  {currentWizardStep === 3 && (
+                    <button
+                      onClick={() => setIsSaveTemplateModalOpen(true)}
+                      className="button-base py-2.5 px-6 font-semibold transition-all bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC] shadow-sm"
+                    >
+                      Save Template
                     </button>
                   )}
                 </div>
@@ -2250,15 +2389,61 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
         onReopenThread={handleReopenThread}
       />
 
+      {/* Item 1 & 2: Analyst edit comment modal — required before a correction is saved */}
+      {pendingAnalystEdit && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center" style={{ backgroundColor: 'rgba(4,11,31,0.5)' }}>
+          <div className="bg-white border border-[#DFE1E5] rounded-2xl w-full max-w-lg mx-4 p-6 animate-in fade-in zoom-in-95 duration-200" style={{ boxShadow: '0 2.12px 19.86px rgba(30,45,92,0.05), 0 9.48px 45.88px rgba(30,45,92,0.036), 0 23.59px 104.77px rgba(30,45,92,0.028)' }}>
+            <h3 className="text-lg font-bold text-[#1E2D5C] mb-1">Explain This Correction</h3>
+            <p className="text-sm text-[#78819D] mb-1">
+              You're adjusting <span className="text-[#1E2D5C] font-semibold">{pendingAnalystEdit.itemLabel}</span>
+            </p>
+            <div className="flex items-center gap-3 bg-[#F6F7F9] rounded-xl px-4 py-3 mb-5 border border-[#DFE1E5]">
+              <div className="text-center flex-1">
+                <div className="text-[10px] font-bold text-[#78819D] uppercase tracking-widest mb-1">Previous Approved</div>
+                <div className="text-base font-mono text-[#78819D] line-through">{pendingAnalystEdit.oldValue.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</div>
+              </div>
+              <div className="text-[#78819D] text-xl">→</div>
+              <div className="text-center flex-1">
+                <div className="text-[10px] font-bold text-[#78819D] uppercase tracking-widest mb-1">New Approved</div>
+                <div className="text-base font-mono font-bold text-[#139B23]">{pendingAnalystEdit.newValue.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</div>
+              </div>
+            </div>
+            <label className="block text-xs font-bold text-[#78819D] uppercase tracking-wider mb-2">
+              Reason for adjustment <span className="text-[#B92814]">*</span>
+            </label>
+            <textarea
+              className="form-input-premium w-full rounded-xl p-3 text-sm resize-none mb-5"
+              rows={4}
+              placeholder="Explain why this line item is being corrected. The borrower will see this note..."
+              value={pendingAnalystEditComment}
+              onChange={e => setPendingAnalystEditComment(e.target.value)}
+              autoFocus
+            />
+            <div className="flex justify-end gap-3">
+              <button onClick={handleCancelAnalystEdit} className="button-base bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC]">
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmAnalystEdit}
+                disabled={!pendingAnalystEditComment.trim()}
+                className={`button-base font-bold transition-all ${pendingAnalystEditComment.trim() ? 'bg-brand-500 text-white hover:bg-brand-600' : 'bg-[#BCBFC7] text-white cursor-not-allowed'}`}
+              >
+                Save & Notify Borrower
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {isRequirementsModalOpen && (
         <ComplexModal
             isOpen={isRequirementsModalOpen}
             onClose={() => setIsRequirementsModalOpen(false)}
-            title="Before you submit..."
+            title="Submit Application"
             footer={
                 <>
-                    <button onClick={() => setIsRequirementsModalOpen(false)} className="button-base bg-slate-200 text-slate-700 hover:bg-slate-300">Keep Editing</button>
-                    <button onClick={handleProceedWithSubmit} className="button-base bg-green-600 text-white hover:bg-green-700">Submit Anyway</button>
+                    <button onClick={() => setIsRequirementsModalOpen(false)} className="button-base bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC] focus:ring-brand-500">Keep Editing</button>
+                    <button onClick={handleProceedWithSubmit} className="button-base bg-brand-600 text-white hover:bg-brand-500 focus:ring-brand-500">Submit Application</button>
                 </>
             }
             size="lg"
@@ -2324,8 +2509,8 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
           <div className="fixed inset-0 bg-white z-[9999] overflow-auto p-8">
               <div className="max-w-4xl mx-auto">
                   <div className="flex justify-end mb-4 print:hidden">
-                      <button onClick={() => setIsPrintingReport(false)} className="mr-4 text-slate-500 underline">Close Preview</button>
-                      <button onClick={handlePrint} className="bg-[#32373c] text-white px-4 py-2 rounded font-bold hover:bg-[#4a5056]">Print / Save PDF</button>
+                      <button onClick={() => setIsPrintingReport(false)} className="mr-4 text-[#78819D] underline">Close Preview</button>
+                      <button onClick={handlePrint} className="bg-brand-500 text-white px-4 py-2 rounded font-bold hover:bg-brand-600">Print / Save PDF</button>
                   </div>
                   <PrintableReport
                       propertyDetails={propertyDetails}
@@ -2342,23 +2527,23 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
           </div>
       )}
     {/* Brand Footer Strip */}
-    <div className="w-full border-t border-white/10 bg-[#0f1117] py-3 px-6 flex flex-col sm:flex-row items-center justify-between gap-2 flex-shrink-0 print:hidden">
+    <div className="w-full border-t border-[#DFE1E5] bg-white py-3 px-6 flex flex-col sm:flex-row items-center justify-between gap-2 flex-shrink-0 print:hidden">
       {/* Logo */}
       <img
-        src="https://www.limaone.com/wp-content/uploads/lima-one-logo-light-250x66.webp"
+        src="https://www.limaone.com/wp-content/uploads/lima-one-logo-dark-250x66.webp"
         alt="Lima One Capital"
         width={100}
         height={27}
-        className="object-contain opacity-70"
+        className="object-contain"
       />
       {/* Legal text */}
-      <p className="text-[10px] text-slate-500 text-center leading-relaxed">
+      <p className="text-[10px] text-[#78819D] text-center leading-relaxed">
         © {new Date().getFullYear()} Lima One Capital, LLC &nbsp;·&nbsp; NMLS #1324403 &nbsp;·&nbsp; 300 East McBee Ave, Suite 200, Greenville, SC 29601 &nbsp;·&nbsp; Nation's Premier Lender for Real Estate Investors®
       </p>
       {/* Contact */}
       <a
         href="tel:8003904212"
-        className="text-[11px] text-slate-400 hover:text-[#0693e3] transition-colors font-medium whitespace-nowrap"
+        className="text-[11px] text-[#78819D] hover:text-brand-500 transition-colors font-medium whitespace-nowrap"
       >
         (800) 390-4212
       </a>

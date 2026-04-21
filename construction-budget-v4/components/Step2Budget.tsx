@@ -91,13 +91,13 @@ const DrawItemRow: React.FC<DrawItemRowProps> = ({ item, categoryName, onMoveIte
         <div 
             draggable 
             onDragStart={handleDragStart}
-            className="flex items-center justify-between p-2 mb-1.5 bg-slate-800/60 border border-white/10 text-slate-200 rounded-xl shadow-sm hover:border-[#0693e3]/40 hover:bg-slate-700/60 cursor-grab active:cursor-grabbing text-sm transition-colors"
+            className="flex items-center justify-between p-2 mb-1.5 bg-[#F6F7F9] border border-[#DFE1E5] text-[#1E2D5C] rounded-xl shadow-sm hover:border-brand-200 hover:bg-[#F7F9FC] cursor-grab active:cursor-grabbing text-sm transition-colors"
         >
             <div className="flex flex-col">
-                <span className="font-medium text-slate-100">{item.drawItem || "Unnamed Item"}</span>
-                <span className="text-[10px] text-slate-400">{categoryName} • {item.itemNumber}</span>
+                <span className="font-medium text-[#1E2D5C]">{item.drawItem || "Unnamed Item"}</span>
+                <span className="text-[10px] text-[#78819D]">{categoryName} • {item.itemNumber}</span>
             </div>
-            <div className="font-mono font-bold text-[#0693e3]">
+            <div className="font-mono font-bold text-brand-500">
                 {formatCurrency(item.budget)}
             </div>
         </div>
@@ -142,31 +142,31 @@ const DrawBucket: React.FC<{
             onDrop={handleDrop}
             className={`flex flex-col rounded-xl border transition-all duration-200 overflow-hidden ${
                 isOver
-                    ? 'border-[#0693e3]/60 bg-[#0693e3]/10 shadow-lg shadow-[#0693e3]/10'
-                    : 'border-white/10 bg-white/5'
+                    ? 'border-brand-400 bg-brand-50 shadow-lg shadow-brand-100'
+                    : 'border-[#DFE1E5] bg-white'
             }`}
         >
             {/* LO cyan top accent bar */}
-            <div className={`h-1 w-full transition-all duration-200 ${isOver ? 'bg-[#0693e3]' : 'bg-[#0693e3]/40'}`} />
+            <div className={`h-1 w-full transition-all duration-200 ${isOver ? 'bg-brand-500' : 'bg-brand-200'}`} />
 
-            <div className="p-3 border-b border-white/10 bg-white/5">
+            <div className="p-3 border-b border-[#DFE1E5] bg-[#F6F7F9]">
                 <div className="flex justify-between items-start mb-1">
-                    <h4 className="font-bold text-white text-sm">{label}</h4>
-                    <span className="font-mono font-bold text-[#0693e3] text-sm">{formatCurrency(total)}</span>
+                    <h4 className="font-bold text-[#1E2D5C] text-sm">{label}</h4>
+                    <span className="font-mono font-bold text-brand-500 text-sm">{formatCurrency(total)}</span>
                 </div>
-                <p className="text-[10px] text-slate-400 mb-2">{description}</p>
-                <div className="w-full bg-slate-700/60 rounded-full h-1 overflow-hidden">
-                    <div className="bg-[#0693e3] h-1 transition-all duration-500" style={{ width: `${percentOfTotal}%` }} />
+                <p className="text-[10px] text-[#78819D] mb-2">{description}</p>
+                <div className="w-full bg-[#DFE1E5] rounded-full h-1 overflow-hidden">
+                    <div className="bg-brand-500 h-1 transition-all duration-500" style={{ width: `${percentOfTotal}%` }} />
                 </div>
             </div>
 
             <div className="p-2 flex-grow overflow-y-auto min-h-[120px] max-h-[360px]">
                 {items.length === 0 ? (
-                    <div className="h-full min-h-[100px] flex flex-col items-center justify-center gap-2 p-4 border-2 border-dashed border-[#0693e3]/25 rounded-lg">
-                        <div className="w-6 h-6 rounded-full border-2 border-dashed border-[#0693e3]/40 flex items-center justify-center">
-                            <span className="text-[#0693e3]/60 text-xs font-bold">+</span>
+                    <div className="h-full min-h-[100px] flex flex-col items-center justify-center gap-2 p-4 border-2 border-dashed border-brand-200 rounded-lg">
+                        <div className="w-6 h-6 rounded-full border-2 border-dashed border-brand-300 flex items-center justify-center">
+                            <span className="text-brand-400 text-xs font-bold">+</span>
                         </div>
-                        <span className="text-xs text-slate-500 italic">Drag items here</span>
+                        <span className="text-xs text-[#78819D] italic">Drag items here</span>
                     </div>
                 ) : (
                     items.map(wrapper => (
@@ -304,7 +304,7 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
     // Whisper Logic - Now depends on isGuidanceEnabled
     const showWhisper = isGuidanceEnabled && isBudgetFocused && guidance && (guidance.benchmarkLow || guidance.status !== 'OK');
     const isWarning = isGuidanceEnabled && (guidance?.status === 'HIGH_WARNING' || guidance?.status === 'LOW_WARNING');
-    const whisperColor = isWarning ? 'text-orange-400' : 'text-slate-400';
+    const whisperColor = isWarning ? 'text-[#EAA800]' : 'text-[#78819D]';
     
     let whisperText = '';
     if (guidance?.benchmarkLow && guidance?.benchmarkHigh) {
@@ -316,7 +316,7 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
     return (
         <>
         <tr id={rowId} className={isHighlighted ? 'ai-highlight' : ''}> 
-            <td data-label="Item #" className={`read-only-cell text-center ${item.isRedText ? 'highlight-red dark:text-red-300': ''} w-[6%]`}>
+            <td data-label="Item #" className={`read-only-cell text-center ${item.isRedText ? 'highlight-red text-[#B92814]': ''} w-[6%]`}>
                 <div className="flex items-center justify-center space-x-1">
                     <span>{item.itemNumber}</span>
                     {item.isUncertain && (
@@ -338,18 +338,18 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
                   value={item.drawItem}
                   onChange={(e) => onUpdateBudgetItem(categoryName, item.id, 'drawItem', e.target.value)}
                   placeholder="(your description)"
-                  className={`spreadsheet-input ${item.isRedText ? 'highlight-red dark:text-red-300' : ''}`}
+                  className={`spreadsheet-input ${item.isRedText ? 'highlight-red text-[#B92814]' : ''}`}
                   aria-label="Custom Draw Item Name"
                   disabled={isLocked}
                 />
               </td>
             ) : (
-              <td data-label="Item / Task" className={`read-only-cell ${item.isRedText ? 'highlight-red dark:text-red-300': ''} w-[22%]`}>
+              <td data-label="Item / Task" className={`read-only-cell ${item.isRedText ? 'highlight-red text-[#B92814]': ''} w-[22%]`}>
                   <div className="flex items-center">
                     {item.drawItem}
                     {itemHelper && (
                         <Tooltip text={itemHelper.text} position="top">
-                            <span className="ml-1 inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold text-slate-500 border border-slate-400 rounded-full cursor-help hover:text-brand-600 hover:border-brand-600">?</span>
+                            <span className="ml-1 inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold text-[#78819D] border border-[#BCBFC7] rounded-full cursor-help hover:text-brand-600 hover:border-brand-600">?</span>
                         </Tooltip>
                     )}
                   </div>
@@ -367,14 +367,14 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
                         textarea.style.height = `${textarea.scrollHeight}px`;
                     }}
                     placeholder={item.isCustomDescription ? 'Your description' : 'Item Description'}
-                    className={`spreadsheet-input resize-none overflow-hidden ${descriptionError ? 'description-input-error' : ''} ${needsDescriptionHighlight ? 'bg-red-900/60 !placeholder-red-300' : ''}`}
+                    className={`spreadsheet-input resize-none overflow-hidden ${descriptionError ? 'description-input-error' : ''} ${needsDescriptionHighlight ? 'bg-[#FFF0EE] !placeholder-[#B92814]' : ''}`}
                     aria-label="Item Description"
                     disabled={isLocked}
                 />
                {item.isCustomDescription && !isLocked && (
                 <button
                   onClick={() => onRemoveCustomBudgetItem(categoryName, item.id)}
-                  className="static w-full mt-2 flex items-center justify-center p-3 bg-red-900/50 text-red-300 rounded-md font-bold md:absolute md:right-1 md:top-1/2 md:w-auto md:h-auto md:p-0.5 md:bg-red-600 md:text-white md:rounded-full md:-translate-y-1/2 md:mt-0 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                  className="static w-full mt-2 flex items-center justify-center p-3 bg-[#FFF0EE] text-[#B92814] rounded-md font-bold md:absolute md:right-1 md:top-1/2 md:w-auto md:h-auto md:p-0.5 md:bg-[#B92814] md:text-white md:rounded-full md:-translate-y-1/2 md:mt-0 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 transition-opacity"
                   aria-label="Remove custom item"
                 >
                   <span className="md:hidden">Remove Item</span>
@@ -398,14 +398,14 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
             <td data-label="Borrower Requested" className="p-1 w-[15%]">
                 {item.isContingencyItem && (
                     <Tooltip text={contingencyTooltipText} position="top">
-                        <div className="flex flex-col items-center text-xs mb-0.5 text-slate-300">
+                        <div className="flex flex-col items-center text-xs mb-0.5 text-[#1E2D5C]">
                             <label htmlFor={`contingency-auto-${item.id}`} className={`flex items-center space-x-1 ${budgetInputReadOnly ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}>
                                 <input
                                     type="checkbox"
                                     id={`contingency-auto-${item.id}`}
                                     checked={scopeSummary.isContingencyAutoCalculated}
                                     onChange={(e) => onScopeSummaryChange('isContingencyAutoCalculated', e.target.checked)}
-                                    className="form-checkbox h-3 w-3 text-sky-500 bg-slate-600 checked:bg-sky-500"
+                                    className="form-checkbox h-3 w-3 text-brand-500 bg-white checked:bg-brand-500"
                                     disabled={budgetInputReadOnly}
                                 />
                                 <span>Auto</span>
@@ -443,8 +443,8 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
                                 }
                             }}
                             onKeyDown={handleBudgetKeyDown}
-                            className={`spreadsheet-input text-right font-bold text-brand-300 bg-brand-900/10 border-brand-500/30
-                                ${budgetInputReadOnly ? 'bg-slate-600 cursor-not-allowed text-slate-400' : ''} 
+                            className={`spreadsheet-input text-right font-bold text-brand-500 bg-brand-50 border-brand-200
+                                ${budgetInputReadOnly ? 'bg-[#F6F7F9] cursor-not-allowed text-[#78819D]' : ''}
                                 ${item.isGcBuilderFeeItem ? 'border-orange-500' : ''}
                                 ${isWarning && !isBudgetFocused ? 'border-yellow-400 text-yellow-400' : ''}
                             `}
@@ -455,7 +455,7 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
                         />
                         {/* Inline Whisper Guidance */}
                         {showWhisper && (
-                            <div className={`absolute top-full right-0 mt-1 z-20 text-[10px] font-semibold whitespace-nowrap bg-slate-800 px-2 py-1 rounded-lg shadow border border-slate-600 ${whisperColor}`}>
+                            <div className={`absolute top-full right-0 mt-1 z-20 text-[10px] font-semibold whitespace-nowrap bg-white px-2 py-1 rounded-lg shadow border border-[#DFE1E5] ${whisperColor}`}>
                                 {whisperText}
                             </div>
                         )}
@@ -493,7 +493,7 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
                     }
                     }}
                     onKeyDown={handleActualKeyDown}
-                    className={`spreadsheet-input text-right font-bold text-green-300 bg-green-900/10 border-green-500/30 ${isLimaApprovedReadOnly ? 'bg-slate-600 text-slate-400 cursor-not-allowed' : ''}`}
+                    className={`spreadsheet-input text-right font-bold text-[#139B23] bg-[#E1F7E4]/50 border-[#ADDEB4] ${isLimaApprovedReadOnly ? 'bg-[#F6F7F9] text-[#78819D] cursor-not-allowed' : ''}`}
                     placeholder="$0"
                     step={(isLimaApprovedBudgetEditable && isActualFocused) ? "1" : undefined} 
                     readOnly={isLimaApprovedReadOnly}
@@ -504,16 +504,16 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
         </tr>
         {(item.uploadedPhotos && item.uploadedPhotos.length > 0) && (
             <tr className={isHighlighted ? 'ai-highlight' : ''}>
-                <td colSpan={showApprovedColumn ? 6 : 5} className="p-2 bg-slate-800/50">
+                <td colSpan={showApprovedColumn ? 6 : 5} className="p-2 bg-[#F6F7F9]">
                     <div className="flex items-start space-x-2">
                         <div className="flex flex-wrap gap-2 flex-grow">
                             {item.uploadedPhotos.map((photo, index) => (
                                 <div key={index} className="relative group">
                                     <img src={photo.preview} alt={`upload preview ${index}`} className="h-24 w-24 object-cover rounded-md" />
                                     {!isLocked && (
-                                        <button 
-                                            onClick={() => onRemovePhoto(categoryName, item.id, index)} 
-                                            className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 shadow-md hover:bg-red-700 transition-colors"
+                                        <button
+                                            onClick={() => onRemovePhoto(categoryName, item.id, index)}
+                                            className="absolute -top-2 -right-2 bg-[#B92814] text-white rounded-full p-1 shadow-md hover:bg-[#9A2010] transition-colors"
                                             aria-label="Remove photo"
                                         >
                                             <XCircleIcon className="w-5 h-5" />
@@ -522,7 +522,7 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
                                 </div>
                             ))}
                         </div>
-                        <div className="text-xs text-slate-400 p-2 border-l-2 border-slate-700 w-1/3">
+                        <div className="text-xs text-[#78819D] p-2 border-l-2 border-[#DFE1E5] w-1/3">
                             <p className="font-semibold">AI Analysis:</p>
                             <p><i>Analysis will appear here...</i></p>
                         </div>
@@ -653,7 +653,7 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
     <>
       <tr 
         id={`category-row-${category.name.replace(/\s+/g, '-')}`}
-        className={`transition-opacity ${shouldHighlight ? 'bg-red-600 border-2 border-red-700' : 'bg-[#1E2E5C] dark:bg-slate-700 hover:bg-opacity-90 dark:hover:bg-opacity-80'}`} 
+        className={`transition-opacity ${shouldHighlight ? 'bg-[#B92814] border-2 border-[#9A2010]' : 'bg-brand-700 hover:bg-opacity-90'}`}
         onClick={!isSimplified ? onToggleCollapse : undefined} 
       >
         <td className={`${categoryHeaderTdBaseClass} text-left full-width-mobile`} colSpan={2} data-label="Item / Task">
@@ -663,19 +663,19 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
             
             {/* Accordion Summary */}
             {effectiveCollapsed && !isSimplified && (
-                <span className="text-sm font-normal text-slate-300 ml-4 hidden sm:inline-block">
+                <span className="text-sm font-normal text-brand-100 ml-4 hidden sm:inline-block">
                     {activeItemCount} selected | {formatCurrency(categoryBudgetTotal)}
                 </span>
             )}
 
             {categoryTooltip && !effectiveCollapsed && (
                 <Tooltip text={categoryTooltip} position="top">
-                    <InfoIcon className="text-slate-300 hover:text-white ml-2 w-4 h-4 cursor-help" />
+                    <InfoIcon className="text-[#78819D] hover:text-[#1E2D5C] ml-2 w-4 h-4 cursor-help" />
                 </Tooltip>
             )}
             {categoryRisk && (
                 <Tooltip text={`Risk Alert: ${categoryRisk.message}`} position="right">
-                    <WarningTriangleIcon className="text-orange-400 w-5 h-5 ml-2" />
+                    <WarningTriangleIcon className="text-[#EAA800] w-5 h-5 ml-2" />
                 </Tooltip>
             )}
             {shouldHighlight && (
@@ -689,7 +689,7 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
             {showWizardButton && !isLocked && !effectiveCollapsed && (
                 <button
                     onClick={(e) => { e.stopPropagation(); onOpenSoftCostWizard!(); }}
-                    className="ml-4 flex items-center text-xs bg-[#0693e3] hover:bg-[#0578c5] text-white py-1 px-3 rounded-full transition-colors font-bold shadow-sm"
+                    className="ml-4 flex items-center text-xs bg-brand-500 hover:bg-brand-600 text-white py-1 px-3 rounded-full transition-colors font-bold shadow-sm"
                 >
                     <MagicWandIcon className="w-4 h-4 mr-1" />
                     Launch Soft Cost Wizard
@@ -700,7 +700,7 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
         
         {/* Description Column (Simplified View: Textarea) or Spacer (Detailed) */}
         {isSimplified ? (
-            <td className="p-1 w-[37%] bg-[#1E2E5C] dark:bg-slate-700 relative" onClick={(e) => e.stopPropagation()}>
+            <td className="p-1 w-[37%] bg-brand-700 relative" onClick={(e) => e.stopPropagation()}>
                 <textarea
                     ref={descriptionRef}
                     value={category.description || ''}
@@ -737,52 +737,12 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
                 /* Detailed View: Actions / Add Item Button */
                 !effectiveCollapsed && (
                     <div className="flex items-center justify-center space-x-2">
-                        {/* Bulk Adjust Trigger */}
-                        {!isLocked && onCategoryBulkAdjust && (
-                            <div className="relative">
-                                <Tooltip text="Adjust all items in this category by a percentage.">
-                                    <button 
-                                        onClick={(e) => { e.stopPropagation(); setIsBulkAdjustOpen(!isBulkAdjustOpen); }}
-                                        className="w-6 h-6 bg-white/20 hover:bg-white/40 rounded flex items-center justify-center text-white transition-colors"
-                                    >
-                                        <span className="font-bold text-xs">%</span>
-                                    </button>
-                                </Tooltip>
-                                
-                                {/* Inline Popover for Bulk Adjust */}
-                                {isBulkAdjustOpen && (
-                                    <div
-                                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-slate-800 shadow-xl rounded-xl p-3 z-50 border border-slate-600 animate-in fade-in zoom-in-95 duration-200"
-                                        onClick={(e) => e.stopPropagation()}
-                                    >
-                                        <div className="text-xs text-slate-400 mb-2 font-normal text-left">Adjust Category Budget</div>
-                                        <div className="flex gap-2">
-                                            <input 
-                                                type="number" 
-                                                value={bulkPercent}
-                                                onChange={(e) => setBulkPercent(e.target.value)}
-                                                placeholder="+/- %"
-                                                className="w-full text-white bg-slate-700 text-xs border border-slate-500 rounded px-2 py-1"
-                                                autoFocus
-                                            />
-                                            <button 
-                                                onClick={handleBulkAdjustSubmit}
-                                                className="bg-[#32373c] text-white text-xs px-2 py-1 rounded hover:bg-[#4a5056]"
-                                            >
-                                                Go
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-                                {isBulkAdjustOpen && <div className="fixed inset-0 z-40 bg-transparent" onClick={(e) => { e.stopPropagation(); setIsBulkAdjustOpen(false); }}></div>}
-                            </div>
-                        )}
 
                         {isLimaApprovedBudgetEditable && (
                             <Tooltip text="Copy all requested amounts in this category to the 'Lima One Approved' column.">
                                 <button
                                     onClick={(e) => { e.stopPropagation(); onCopyCategoryAmounts(category.name); }}
-                                    className="text-xs bg-green-600 hover:bg-green-700 text-white py-1 px-2 rounded-md transition-colors text-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="text-xs bg-[#139B23] hover:bg-[#0F7A1B] text-white py-1 px-2 rounded-md transition-colors text-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                                     aria-label={`Copy all requested amounts to approved for ${category.name}`}
                                 >
                                     Approve Requested
@@ -792,7 +752,7 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
                         <button
                             id={addItemButtonId}
                             onClick={(e) => { e.stopPropagation(); onAddCustomBudgetItem(category.name); }}
-                            className="text-xs bg-[#0693e3] hover:bg-[#0578c5] text-white py-1 px-2 rounded-md transition-colors text-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="text-xs bg-brand-500 hover:bg-brand-600 text-white py-1 px-2 rounded-md transition-colors text-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                             aria-label={`Add custom item to ${category.name}`}
                             disabled={isLocked}
                         >
@@ -809,7 +769,7 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
                         type="number"
                         value={categoryBudgetTotal === 0 ? '' : categoryBudgetTotal}
                         onChange={(e) => onUpdateCategoryTotalBudget(category.name, parseFloat(e.target.value) || 0)}
-                        className="w-28 text-right bg-white text-slate-900 border-none rounded px-2 py-1 font-bold focus:ring-2 focus:ring-brand-500"
+                        className="w-28 text-right bg-white text-[#1E2D5C] border-none rounded px-2 py-1 font-bold focus:ring-2 focus:ring-brand-500"
                         placeholder="$0"
                         onClick={(e) => e.stopPropagation()}
                     />
@@ -828,9 +788,9 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
       
       {showPermitWarning && !effectiveCollapsed && (
           <tr>
-              <td colSpan={showApprovedColumn ? 6 : 5} className="bg-yellow-900/30 border-l-4 border-yellow-500 p-2">
-                  <div className="flex items-center text-sm text-yellow-200">
-                      <WarningTriangleIcon className="w-5 h-5 mr-2 text-yellow-400" />
+              <td colSpan={showApprovedColumn ? 6 : 5} className="bg-[#FFF5DB] border-l-4 border-[#EDDDB1] p-2">
+                  <div className="flex items-center text-sm text-[#EAA800]">
+                      <WarningTriangleIcon className="w-5 h-5 mr-2 text-[#EAA800]" />
                       <span><strong>Note:</strong> Standard and Heavy rehabs typically require building permits. Ensure you have budgeted for city fees.</span>
                   </div>
               </td>
@@ -838,7 +798,7 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
       )}
 
       {!effectiveCollapsed && (category.categoryPhotos && category.categoryPhotos.length > 0) && (
-        <tr className="bg-slate-800/50">
+        <tr className="bg-[#F6F7F9]">
             <td colSpan={showApprovedColumn ? 6 : 5} className="p-2">
                 <div className="flex items-start space-x-2">
                     <div className="flex flex-wrap gap-2 flex-grow">
@@ -853,7 +813,7 @@ const BudgetCategoryRow: React.FC<BudgetCategoryRowProps> = ({ category, isLimaA
                             </div>
                         ))}
                     </div>
-                    <div className="text-xs text-slate-400 p-2 border-l-2 border-slate-700 w-1/3">
+                    <div className="text-xs text-[#78819D] p-2 border-l-2 border-[#DFE1E5] w-1/3">
                         <p className="font-semibold">AI Category Analysis:</p>
                         <p><i>Analysis for these general category photos will appear here...</i></p>
                     </div>
@@ -949,24 +909,24 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
     };
 
     const GuidanceBanner = () => (
-        <div className="relative flex items-center justify-between bg-white/5 border border-white/10 p-3 rounded-xl mb-4 backdrop-blur-sm">
+        <div className="relative flex items-center justify-between bg-[#F6F7F9] border border-[#DFE1E5] p-3 rounded-xl mb-4">
             {/* Left Side */}
             <div className="flex items-center space-x-4">
                 <button
                     onClick={() => setIsLogicPopoverOpen(!isLogicPopoverOpen)}
-                    className="flex items-center space-x-2 bg-white/10 hover:bg-[#0693e3]/20 text-slate-200 hover:text-white px-3 py-1.5 rounded-xl transition-colors border border-white/20 hover:border-[#0693e3]/50 group"
+                    className="flex items-center space-x-2 bg-white hover:bg-brand-50 text-[#1E2D5C] hover:text-brand-700 px-3 py-1.5 rounded-xl transition-colors border border-[#DFE1E5] hover:border-brand-300 group"
                 >
                     <LightBulbIcon className="w-4 h-4 group-hover:text-white transition-colors" />
                     <span className="text-xs font-bold uppercase tracking-wide group-hover:text-white transition-colors">Guidance Logic</span>
                 </button>
                 <div className="flex items-center space-x-2">
-                    <span className="text-sm font-semibold text-slate-200">Live Budget Guidance</span>
+                    <span className="text-sm font-semibold text-[#1E2D5C]">Live Budget Guidance</span>
                     <Tooltip text="Enables real-time cost benchmarks based on your location and property size.">
-                        <InfoIcon className="w-4 h-4 text-slate-400 cursor-help" />
+                        <InfoIcon className="w-4 h-4 text-[#78819D] cursor-help" />
                     </Tooltip>
                 </div>
                 {!hasSqFt && (
-                    <span className="text-xs font-bold text-red-400 bg-red-900/20 px-2 py-1 rounded border border-red-500/30">
+                    <span className="text-xs font-bold text-[#B92814] bg-[#FFF0EE] px-2 py-1 rounded border border-[#F5C5BF]">
                         (Requires 'Projected Sq Ft' in Step 1)
                     </span>
                 )}
@@ -980,29 +940,29 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                     onChange={handleGuidanceToggle}
                     disabled={!hasSqFt}
                 />
-                <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#0693e3]/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-[#0693e3]"></div>
+                <div className="w-11 h-6 bg-[#DFE1E5] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-[#BCBFC7] peer-checked:bg-brand-500"></div>
             </label>
 
             {/* Logic Popover - Absolute positioned */}
             {isLogicPopoverOpen && (
-                <div className="absolute top-full left-0 mt-2 z-50 w-80 bg-slate-800 border border-slate-600 rounded-xl shadow-xl p-4 text-left animate-in fade-in zoom-in-95 duration-200">
+                <div className="absolute top-full left-0 mt-2 z-50 w-80 bg-white border border-[#DFE1E5] rounded-xl shadow-xl p-4 text-left animate-in fade-in zoom-in-95 duration-200">
                     {/* Content matches screenshot logic */}
-                    <h4 className="text-xs font-bold text-slate-400 uppercase mb-2 border-b border-slate-700 pb-1">How It Works</h4>
-                    <div className="bg-slate-900 p-2 rounded text-center text-xs font-mono text-brand-300 mb-3 border border-slate-700 shadow-inner">
+                    <h4 className="text-xs font-bold text-[#78819D] uppercase mb-2 border-b border-[#DFE1E5] pb-1">How It Works</h4>
+                    <div className="bg-[#F4F5F7] p-2 rounded text-center text-xs font-mono text-brand-500 mb-3 border border-[#DFE1E5] shadow-inner">
                         (Avg Cost x Location x SqFt)
                     </div>
-                    <p className="text-xs text-slate-300 mb-3">Compare your input against historical data.</p>
+                    <p className="text-xs text-[#1E2D5C] mb-3">Compare your input against historical data.</p>
                     <ul className="text-xs space-y-2 mb-4">
                         <li className="flex items-center">
-                            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 mr-2 shadow-[0_0_8px_rgba(234,179,8,0.6)]"></span> 
-                            <span className="text-slate-200">Low Warning (&lt;50% of avg)</span>
+                            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 mr-2 shadow-[0_0_8px_rgba(234,179,8,0.6)]"></span>
+                            <span className="text-[#1E2D5C]">Low Warning (&lt;50% of avg)</span>
                         </li>
                         <li className="flex items-center">
-                            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 mr-2 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></span> 
-                            <span className="text-slate-200">High Warning (&gt;150% of avg)</span>
+                            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 mr-2 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></span>
+                            <span className="text-[#1E2D5C]">High Warning (&gt;150% of avg)</span>
                         </li>
                     </ul>
-                    <h4 className="text-xs font-bold text-slate-400 uppercase mb-2 border-b border-slate-700 pb-1">Monitored Items</h4>
+                    <h4 className="text-xs font-bold text-[#78819D] uppercase mb-2 border-b border-[#DFE1E5] pb-1">Monitored Items</h4>
                     <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pr-1 custom-scrollbar">
                         {SUPPORTED_BENCHMARKS.map(item => (
                             <span key={item} className="text-[10px] bg-brand-500/15 border border-brand-400/25 text-brand-300 px-2 py-0.5 rounded-full">{item}</span>
@@ -1052,7 +1012,7 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
             <div className="section-container p-5 animate-in fade-in duration-300">
                 <h3 className="section-title">Draw Schedule Configuration</h3>
                 <div className="flex justify-end mb-6">
-                    <button onClick={() => onSetBudgetViewMode('detailed')} className="flex items-center text-xs font-bold px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 border border-white/20 transition-all">
+                    <button onClick={() => onSetBudgetViewMode('detailed')} className="flex items-center text-xs font-bold px-4 py-2 rounded-xl bg-white hover:bg-[#F6F7F9] text-[#1E2D5C] border border-[#DFE1E5] transition-all">
                         ← Back to Budget
                     </button>
                 </div>
@@ -1060,8 +1020,8 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                     {/* Unassigned Pool */}
                     <div className="lg:col-span-1 flex flex-col gap-4">
-                        <div className="flex items-center gap-2 pl-3 border-l-4 border-[#0693e3]">
-                            <span className="font-bold text-slate-200 text-xs uppercase tracking-widest">Available Items</span>
+                        <div className="flex items-center gap-2 pl-3 border-l-4 border-brand-500">
+                            <span className="font-bold text-[#1E2D5C] text-xs uppercase tracking-widest">Available Items</span>
                         </div>
                         <DrawBucket 
                             drawId="unassigned"
@@ -1108,20 +1068,20 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                         <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
                         Detailed Budget
                     </span>
-                    <span className="text-xs text-slate-500">·</span>
-                    <span className="text-xs text-slate-400 font-medium">Step 3 of 4</span>
+                    <span className="text-xs text-[#78819D]">·</span>
+                    <span className="text-xs text-[#78819D] font-medium">Step 3 of 4</span>
                 </div>
-                <h1 className="text-2xl font-black text-white tracking-tight">Project Budget</h1>
-                <p className="text-sm text-slate-400 mt-1 max-w-xl">
+                <h1 className="text-2xl font-black text-[#1E2D5C] tracking-tight">Project Budget</h1>
+                <p className="text-sm text-[#78819D] mt-1 max-w-xl">
                     Enter line-item costs for each trade. AI estimates and guidance benchmarks update as you type.
                 </p>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/10 backdrop-blur-sm">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#F6F7F9] p-4 rounded-xl border border-[#DFE1E5]">
                 <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-bold text-white">Project Budget</h3>
+                    <h3 className="text-xl font-bold text-[#1E2D5C]">Project Budget</h3>
                     {budgetViewMode === 'simplified' && (
-                        <span className="bg-green-500/20 text-green-300 text-xs px-2 py-1 rounded-full border border-green-500/30 font-semibold">
+                        <span className="bg-[#E1F7E4]/50 text-[#139B23] text-xs px-2 py-1 rounded-full border border-[#ADDEB4] font-semibold">
                             Simplified View
                         </span>
                     )}
@@ -1129,48 +1089,29 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                 
                 <div className="flex flex-wrap items-center gap-2">
                     {/* View Switcher */}
-                    <div className="bg-slate-900/50 p-1 rounded-lg flex border border-white/10">
+                    <div className="bg-[#F4F5F7] p-1 rounded-lg flex border border-[#DFE1E5]">
                         {isSimplifiedViewAvailable && (
                             <button
                                 onClick={() => onSetBudgetViewMode('simplified')}
-                                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${budgetViewMode === 'simplified' ? 'bg-[#0693e3] text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-white/10'}`}
+                                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${budgetViewMode === 'simplified' ? 'bg-brand-500 text-white shadow-sm' : 'text-[#78819D] hover:text-[#1E2D5C] hover:bg-[#F7F9FC]'}`}
                             >
                                 Simple
                             </button>
                         )}
                         <button
                             onClick={() => onSetBudgetViewMode('detailed')}
-                            className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${budgetViewMode === 'detailed' ? 'bg-[#0693e3] text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-white/10'}`}
+                            className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${budgetViewMode === 'detailed' ? 'bg-brand-500 text-white shadow-sm' : 'text-[#78819D] hover:text-[#1E2D5C] hover:bg-[#F7F9FC]'}`}
                         >
                             Detailed
                         </button>
                         <button
                             onClick={() => onSetBudgetViewMode('draw_schedule')}
-                            className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${budgetViewMode === 'draw_schedule' ? 'bg-[#0693e3] text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-white/10'}`}
+                            className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${budgetViewMode === 'draw_schedule' ? 'bg-brand-500 text-white shadow-sm' : 'text-[#78819D] hover:text-[#1E2D5C] hover:bg-[#F7F9FC]'}`}
                         >
                             Draws
                         </button>
                     </div>
 
-                    {!isLocked && (
-                        <>
-                            <button onClick={onOpenBulkUploadModal} className="flex items-center text-xs font-bold px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200 border border-white/10 transition-all">
-                                <CameraIcon className="w-4 h-4 mr-2" />
-                                Photos
-                            </button>
-                            {onSwitchToWalkthrough && (
-                                <button onClick={onSwitchToWalkthrough} className="flex items-center text-xs font-bold px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200 border border-white/10 transition-all">
-                                    <CameraIcon className="w-4 h-4 mr-2" />
-                                    Walkthrough
-                                </button>
-                            )}
-                            {onSaveAsTemplate && (
-                                <button onClick={onSaveAsTemplate} className="text-xs font-bold px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200 border border-white/10 transition-all">
-                                    Save Template
-                                </button>
-                            )}
-                        </>
-                    )}
                 </div>
             </div>
 
@@ -1180,7 +1121,7 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Left: Scope of Work */}
                 <div className="lg:col-span-2 flex flex-col gap-4">
-                    <h4 className="font-bold text-white text-sm uppercase tracking-wide text-slate-300">Scope of Work</h4>
+                    <h4 className="font-bold text-[#1E2D5C] text-sm uppercase tracking-wide">Scope of Work</h4>
                     <textarea
                         value={projectScopeStatement}
                         onChange={onProjectScopeStatementChange}
@@ -1189,56 +1130,49 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                         placeholder="Enter detailed project description, work to be performed, and any specific considerations..."
                         disabled={isLocked}
                     />
-                    <div className="flex justify-end">
+                    <div className="flex justify-end items-center gap-2">
+                        <span className="text-[9px] font-bold text-[#EAA800] uppercase tracking-widest bg-[#FFF5DB] border border-[#EDDDB1] px-1.5 py-0.5 rounded-full">
+                            Coming Soon
+                        </span>
                         <button
-                            onClick={onGenerateScope}
-                            disabled={isGeneratingScope || isLocked}
-                            className="flex items-center text-sm font-bold px-4 py-2 rounded-lg bg-[#0693e3] hover:bg-[#0578c5] text-white shadow-md transition-all disabled:opacity-50"
+                            disabled
+                            className="flex items-center text-sm font-bold px-4 py-2 rounded-lg bg-brand-500 text-white shadow-md opacity-50 cursor-not-allowed select-none"
                             style={{ boxShadow: '0 4px 16px rgba(6,147,227,0.3)' }}
                         >
-                            {isGeneratingScope ? <SpinnerIcon className="w-4 h-4 mr-2" /> : <MagicWandIcon className="w-4 h-4 mr-2" />}
-                            {isGeneratingScope ? 'Generating...' : 'Generate Scope with AI'}
+                            <MagicWandIcon className="w-4 h-4 mr-2" />
+                            Generate Scope with AI
                         </button>
                     </div>
                 </div>
 
                 {/* Right: Summary & Actions */}
                 <div className="lg:col-span-1 flex flex-col gap-4">
-                    <button 
-                        onClick={onOpenBulkUploadModal} 
-                        disabled={isLocked}
-                        className="w-full flex items-center justify-center font-bold py-3 rounded-lg bg-[#0693e3] hover:bg-[#0578c5] text-white shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                        style={{ boxShadow: '0 4px 16px rgba(6,147,227,0.3)' }}
-                    >
-                        <CameraIcon className="w-5 h-5 mr-2" /> Upload Project Photos
-                    </button>
-
-                    <div className="bg-white/5 rounded-xl p-4 border border-white/10 space-y-3 shadow-inner">
+                    <div className="bg-[#F6F7F9] rounded-xl p-4 border border-[#DFE1E5] space-y-3 shadow-inner">
                         <div className="flex justify-between items-center">
-                            <span className="text-slate-400 text-sm font-semibold">Borrower Total:</span>
-                            <span className="font-bold text-white text-lg">{formatCurrency(scopeSummary.borrowerTotal)}</span>
+                            <span className="text-[#78819D] text-sm font-semibold">Borrower Total:</span>
+                            <span className="font-bold text-[#1E2D5C] text-lg">{formatCurrency(scopeSummary.borrowerTotal)}</span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-slate-400 text-sm font-semibold">Lima One Approved:</span>
-                            <span className="font-bold text-green-400 text-lg bg-green-900/30 px-2 py-0.5 rounded border border-green-500/30">
+                            <span className="text-[#78819D] text-sm font-semibold">Lima One Approved:</span>
+                            <span className="font-bold text-[#139B23] text-lg bg-[#E1F7E4]/50 px-2 py-0.5 rounded border border-[#ADDEB4]">
                                 {formatCurrency(scopeSummary.limaOneApprovedTotal)}
                             </span>
                         </div>
-                        <div className="border-t border-white/10 my-1"></div>
+                        <div className="border-t border-[#DFE1E5] my-1"></div>
                         <div className="flex justify-between items-center">
-                            <span className="text-slate-500 text-xs font-medium">$/SqFt Budget (Projected):</span>
-                            <span className="text-slate-300 font-mono text-sm">{isFinite(budgetPerSqFt) ? formatCurrency(budgetPerSqFt) : '#DIV/0!'}</span>
+                            <span className="text-[#78819D] text-xs font-medium">$/SqFt Budget (Projected):</span>
+                            <span className="text-[#1E2D5C] font-mono text-sm">{isFinite(budgetPerSqFt) ? formatCurrency(budgetPerSqFt) : '#DIV/0!'}</span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-slate-500 text-xs font-medium">$/SqFt Actual (Approved):</span>
-                            <span className="text-slate-300 font-mono text-sm">{isFinite(approvedPerSqFt) ? formatCurrency(approvedPerSqFt) : '#DIV/0!'}</span>
+                            <span className="text-[#78819D] text-xs font-medium">$/SqFt Actual (Approved):</span>
+                            <span className="text-[#1E2D5C] font-mono text-sm">{isFinite(approvedPerSqFt) ? formatCurrency(approvedPerSqFt) : '#DIV/0!'}</span>
                         </div>
                     </div>
 
-                    <div className="bg-white/5 rounded-xl p-4 border border-white/10 space-y-3 shadow-inner">
+                    <div className="bg-[#F6F7F9] rounded-xl p-4 border border-[#DFE1E5] space-y-3 shadow-inner">
                         <div>
-                            <label className="block text-xs font-bold text-slate-400 uppercase mb-1 flex items-center">
-                                Start Date <InfoIcon className="text-slate-500 ml-1 w-3 h-3" />
+                            <label className="block text-xs font-bold text-[#78819D] uppercase mb-1 flex items-center">
+                                Start Date <InfoIcon className="text-[#78819D] ml-1 w-3 h-3" />
                             </label>
                             <input 
                                 type="date" 
@@ -1249,8 +1183,8 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-bold text-slate-400 uppercase mb-1 flex items-center">
-                                Projected Completion <InfoIcon className="text-slate-500 ml-1 w-3 h-3" />
+                            <label className="block text-xs font-bold text-[#78819D] uppercase mb-1 flex items-center">
+                                Projected Completion <InfoIcon className="text-[#78819D] ml-1 w-3 h-3" />
                             </label>
                             <input
                                 type="date"
@@ -1265,13 +1199,11 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
             </div>
             </div>
 
-            {/* Guidance Banner */}
-            <GuidanceBanner />
 
             <div id="main-budget-table-container" className="section-container p-0 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left text-slate-300">
-                        <thead className="text-xs uppercase bg-white/10 text-slate-200">
+                    <table className="w-full text-sm text-left text-[#1E2D5C]">
+                        <thead className="text-xs uppercase bg-[#F4F5F7] text-[#78819D]">
                             <tr>
                                 <th scope="col" className="px-4 py-3 w-[6%] text-center">Item #</th>
                                 <th scope="col" className="px-4 py-3 w-[22%]">Item / Task</th>
@@ -1281,7 +1213,7 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                                 {showApprovedColumn && <th scope="col" className="px-4 py-3 w-[15%] text-right">Approved ($)</th>}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/5">
+                        <tbody className="divide-y divide-[#DFE1E5]">
                             {budgetData.map((category, index) => (
                                 <BudgetCategoryRow
                                     key={category.name}
@@ -1319,11 +1251,11 @@ export const Step2Budget: React.FC<Step2BudgetProps> = ({
                                 />
                             ))}
                         </tbody>
-                        <tfoot className="bg-white/10 text-slate-100 font-bold border-t-2 border-white/20">
+                        <tfoot className="bg-[#F4F5F7] text-[#1E2D5C] font-bold border-t-2 border-[#DFE1E5]">
                             <tr>
                                 <td colSpan={4} className="px-4 py-4 text-right text-base uppercase tracking-wider">Project Grand Total</td>
-                                <td className="px-4 py-4 text-right text-lg text-brand-400">{formatCurrency(scopeSummary.borrowerTotal)}</td>
-                                {showApprovedColumn && <td className="px-4 py-4 text-right text-lg text-green-400">{formatCurrency(scopeSummary.limaOneApprovedTotal)}</td>}
+                                <td className="px-4 py-4 text-right text-lg text-brand-500">{formatCurrency(scopeSummary.borrowerTotal)}</td>
+                                {showApprovedColumn && <td className="px-4 py-4 text-right text-lg text-[#139B23]">{formatCurrency(scopeSummary.limaOneApprovedTotal)}</td>}
                             </tr>
                         </tfoot>
                     </table>

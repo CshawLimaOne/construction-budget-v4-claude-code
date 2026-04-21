@@ -27,7 +27,7 @@ const Tooltip: React.FC<TooltipProps> = ({ text, children, position = 'bottom', 
     <span className="relative group inline-flex items-center align-middle"> {/* Use inline-flex for better alignment of children */}
       {children}
       <span
-        className={`absolute ${getPositionClasses()} w-max max-w-xs p-2 text-xs text-white bg-slate-700 dark:bg-slate-600 dark:text-slate-100 rounded-md shadow-lg 
+        className={`absolute ${getPositionClasses()} w-max max-w-xs p-2 text-xs text-white bg-[#1E2D5C] rounded-md shadow-lg
                    opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus-within:opacity-100 
                    transition-opacity duration-200 ease-in-out z-50 pointer-events-none ${className}`}
         role="tooltip"

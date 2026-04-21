@@ -36,11 +36,11 @@ export const BudgetUploadCard: React.FC<BudgetUploadCardProps> = ({ isParsing, p
     }
 
     return (
-        <div className="p-4 bg-white dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg mb-4">
-            <h4 className="font-bold text-slate-800 dark:text-slate-100 text-lg">
+        <div className="p-4 bg-white border-2 border-dashed border-[#DFE1E5] rounded-lg mb-4">
+            <h4 className="font-bold text-[#1E2D5C] text-lg">
                 Already have a budget?
             </h4>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 mb-4">
+            <p className="text-sm text-[#78819D] mt-1 mb-4">
                 Upload your .csv, .txt, .xlsx, or .pdf file here.
             </p>
             <div className="flex items-center justify-start mb-4">
@@ -55,24 +55,24 @@ export const BudgetUploadCard: React.FC<BudgetUploadCardProps> = ({ isParsing, p
                 />
                 <label
                     htmlFor="budget-file-upload"
-                    className={`button-base text-sm py-1.5 px-3 bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 whitespace-nowrap ${isLoading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+                    className={`button-base text-sm py-1.5 px-3 bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC] whitespace-nowrap ${isLoading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
                 >
                     Choose File
                 </label>
-                <span className="ml-3 text-sm text-slate-500 dark:text-slate-400 truncate">
+                <span className="ml-3 text-sm text-[#78819D] truncate">
                     {selectedFile ? selectedFile.name : 'No file chosen'}
                 </span>
             </div>
             <button
                 onClick={handleProcessBudget}
                 disabled={!selectedFile || isLoading}
-                className="button-base w-full bg-[#32373c] text-white hover:bg-[#4a5056] disabled:bg-slate-400 dark:disabled:bg-slate-600 flex items-center justify-center"
+                className="button-base w-full bg-brand-500 text-white hover:bg-brand-600 disabled:bg-[#BCBFC7] disabled:text-white flex items-center justify-center"
             >
                 {isLoading && <SpinnerIcon className="w-4 h-4 mr-2" />}
                 {buttonText}
             </button>
             {(parsingError || analysisError) && (
-                <p className="text-xs text-red-600 dark:text-red-400 mt-2 text-center">
+                <p className="text-xs text-[#B92814] mt-2 text-center">
                     {parsingError || analysisError}
                 </p>
             )}

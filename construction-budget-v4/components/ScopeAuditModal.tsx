@@ -132,28 +132,28 @@ export const ScopeAuditModal: React.FC<ScopeAuditModalProps> = ({ isOpen, onClos
   };
 
   const renderFindings = (findings: ScopeAuditFinding[], title: string, emptyMessage: string, isRiskSection: boolean) => (
-      <div className={`rounded-lg border overflow-hidden mb-6 ${isRiskSection ? 'bg-red-50 dark:bg-red-900/10 border-red-100 dark:border-red-900' : 'bg-green-50 dark:bg-green-900/10 border-green-100 dark:border-green-900'}`}>
-          <div className={`px-4 py-3 font-bold flex items-center ${isRiskSection ? 'text-red-800 dark:text-red-200 bg-red-100/50' : 'text-green-800 dark:text-green-200 bg-green-100/50'}`}>
+      <div className={`rounded-lg border overflow-hidden mb-6 ${isRiskSection ? 'bg-[#FFF0EE] border-red-200' : 'bg-[#E1F7E4] border-[#ADDEB4]'}`}>
+          <div className={`px-4 py-3 font-bold flex items-center ${isRiskSection ? 'text-[#B92814] bg-red-100/50' : 'text-[#139B23] bg-[#E1F7E4]'}`}>
               {isRiskSection ? <WarningTriangleIcon className="w-5 h-5 mr-2" /> : <CheckCircleIcon className="w-5 h-5 mr-2" />}
               {title} ({findings.length})
           </div>
           <div className="p-4 space-y-4">
               {findings.length === 0 ? (
-                  <p className="text-sm italic text-slate-500 dark:text-slate-400">{emptyMessage}</p>
+                  <p className="text-sm italic text-[#78819D]">{emptyMessage}</p>
               ) : (
                   findings.map((finding, idx) => (
-                      <div key={idx} className="flex flex-col md:flex-row bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden shadow-sm">
+                      <div key={idx} className="flex flex-col md:flex-row bg-white border border-[#DFE1E5] rounded-lg overflow-hidden shadow-sm">
                           {/* Left: Visual Evidence */}
-                          <div className="w-full md:w-1/4 bg-slate-100 dark:bg-slate-900 flex items-center justify-center p-2 relative group">
+                          <div className="w-full md:w-1/4 bg-[#F6F7F9] flex items-center justify-center p-2 relative group">
                               {finding.photoIndex !== undefined && filePreviews[finding.photoIndex] ? (
                                   <>
                                     <img src={filePreviews[finding.photoIndex]} alt="Evidence" className="max-h-32 object-contain rounded" />
-                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded">
+                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded" style={{backgroundColor: 'rgba(4,11,31,0.5)'}}>
                                         <span className="text-white text-xs font-bold bg-black/50 px-2 py-1 rounded">Photo #{finding.photoIndex + 1}</span>
                                     </div>
                                   </>
                               ) : (
-                                  <div className="text-xs text-slate-400 flex flex-col items-center">
+                                  <div className="text-xs text-[#78819D] flex flex-col items-center">
                                       <CameraIcon className="w-8 h-8 mb-1" />
                                       <span>No Image</span>
                                   </div>
@@ -166,18 +166,18 @@ export const ScopeAuditModal: React.FC<ScopeAuditModalProps> = ({ isOpen, onClos
                                   {getSeverityBadge(finding.severity)}
                               </div>
                               
-                              <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                              <p className="text-sm font-semibold text-[#1E2D5C] mb-2">
                                   {finding.observation}
                               </p>
                               
-                              <div className="mt-auto pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center text-sm">
+                              <div className="mt-auto pt-3 border-t border-[#DFE1E5] flex items-center text-sm">
                                   {finding.severity === 'verified' ? (
-                                      <span className="text-green-700 dark:text-green-400 flex items-center font-medium">
+                                      <span className="text-[#139B23] flex items-center font-medium">
                                           <CheckCircleIcon className="w-4 h-4 mr-2" />
                                           Matched: {finding.missingCategoryOrItem}
                                       </span>
                                   ) : (
-                                      <span className="text-red-600 dark:text-red-400 flex items-center font-medium">
+                                      <span className="text-[#B92814] flex items-center font-medium">
                                           <WarningTriangleIcon className="w-4 h-4 mr-2" />
                                           Missing/Discrepancy: {finding.missingCategoryOrItem}
                                       </span>
@@ -193,14 +193,14 @@ export const ScopeAuditModal: React.FC<ScopeAuditModalProps> = ({ isOpen, onClos
 
   const footer = (
     <>
-      <button onClick={onClose} className="button-base bg-transparent text-slate-600 border border-slate-300 hover:bg-slate-100 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-700">
+      <button onClick={onClose} className="button-base bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC]">
         Close
       </button>
       {step === 'upload' && (
         <button 
           onClick={handleRunAudit} 
           disabled={uploadedFiles.length === 0}
-          className="button-base bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 disabled:bg-slate-300 disabled:cursor-not-allowed"
+          className="button-base bg-brand-500 text-white hover:bg-brand-600 focus:ring-brand-500 disabled:bg-[#BCBFC7] disabled:cursor-not-allowed"
         >
           Run Scope Audit
         </button>
@@ -218,20 +218,20 @@ export const ScopeAuditModal: React.FC<ScopeAuditModalProps> = ({ isOpen, onClos
     >
       {step === 'upload' && (
         <div className="space-y-6">
-          <div className="bg-brand-50 dark:bg-brand-900/20 p-4 rounded-lg border-l-4 border-brand-500">
-            <h4 className="font-bold text-brand-900 dark:text-brand-100 mb-1">Analyst Control Panel</h4>
-            <p className="text-sm text-brand-800 dark:text-brand-300">
+          <div className="bg-brand-50 p-4 rounded-lg border-l-4 border-brand-500">
+            <h4 className="font-bold text-[#1E2D5C] mb-1">Analyst Control Panel</h4>
+            <p className="text-sm text-[#78819D]">
               Upload the <strong>Property Inspection Report</strong> or site photos here. The AI Agent will cross-reference visual defects against the Borrower's Budget to identify missing line items (Scope Gap) and verify matched items.
             </p>
           </div>
 
           <div 
             onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-10 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            className="border-2 border-dashed border-[#DFE1E5] rounded-lg p-10 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-[#F7F9FC] transition-colors"
           >
-            <CloudUploadIcon className="w-12 h-12 text-slate-400 mb-4" />
-            <span className="text-lg font-medium text-slate-700 dark:text-slate-200">Upload Inspection Photos / PDF</span>
-            <span className="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            <CloudUploadIcon className="w-12 h-12 text-[#78819D] mb-4" />
+            <span className="text-lg font-medium text-[#1E2D5C]">Upload Inspection Photos / PDF</span>
+            <span className="text-sm text-[#78819D] mt-2">
                 {uploadedFiles.length > 0 ? `${uploadedFiles.length} files selected` : "Drag & drop or click to browse"}
             </span>
             <input 
@@ -250,7 +250,7 @@ export const ScopeAuditModal: React.FC<ScopeAuditModalProps> = ({ isOpen, onClos
                     <img key={i} src={src} alt="preview" className="w-full h-20 object-cover rounded shadow-sm" />
                 ))}
                 {filePreviews.length > 12 && (
-                    <div className="w-full h-20 bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xs text-slate-500 rounded">
+                    <div className="w-full h-20 bg-[#F6F7F9] flex items-center justify-center text-xs text-[#78819D] rounded">
                         +{filePreviews.length - 12} more
                     </div>
                 )}
@@ -268,8 +268,8 @@ export const ScopeAuditModal: React.FC<ScopeAuditModalProps> = ({ isOpen, onClos
                 </div>
             </div>
             <div className="text-center space-y-2">
-                <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">Auditing Scope...</h3>
-                <p className="text-sm font-mono text-slate-500 dark:text-slate-400 animate-pulse">
+                <h3 className="text-lg font-bold text-[#1E2D5C]">Auditing Scope...</h3>
+                <p className="text-sm font-mono text-[#78819D] animate-pulse">
                     &gt; {progressMessage}
                 </p>
             </div>
@@ -278,10 +278,10 @@ export const ScopeAuditModal: React.FC<ScopeAuditModalProps> = ({ isOpen, onClos
 
       {step === 'results' && auditResult && (
         <div className="space-y-6">
-            <div className="flex items-center justify-between bg-slate-100 dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center justify-between bg-[#F6F7F9] p-4 rounded-lg border border-[#DFE1E5]">
                 <div>
-                    <h3 className="font-bold text-slate-700 dark:text-slate-200">Audit Summary</h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 italic">"{auditResult.summary}"</p>
+                    <h3 className="font-bold text-[#1E2D5C]">Audit Summary</h3>
+                    <p className="text-sm text-[#78819D] italic">"{auditResult.summary}"</p>
                 </div>
             </div>
 

@@ -9,8 +9,8 @@ interface GcOnboardingFormProps {
 }
 
 const FormSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-    <div className="gc-onboarding-section border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden mb-6">
-        <h3 className="bg-slate-100 dark:bg-slate-700 p-3 font-bold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700">{title}</h3>
+    <div className="gc-onboarding-section border border-[#DFE1E5] rounded-lg overflow-hidden mb-6">
+        <h3 className="bg-[#F6F7F9] p-3 font-bold text-[#1E2D5C] border-b border-[#DFE1E5]">{title}</h3>
         <div className="p-4 space-y-4">
             {children}
         </div>
@@ -19,7 +19,7 @@ const FormSection: React.FC<{ title: string; children: React.ReactNode }> = ({ t
 
 const FormRow: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
     <div>
-        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{label}</label>
+        <label className="block text-sm font-medium text-[#1E2D5C] mb-1">{label}</label>
         {children}
     </div>
 );
@@ -35,7 +35,7 @@ export const GcOnboardingForm: React.FC<GcOnboardingFormProps> = ({ data, onChan
 
     return (
         <div className="text-sm">
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+            <p className="text-xs text-[#78819D] mb-4">
                 To begin, please provide the information below to create your Contractor Profile. This profile setup is a one-time process. To keep your file current, we will only require an annual update of your licenses and insurance certificates going forward.
             </p>
 
@@ -75,12 +75,12 @@ export const GcOnboardingForm: React.FC<GcOnboardingFormProps> = ({ data, onChan
             </FormSection>
 
             <FormSection title="Statement of Previous Similar Experience">
-                 <p className="text-xs text-slate-500 dark:text-slate-400 -mt-2 mb-4">
+                 <p className="text-xs text-[#78819D] -mt-2 mb-4">
                    Please list 3 completed projects of similar scope/budget.
                 </p>
                 <div className="space-y-4">
                 {data.previousExperience.map((exp, index) => (
-                    <div key={exp.id} className="grid grid-cols-1 md:grid-cols-3 gap-3 p-3 border border-slate-200 dark:border-slate-600 rounded-md">
+                    <div key={exp.id} className="grid grid-cols-1 md:grid-cols-3 gap-3 p-3 border border-[#DFE1E5] rounded-md">
                         <FormRow label={`Project ${index + 1} Address`}>
                             <input type="text" value={exp.address} onChange={e => handleExperienceChange(exp.id, 'address', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
                         </FormRow>
@@ -138,12 +138,12 @@ export const GcOnboardingForm: React.FC<GcOnboardingFormProps> = ({ data, onChan
             </FormSection>
             
             <FormSection title="Release Authorization">
-                <div className="space-y-4 text-xs text-slate-600 dark:text-slate-400">
+                <div className="space-y-4 text-xs text-[#78819D]">
                     <p><strong>Release Authorization:</strong> The undersigned hereby declares that the statements made to Lender herein are true and correct and authorizes lender to obtain personal and/or business credit information should Lender deem it necessary.</p>
                     <p>The undersigned has been advised and further authorizes the lender to obtain information concerning the undersigned's past employment, past performance, construction contracts, work history, credit and any other matter which Lender deems relevant and authorizes but does not require Lender to disclose any such information to Lender's borrower and/or necessary persons. During this review, the Lender reserves the right to perform a background and OFAC check. Lender additionally reserves the right to perform background and OFAC checks of the undersigned on an annual basis. The undersigned hereby agrees that so long as Lender acts in good faith, Lender and Lender's agent shall be held harmless and shall be indemnified in connection with any claims, suits, actions, or the like which relate in any way to said investigation or disclosures.</p>
                     <p><strong>Verification of Previous Work:</strong> Should Lima One Capital be unable to verify previous scope and production capabilities with the information provided, further documentation, including bank statements and/or tax returns, may be required.</p>
                 </div>
-                 <div className="mt-4 p-4 border-t border-slate-200 dark:border-slate-700">
+                 <div className="mt-4 p-4 border-t border-[#DFE1E5]">
                      <label className="flex items-start">
                         <input 
                             type="checkbox" 
@@ -152,13 +152,13 @@ export const GcOnboardingForm: React.FC<GcOnboardingFormProps> = ({ data, onChan
                             className="h-4 w-4 text-brand-600 border-gray-300 rounded focus:ring-brand-500 mt-0.5"
                             disabled={isReadOnly}
                          />
-                        <span className="ml-3 text-sm text-slate-800 dark:text-slate-200">
+                        <span className="ml-3 text-sm text-[#1E2D5C]">
                             By checking this box, you acknowledge and agree to the terms of the Release Authorization and Verification of Previous Work.
                         </span>
                      </label>
                  </div>
 
-                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-[#DFE1E5]">
                      <FormRow label="Signature (Type Full Name)">
                         <input type="text" value={data.authorization.signature} onChange={e => onChange('authorization.signature', e.target.value)} className="spreadsheet-input w-full" readOnly={isReadOnly} />
                     </FormRow>

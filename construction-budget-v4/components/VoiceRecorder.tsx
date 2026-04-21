@@ -84,7 +84,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplet
         className={`relative z-10 flex items-center justify-center p-4 rounded-full transition-all duration-200 focus:outline-none shadow-lg ${
           isRecording 
             ? 'bg-red-600 text-white scale-110' 
-            : 'bg-white text-red-500 border-2 border-red-500 hover:bg-red-50 dark:bg-slate-700 dark:border-red-400 dark:text-red-400 dark:hover:bg-slate-600'
+            : 'bg-white text-red-500 border-2 border-red-500 hover:bg-red-50'
         }`}
         aria-label={isRecording ? "Release to stop recording" : "Press and hold to record"}
         title="Press and hold to record"
@@ -92,7 +92,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplet
         <MicrophoneIcon className="w-8 h-8" />
       </button>
       {isRecording && (
-        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-bold text-red-600 dark:text-red-400 whitespace-nowrap animate-pulse">
+        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-bold text-[#B92814] whitespace-nowrap animate-pulse">
           Recording...
         </div>
       )}

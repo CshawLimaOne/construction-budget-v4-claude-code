@@ -210,17 +210,17 @@ const WalkthroughItemRow: React.FC<{
   };
 
   const isExpanded = status === 'Replace' || status === 'Repair';
-  let containerBorderClass = 'border-white/5';
-  if (status === 'Replace') containerBorderClass = 'border-red-500/50 bg-red-900/10';
-  else if (status === 'Repair') containerBorderClass = 'border-yellow-500/50 bg-yellow-900/10';
-  else if (status === 'Keep') containerBorderClass = 'border-brand-500/30 bg-brand-900/10';
-  else if (status === 'N/A') containerBorderClass = 'border-slate-600/50 bg-slate-800/30 opacity-60';
+  let containerBorderClass = 'border-[#DFE1E5]';
+  if (status === 'Replace') containerBorderClass = 'border-[#B92814] bg-[#FFF0EE]';
+  else if (status === 'Repair') containerBorderClass = 'border-[#EDDDB1] bg-[#FFF5DB]';
+  else if (status === 'Keep') containerBorderClass = 'border-brand-200 bg-brand-50';
+  else if (status === 'N/A') containerBorderClass = 'border-[#DFE1E5] bg-[#F6F7F9] opacity-60';
 
   return (
-    <div className={`mb-3 rounded-xl border transition-all duration-300 overflow-hidden ${containerBorderClass} bg-slate-800/70 backdrop-blur-sm`}>
+    <div className={`mb-3 rounded-xl border transition-all duration-300 overflow-hidden ${containerBorderClass} bg-white`}>
       <div className="p-4 flex flex-col gap-3">
         <div className="flex justify-between items-center">
-          <span className="font-bold text-white text-lg tracking-wide">{itemDef.label}</span>
+          <span className="font-bold text-[#1E2D5C] text-lg tracking-wide">{itemDef.label}</span>
           {status && status !== 'Keep' && status !== 'N/A' && (
               <span className="font-mono font-bold text-brand-300 bg-brand-500/15 border border-brand-400/25 px-2.5 py-0.5 rounded-full text-sm">
                   ${(itemState?.costEstimate || 0).toLocaleString()}
@@ -228,10 +228,10 @@ const WalkthroughItemRow: React.FC<{
           )}
         </div>
         
-        <div className="grid grid-cols-4 gap-1 bg-black/30 p-1 rounded-xl">
+        <div className="grid grid-cols-4 gap-1 bg-[#F6F7F9] p-1 rounded-xl">
           {(['Keep', 'Repair', 'Replace', 'N/A'] as const).map((opt) => {
             const isActive = status === opt;
-            let activeClass = 'text-slate-400 hover:text-white hover:bg-white/5';
+            let activeClass = 'text-[#78819D] hover:text-[#1E2D5C] hover:bg-[#F7F9FC]';
 
             if (isActive) {
               if (opt === 'Keep')    activeClass = 'bg-brand-600 text-white shadow-lg shadow-brand-900/50';
@@ -253,11 +253,11 @@ const WalkthroughItemRow: React.FC<{
         </div>
         
         {showHistoricalPrompt && isExpanded && (
-            <div className="animate-in fade-in slide-in-from-top-2 p-3 bg-brand-600/20 border border-brand-500/30 rounded-xl flex items-center justify-between">
-                <div className="flex items-center text-xs text-brand-200">
-                    <LightBulbIcon className="w-4 h-4 mr-2 text-yellow-400" />
+            <div className="animate-in fade-in slide-in-from-top-2 p-3 bg-brand-50 border border-brand-200 rounded-xl flex items-center justify-between">
+                <div className="flex items-center text-xs text-[#1E2D5C]">
+                    <LightBulbIcon className="w-4 h-4 mr-2 text-[#EAA800]" />
                     <span>
-                        Typical cost: <strong className="text-white">${MOCK_HISTORICAL_DATA[itemDef.defaultCostCode].price.toLocaleString()}</strong>
+                        Typical cost: <strong className="text-[#1E2D5C]">${MOCK_HISTORICAL_DATA[itemDef.defaultCostCode].price.toLocaleString()}</strong>
                     </span>
                 </div>
                 <button 
@@ -272,11 +272,11 @@ const WalkthroughItemRow: React.FC<{
 
       {isExpanded && (
         <div className="px-4 pb-4 pt-0 animate-in slide-in-from-top-2 duration-300">
-          <div className="h-px w-full bg-white/10 mb-4"></div>
+          <div className="h-px w-full bg-[#DFE1E5] mb-4"></div>
           <div className="grid grid-cols-1 gap-4">
             <div>
               <div className="flex justify-between items-end mb-1">
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase">Estimated Cost</label>
+                  <label className="block text-[10px] font-bold text-[#78819D] uppercase">Estimated Cost</label>
                   {unitCost && (
                       <div className="text-[10px] text-brand-300 font-mono bg-brand-500/15 border border-brand-400/25 px-2 py-0.5 rounded-full flex items-center">
                           <CalculatorIcon className="w-3 h-3 mr-1" />
@@ -285,23 +285,23 @@ const WalkthroughItemRow: React.FC<{
                   )}
               </div>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-mono">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#78819D] font-mono">$</span>
                 <input
                   type="number"
                   value={itemState?.costEstimate || ''}
                   onChange={(e) => onUpdate('costEstimate', parseFloat(e.target.value) || 0)}
-                  className="w-full pl-7 pr-3 py-3 rounded-xl border border-white/10 bg-slate-800/60 text-white text-lg font-bold focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all"
+                  className="w-full pl-7 pr-3 py-3 rounded-xl border border-[#DFE1E5] bg-white text-[#1E2D5C] text-lg font-bold focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all"
                   placeholder="0.00"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Notes / Scope</label>
+              <label className="block text-[10px] font-bold text-[#78819D] uppercase mb-1">Notes / Scope</label>
               <div className="flex gap-2">
                 <textarea
                   value={itemState?.notes || ''}
                   onChange={(e) => onUpdate('notes', e.target.value)}
-                  className="flex-grow p-3 rounded-xl border border-white/10 bg-slate-800/60 text-white text-sm min-h-[80px] focus:border-brand-500 outline-none resize-none"
+                  className="flex-grow p-3 rounded-xl border border-[#DFE1E5] bg-white text-[#1E2D5C] text-sm min-h-[80px] focus:border-brand-500 outline-none resize-none"
                   placeholder="Describe work needed..."
                 />
                 <div className="flex-shrink-0 flex flex-col justify-end items-center gap-2">
@@ -312,12 +312,12 @@ const WalkthroughItemRow: React.FC<{
             </div>
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase">Photos ({itemState?.photos?.length || 0})</label>
+                <label className="text-[10px] font-bold text-[#78819D] uppercase">Photos ({itemState?.photos?.length || 0})</label>
                 <div className="flex gap-2">
                     <button onClick={onOpenCamera} className="flex items-center text-[10px] font-bold text-brand-300 bg-brand-500/10 border border-brand-500/30 px-3 py-1.5 rounded-full hover:bg-brand-500/20 transition-colors shadow-sm">
                         <CameraIcon className="w-3 h-3 mr-1" /> Camera
                     </button>
-                    <button onClick={() => fileInputRef.current?.click()} className="flex items-center text-[10px] font-bold text-slate-400 border border-white/10 px-2 py-1.5 rounded-full hover:bg-white/10 transition-colors">
+                    <button onClick={() => fileInputRef.current?.click()} className="flex items-center text-[10px] font-bold text-[#78819D] border border-[#DFE1E5] px-2 py-1.5 rounded-full hover:bg-[#F7F9FC] transition-colors">
                         + Gallery
                     </button>
                 </div>
@@ -326,7 +326,7 @@ const WalkthroughItemRow: React.FC<{
               {itemState?.photos && itemState.photos.length > 0 ? (
                 <div className="flex gap-3 overflow-x-auto pb-2 custom-scrollbar">
                   {itemState.photos.map((p, i) => (
-                    <div key={i} className="relative flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden border border-white/10 group shadow-lg">
+                    <div key={i} className="relative flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden border border-[#DFE1E5] group shadow-sm">
                       <img src={p.preview} alt="" className="w-full h-full object-cover" />
                       <button onClick={() => { const newPhotos = [...(itemState.photos || [])]; newPhotos.splice(i, 1); onUpdate('photos', newPhotos); }} className="absolute top-1 right-1 bg-red-600/90 text-white rounded-full p-1 transition-all active:scale-110 shadow-md">
                         <TrashIcon className="w-3 h-3" />
@@ -335,7 +335,7 @@ const WalkthroughItemRow: React.FC<{
                   ))}
                 </div>
               ) : (
-                  <div className="h-20 border border-dashed border-white/15 rounded-xl flex items-center justify-center text-xs text-slate-500">No photos</div>
+                  <div className="h-20 border border-dashed border-[#DFE1E5] rounded-xl flex items-center justify-center text-xs text-[#78819D]">No photos</div>
               )}
             </div>
           </div>
@@ -530,40 +530,40 @@ export const WalkthroughRoomView: React.FC<WalkthroughRoomViewProps> = ({ room, 
   return (
     <>
         <div
-            className="flex flex-col h-full bg-gradient-to-br from-slate-900 to-[#1E2E5C] text-white animate-in slide-in-from-right-10 duration-300 relative"
+            className="flex flex-col h-full bg-[#F4F5F7] text-[#1E2D5C] animate-in slide-in-from-right-10 duration-300 relative"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
         >
         
         {/* Header */}
-        <div className="p-4 bg-slate-800/70 backdrop-blur-sm border-b border-white/10 flex items-center justify-between sticky top-0 z-20 shadow-md">
+        <div className="p-4 bg-white border-b border-[#DFE1E5] flex items-center justify-between sticky top-0 z-20 shadow-sm">
             <div className="flex items-center">
-                <button onClick={onBack} className="mr-3 p-2 -ml-2 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full transition-colors">
+                <button onClick={onBack} className="mr-3 p-2 -ml-2 text-[#78819D] hover:text-[#1E2D5C] bg-[#F6F7F9] hover:bg-[#F7F9FC] rounded-full transition-colors">
                     <ChevronLeftIcon className="w-6 h-6" />
                 </button>
                 <div>
-                    <h2 className="text-lg font-bold text-white flex items-center">
+                    <h2 className="text-lg font-bold text-[#1E2D5C] flex items-center">
                         <span className="mr-2.5 flex-shrink-0">{getRoomHeaderIcon(room.icon)}</span>
                         {room.label}
                     </h2>
                 </div>
             </div>
-            <div className="text-right bg-black/20 px-3 py-1.5 rounded-xl border border-white/10">
-                <div className="text-[10px] text-slate-400 uppercase font-bold">Room Total</div>
-                <div className="text-lg font-mono font-bold text-brand-400">${total.toLocaleString()}</div>
+            <div className="text-right bg-[#F6F7F9] px-3 py-1.5 rounded-xl border border-[#DFE1E5]">
+                <div className="text-[10px] text-[#78819D] uppercase font-bold">Room Total</div>
+                <div className="text-lg font-mono font-bold text-brand-500">${total.toLocaleString()}</div>
             </div>
         </div>
 
         {/* Offline Notice */}
         {showOfflineNotice && (
-            <div className="p-4 bg-amber-500/20 border-b border-amber-500/30 animate-in fade-in slide-in-from-top-4">
+            <div className="p-4 bg-[#FFF5DB] border-b border-[#EDDDB1] animate-in fade-in slide-in-from-top-4">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-amber-500 rounded-full text-black">
+                    <div className="p-2 bg-[#EAA800] rounded-full text-white">
                         <WavesIcon className="w-4 h-4" />
                     </div>
                     <div>
-                        <h4 className="font-bold text-amber-200 text-sm">Saved to Device</h4>
-                        <p className="text-[10px] text-amber-100/80">
+                        <h4 className="font-bold text-[#EAA800] text-sm">Saved to Device</h4>
+                        <p className="text-[10px] text-[#78819D]">
                             Recording queued. Will sync automatically when online.
                         </p>
                     </div>
@@ -572,19 +572,19 @@ export const WalkthroughRoomView: React.FC<WalkthroughRoomViewProps> = ({ room, 
         )}
 
         {/* Continuous Flow Mode CTA */}
-        <div className="mx-4 mt-4 mb-2 p-4 bg-gradient-to-r from-brand-500/20 to-brand-600/10 border border-brand-400/30 rounded-xl backdrop-blur-sm">
+        <div className="mx-4 mt-4 mb-2 p-4 bg-brand-50 border border-brand-200 rounded-xl">
             <div className="flex items-center justify-between gap-4">
                 <div className="flex-grow">
                     <div className="flex items-center gap-2 mb-1">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
-                        <h4 className="text-sm font-bold text-white tracking-tight">
+                        <div className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
+                        <h4 className="text-sm font-bold text-[#1E2D5C] tracking-tight">
                             AI Room Scan
                         </h4>
-                        <span className="inline-flex text-[10px] font-bold bg-brand-500/25 border border-brand-400/30 text-brand-200 px-2 py-0.5 rounded-full uppercase tracking-widest">
+                        <span className="inline-flex text-[10px] font-bold bg-brand-500 text-white px-2 py-0.5 rounded-full uppercase tracking-widest">
                             Recommended
                         </span>
                     </div>
-                    <p className="text-[11px] text-brand-200/80 leading-snug">
+                    <p className="text-[11px] text-[#78819D] leading-snug">
                         Hold the mic button and describe the whole room aloud. AI will fill in every item automatically.
                     </p>
                 </div>
@@ -594,15 +594,15 @@ export const WalkthroughRoomView: React.FC<WalkthroughRoomViewProps> = ({ room, 
 
         {/* Processing Overlay */}
         {isProcessingRoom && (
-            <div className="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex flex-col items-center justify-center p-8 text-center animate-in fade-in duration-300">
+            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center p-8 text-center animate-in fade-in duration-300" style={{ backgroundColor: 'rgba(4,11,31,0.5)' }}>
                 <div className="relative mb-6">
-                    <div className="w-24 h-24 border-4 border-brand-500/20 border-t-brand-500 rounded-full animate-spin"></div>
+                    <div className="w-24 h-24 border-4 border-brand-200 border-t-brand-500 rounded-full animate-spin"></div>
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <AudioWavesIcon className="w-10 h-10 text-brand-400 animate-pulse" />
+                        <AudioWavesIcon className="w-10 h-10 text-brand-500 animate-pulse" />
                     </div>
                 </div>
                 <h3 className="text-xl font-black text-white mb-2">Magic in progress...</h3>
-                <p className="text-sm font-mono text-brand-400 animate-pulse uppercase tracking-widest">{processingStage}</p>
+                <p className="text-sm font-mono text-brand-200 animate-pulse uppercase tracking-widest">{processingStage}</p>
             </div>
         )}
 
@@ -626,12 +626,12 @@ export const WalkthroughRoomView: React.FC<WalkthroughRoomViewProps> = ({ room, 
                     );
                 })}
                 <div className="mt-8 mb-4 flex flex-col items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center">
-                        <CheckIcon className="w-5 h-5 text-emerald-400" />
+                    <div className="w-10 h-10 rounded-full bg-[#E1F7E4] border border-[#ADDEB4] flex items-center justify-center">
+                        <CheckIcon className="w-5 h-5 text-[#139B23]" />
                     </div>
                     <div className="text-center">
-                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">All Items Reviewed</div>
-                        <div className="text-[10px] text-slate-500 mt-0.5">Use Next Room or Finish below</div>
+                        <div className="text-xs font-bold text-[#78819D] uppercase tracking-widest">All Items Reviewed</div>
+                        <div className="text-[10px] text-[#78819D] mt-0.5">Use Next Room or Finish below</div>
                     </div>
                 </div>
             </div>
@@ -643,17 +643,17 @@ export const WalkthroughRoomView: React.FC<WalkthroughRoomViewProps> = ({ room, 
             style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))' }}
         >
             {onPrevRoom ? (
-                <button onClick={onPrevRoom} className="pointer-events-auto flex items-center justify-center p-4 rounded-full bg-white/10 text-white shadow-lg border border-white/20 active:scale-95 transition-all backdrop-blur-sm">
+                <button onClick={onPrevRoom} className="pointer-events-auto flex items-center justify-center p-4 rounded-full bg-white text-[#1E2D5C] shadow-sm border border-[#DFE1E5] hover:bg-[#F7F9FC] active:scale-95 transition-all">
                     <ChevronLeftIcon className="w-6 h-6" />
                 </button>
             ) : <div />}
             {onNextRoom ? (
-                <button onClick={onNextRoom} className="pointer-events-auto flex items-center px-6 py-4 rounded-full bg-[#0693e3] text-white shadow-lg active:scale-95 transition-all font-bold hover:bg-[#0578c5]" style={{ boxShadow: '0 4px 20px rgba(6,147,227,0.4)' }}>
+                <button onClick={onNextRoom} className="pointer-events-auto flex items-center px-6 py-4 rounded-full bg-brand-500 text-white shadow-sm active:scale-95 transition-all font-bold hover:bg-brand-600">
                     <span className="mr-2">Next Room</span>
                     <ChevronRightIcon className="w-5 h-5" />
                 </button>
             ) : (
-                <button onClick={onBack} className="pointer-events-auto flex items-center px-6 py-4 rounded-full bg-white/10 text-white shadow-lg border border-white/20 active:scale-95 transition-all font-bold backdrop-blur-sm">
+                <button onClick={onBack} className="pointer-events-auto flex items-center px-6 py-4 rounded-full bg-white text-[#1E2D5C] shadow-sm border border-[#DFE1E5] hover:bg-[#F7F9FC] active:scale-95 transition-all font-bold">
                     <ChevronLeftIcon className="w-5 h-5 mr-2" />
                     <span>Back to Rooms</span>
                 </button>

@@ -152,8 +152,8 @@ const ClockIcon: React.FC<{ className?: string }> = ({ className }) => (
 // --- Sub-Components ---
 
 const ReportCard: React.FC<{ title: React.ReactNode; children: React.ReactNode; className?: string }> = ({ title, children, className }) => (
-  <div className={`report-card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden border border-slate-200 dark:border-slate-700 ${className} avoid-break`}>
-    <div className="bg-[#32373c] text-white font-bold uppercase tracking-wider py-2.5 px-4 flex items-center border-l-4 border-[#0693e3]">
+  <div className={`report-card bg-white rounded-lg shadow-md overflow-hidden border border-[#DFE1E5] ${className} avoid-break`}>
+    <div className="bg-[#1E2D5C] text-white font-bold uppercase tracking-wider py-2.5 px-4 flex items-center border-l-4 border-brand-500">
         {title}
     </div>
     <div className="p-4">{children}</div>
@@ -165,49 +165,49 @@ const LoanSetupCard: React.FC<{ feasibilityData: FeasibilityData; onChange: (pat
         <ReportCard title="Loan Setup & Configuration">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Loan Number</label>
+                    <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">Loan Number</label>
                     <input 
                         type="text" 
                         value={feasibilityData.loanNumber} 
                         onChange={e => onChange('loanNumber', e.target.value)} 
-                        className="w-full text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-[#0693e3] outline-none !text-slate-900 dark:!text-slate-100"
+                        className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1.5 bg-white focus:ring-2 focus:ring-brand-500 outline-none !text-[#1E2D5C]"
                     />
                 </div>
                 <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Borrower Name</label>
+                    <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">Borrower Name</label>
                     <input 
                         type="text" 
                         value={feasibilityData.borrowerName} 
                         onChange={e => onChange('borrowerName', e.target.value)} 
-                        className="w-full text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-[#0693e3] outline-none !text-slate-900 dark:!text-slate-100"
+                        className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1.5 bg-white focus:ring-2 focus:ring-brand-500 outline-none !text-[#1E2D5C]"
                     />
                 </div>
                 <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Processed By</label>
+                    <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">Processed By</label>
                     <input 
                         type="text" 
                         value={feasibilityData.processedBy} 
                         onChange={e => onChange('processedBy', e.target.value)} 
-                        className="w-full text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-[#0693e3] outline-none !text-slate-900 dark:!text-slate-100"
+                        className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1.5 bg-white focus:ring-2 focus:ring-brand-500 outline-none !text-[#1E2D5C]"
                     />
                 </div>
                 <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Approved By</label>
+                    <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">Approved By</label>
                     <input 
                         type="text" 
                         value={feasibilityData.approvedBy} 
                         onChange={e => onChange('approvedBy', e.target.value)} 
-                        className="w-full text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-[#0693e3] outline-none !text-slate-900 dark:!text-slate-100"
+                        className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1.5 bg-white focus:ring-2 focus:ring-brand-500 outline-none !text-[#1E2D5C]"
                     />
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                  <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Tier Reviewed</label>
+                    <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">Tier Reviewed</label>
                     <select 
                         value={feasibilityData.tierReviewed} 
                         onChange={e => onChange('tierReviewed', e.target.value)}
-                        className="w-full text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-[#0693e3] outline-none !text-slate-900 dark:!text-slate-100"
+                        className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1.5 bg-white focus:ring-2 focus:ring-brand-500 outline-none !text-[#1E2D5C]"
                     >
                         <option value="1">Tier 1</option>
                         <option value="2">Tier 2</option>
@@ -217,12 +217,12 @@ const LoanSetupCard: React.FC<{ feasibilityData: FeasibilityData; onChange: (pat
                     </select>
                 </div>
                 <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Approval Date</label>
+                    <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">Approval Date</label>
                     <input 
                         type="date" 
                         value={feasibilityData.approvalDate} 
                         onChange={e => onChange('approvalDate', e.target.value)} 
-                        className="w-full text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-[#0693e3] outline-none !text-slate-900 dark:!text-slate-100"
+                        className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1.5 bg-white focus:ring-2 focus:ring-brand-500 outline-none !text-[#1E2D5C]"
                     />
                 </div>
                 <div className="flex items-end pb-2">
@@ -231,9 +231,9 @@ const LoanSetupCard: React.FC<{ feasibilityData: FeasibilityData; onChange: (pat
                             type="checkbox" 
                             checked={feasibilityData.strategicAccount} 
                             onChange={e => onChange('strategicAccount', e.target.checked)}
-                            className="mr-2 h-4 w-4 accent-[#0693e3] rounded border-slate-300" 
+                            className="mr-2 h-4 w-4 accent-brand-500 rounded border-[#DFE1E5]" 
                         />
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Strategic Account</span>
+                        <span className="text-sm font-medium text-[#1E2D5C]">Strategic Account</span>
                     </label>
                 </div>
                  <div className="flex items-end pb-2">
@@ -242,9 +242,9 @@ const LoanSetupCard: React.FC<{ feasibilityData: FeasibilityData; onChange: (pat
                             type="checkbox" 
                             checked={feasibilityData.isRepeatBorrower} 
                             onChange={e => onChange('isRepeatBorrower', e.target.checked)}
-                            className="mr-2 h-4 w-4 accent-[#0693e3] rounded border-slate-300" 
+                            className="mr-2 h-4 w-4 accent-brand-500 rounded border-[#DFE1E5]" 
                         />
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Repeat Borrower</span>
+                        <span className="text-sm font-medium text-[#1E2D5C]">Repeat Borrower</span>
                     </label>
                 </div>
             </div>
@@ -260,11 +260,11 @@ const MarketHealthCard: React.FC<{
         <ReportCard title="Market Health Configuration">
             <div className="space-y-4">
                 <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Market Sentiment (Price Trend)</label>
+                    <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">Market Sentiment (Price Trend)</label>
                     <select 
                         value={marketMetrics.priceTrend} 
                         onChange={(e) => onChange('priceTrend', e.target.value)}
-                        className="w-full text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-[#0693e3] outline-none !text-slate-900 dark:!text-slate-100"
+                        className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1.5 bg-white focus:ring-2 focus:ring-brand-500 outline-none !text-[#1E2D5C]"
                     >
                         <option value="Rapidly Appreciating">Rapidly Appreciating (Hot)</option>
                         <option value="Stable">Stable</option>
@@ -275,40 +275,40 @@ const MarketHealthCard: React.FC<{
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">90-Day Delinquency %</label>
+                        <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">90-Day Delinquency %</label>
                         <div className="relative">
                             <input 
                                 type="number" 
                                 step="0.1"
                                 value={marketMetrics.delinquency90Day} 
                                 onChange={(e) => onChange('delinquency90Day', parseFloat(e.target.value))}
-                                className="w-full text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-[#0693e3] outline-none !text-slate-900 dark:!text-slate-100"
+                                className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1.5 bg-white focus:ring-2 focus:ring-brand-500 outline-none !text-[#1E2D5C]"
                             />
-                            <span className="absolute right-3 top-1.5 text-slate-400 text-sm">%</span>
+                            <span className="absolute right-3 top-1.5 text-[#78819D] text-sm">%</span>
                         </div>
                     </div>
                     <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Months Supply</label>
+                        <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">Months Supply</label>
                         <div className="relative">
                             <input 
                                 type="number" 
                                 step="0.1"
                                 value={marketMetrics.monthsSupply} 
                                 onChange={(e) => onChange('monthsSupply', parseFloat(e.target.value))}
-                                className="w-full text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-[#0693e3] outline-none !text-slate-900 dark:!text-slate-100"
+                                className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1.5 bg-white focus:ring-2 focus:ring-brand-500 outline-none !text-[#1E2D5C]"
                             />
-                            <span className="absolute right-3 top-1.5 text-slate-400 text-sm">mos</span>
+                            <span className="absolute right-3 top-1.5 text-[#78819D] text-sm">mos</span>
                         </div>
                     </div>
                 </div>
                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Avg Days on Market</label>
+                        <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">Avg Days on Market</label>
                         <input 
                             type="number" 
                             value={marketMetrics.avgDaysOnMarket} 
                             onChange={(e) => onChange('avgDaysOnMarket', parseFloat(e.target.value))}
-                            className="w-full text-sm border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-[#0693e3] outline-none !text-slate-900 dark:!text-slate-100"
+                            className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1.5 bg-white focus:ring-2 focus:ring-brand-500 outline-none !text-[#1E2D5C]"
                         />
                     </div>
                      <div className="flex items-end pb-2">
@@ -319,7 +319,7 @@ const MarketHealthCard: React.FC<{
                                 onChange={e => onChange('femaDisasterZone', e.target.checked)}
                                 className="mr-2 h-4 w-4 text-red-600 rounded border-slate-300 focus:ring-red-500" 
                             />
-                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">FEMA Disaster Zone?</span>
+                            <span className="text-sm font-medium text-[#1E2D5C]">FEMA Disaster Zone?</span>
                         </label>
                     </div>
                 </div>
@@ -341,27 +341,27 @@ const DecisionConsole: React.FC<{
     const isApprovingHighRisk = isHighRisk && feasibilityData.recommendation === 'Recommended';
     
     // Style for the mitigating factors box based on risk context
-    const mitigantsBoxStyle = isApprovingHighRisk 
-        ? "border-red-500 ring-1 ring-red-500 bg-red-50 dark:bg-red-900/10" 
-        : "border-slate-300 bg-slate-50 dark:bg-slate-900 dark:border-slate-600";
+    const mitigantsBoxStyle = isApprovingHighRisk
+        ? "border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]"
+        : "border-[#DFE1E5] bg-[#F6F7F9]";
 
     const getRecommendationStyle = (rec: RecommendationType) => {
         switch(rec) {
             case 'Recommended': return '!text-green-600 bg-green-50 border-green-200';
             case 'Recommended with Conditions': return '!text-yellow-600 bg-yellow-50 border-yellow-200';
             case 'Not Recommended': return '!text-red-600 bg-red-50 border-red-200';
-            default: return '!text-slate-500 bg-slate-50 border-slate-200';
+            default: return '!text-[#78819D] bg-[#F6F7F9] border-[#DFE1E5]';
         }
     };
 
     return (
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 p-4 mb-6">
+        <div className="bg-white rounded-lg shadow-md border border-[#DFE1E5] p-4 mb-6">
             <div className="flex flex-col lg:flex-row gap-6">
                 
                 {/* Center: Mitigating Factors - Expanded to 3/4 width */}
-                <div className="lg:w-3/4 flex flex-col border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-700 pb-4 lg:pb-0 lg:pr-4">
+                <div className="lg:w-3/4 flex flex-col border-b lg:border-b-0 lg:border-r border-[#DFE1E5] pb-4 lg:pb-0 lg:pr-4">
                     <div className="flex justify-between items-center mb-2">
-                        <label className="text-xs font-bold text-slate-500 uppercase">Mitigating Factors / Analysis</label>
+                        <label className="text-xs font-bold text-[#78819D] uppercase">Mitigating Factors / Analysis</label>
                         {isApprovingHighRisk && (
                             <span className="text-xs font-bold text-red-600 animate-pulse">Required for {dealGrade.grade} Grade Approval</span>
                         )}
@@ -369,19 +369,19 @@ const DecisionConsole: React.FC<{
                     <textarea 
                         value={feasibilityData.mitigatingFactors} 
                         onChange={e => onChange('mitigatingFactors', e.target.value)}
-                        className={`w-full flex-grow min-h-[120px] p-3 text-sm rounded focus:bg-white focus:border-[#0693e3] outline-none resize-none transition-colors !text-slate-900 dark:!text-slate-100 ${mitigantsBoxStyle}`}
+                        className={`w-full flex-grow min-h-[120px] p-3 text-sm rounded focus:bg-white focus:border-brand-500 outline-none resize-none transition-colors !text-[#1E2D5C] ${mitigantsBoxStyle}`}
                         placeholder="Enter analysis or mitigating factors here..."
                     />
                 </div>
 
                 {/* Right: Decision & Conditions - Kept at 1/4 width */}
                 <div className="lg:w-1/4 flex flex-col pt-4 lg:pt-0 lg:pl-4">
-                    <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Final Recommendation</h4>
+                    <h4 className="text-xs font-bold text-[#78819D] uppercase tracking-wider mb-2">Final Recommendation</h4>
                     
                     <select 
                         value={feasibilityData.recommendation} 
                         onChange={e => onChange('recommendation', e.target.value)}
-                        className={`w-full text-sm font-bold py-2 px-3 rounded border cursor-pointer outline-none focus:ring-2 focus:ring-[#0693e3] transition-colors mb-3 ${getRecommendationStyle(feasibilityData.recommendation)}`}
+                        className={`w-full text-sm font-bold py-2 px-3 rounded border cursor-pointer outline-none focus:ring-2 focus:ring-brand-500 transition-colors mb-3 ${getRecommendationStyle(feasibilityData.recommendation)}`}
                     >
                         <option value="">Select Action...</option>
                         <option value="Recommended">Recommended</option>
@@ -389,7 +389,7 @@ const DecisionConsole: React.FC<{
                         <option value="Not Recommended">Not Recommended</option>
                     </select>
 
-                    <div className="bg-slate-50 dark:bg-slate-800 p-2 rounded text-xs text-slate-500 italic">
+                    <div className="bg-[#F6F7F9] p-2 rounded text-xs text-[#78819D] italic">
                         {feasibilityData.recommendation === 'Recommended with Conditions' 
                             ? "Review conditions in the Closing Conditions card below."
                             : "Select decision to finalize."}
@@ -415,28 +415,28 @@ const SponsorshipStrengthCard: React.FC<{
         <ReportCard title="Sponsorship Strength" className="col-span-1 lg:col-span-2">
             
             {/* Top Bar: Borrower vs GC Identity */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 border-b border-slate-100 dark:border-slate-700 pb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 border-b border-[#DFE1E5] pb-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h4 className="font-bold text-slate-700 dark:text-slate-200">Borrower Profile</h4>
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${isRepeat ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-[#0693e3]/15 text-[#0578c5] border border-[#0693e3]/30'}`}>
+                        <h4 className="font-bold text-[#1E2D5C]">Borrower Profile</h4>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${isRepeat ? 'bg-[#E1F7E4] text-[#139B23] border border-[#ADDEB4]' : 'bg-brand-50 text-brand-500 border border-brand-200'}`}>
                             {isRepeat ? 'Repeat Borrower' : 'New Borrower'}
                         </span>
                     </div>
                 </div>
                 
-                <div className="flex items-center justify-between md:border-l md:border-slate-200 md:dark:border-slate-700 md:pl-4">
+                <div className="flex items-center justify-between md:border-l md:border-[#DFE1E5] md:pl-4">
                     <div>
-                        <h4 className="font-bold text-slate-700 dark:text-slate-200">General Contractor</h4>
+                        <h4 className="font-bold text-[#1E2D5C]">General Contractor</h4>
                         <div className="flex items-center gap-2">
-                            <span className="text-xs text-slate-500 truncate max-w-[150px]">{gcData.name}</span>
-                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${gcData.isRepeat ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-slate-100 text-slate-600 border border-slate-200'}`}>
+                            <span className="text-xs text-[#78819D] truncate max-w-[150px]">{gcData.name}</span>
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${gcData.isRepeat ? 'bg-[#E1F7E4] text-[#139B23] border border-[#ADDEB4]' : 'bg-[#F6F7F9] text-[#78819D] border border-[#DFE1E5]'}`}>
                                 {gcData.isRepeat ? 'Repeat GC' : 'New GC'}
                             </span>
                         </div>
                     </div>
                     {gcData.buildzoomUrl && (
-                        <a href={gcData.buildzoomUrl} target="_blank" rel="noreferrer" className="text-xs text-[#0693e3] hover:underline flex items-center">
+                        <a href={gcData.buildzoomUrl} target="_blank" rel="noreferrer" className="text-xs text-brand-500 hover:underline flex items-center">
                             <InfoIcon className="w-3 h-3 mr-1" /> Profile
                         </a>
                     )}
@@ -445,19 +445,19 @@ const SponsorshipStrengthCard: React.FC<{
 
             {/* Condition 1: First Time Borrower (New) */}
             {!isRepeat && (
-                <div className="rounded-xl border border-dashed border-slate-300 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-800/30 overflow-hidden">
+                <div className="rounded-xl border border-dashed border-[#DFE1E5] bg-[#F6F7F9] overflow-hidden">
                     <div className="px-6 py-8 text-center">
                         {/* Icon */}
-                        <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[#0693e3]/10 border border-[#0693e3]/20 flex items-center justify-center">
-                            <InfoIcon className="w-7 h-7 text-[#0693e3]/70" />
+                        <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-brand-50 border border-brand-200 flex items-center justify-center">
+                            <InfoIcon className="w-7 h-7 text-brand-500" />
                         </div>
-                        <h3 className="text-base font-bold text-slate-700 dark:text-slate-200 mb-1">First-Time Borrower</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-6 max-w-md mx-auto leading-relaxed">
+                        <h3 className="text-base font-bold text-[#1E2D5C] mb-1">First-Time Borrower</h3>
+                        <p className="text-sm text-[#78819D] mb-6 max-w-md mx-auto leading-relaxed">
                             No prior loan history found in the system for this borrower. Performance metrics will populate here automatically once Snowflake integration is live.
                         </p>
                         {/* What to expect */}
-                        <div className="text-left max-w-sm mx-auto bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 shadow-sm">
-                            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3">What you'll see for repeat borrowers</p>
+                        <div className="text-left max-w-sm mx-auto bg-white rounded-xl border border-[#DFE1E5] p-4 shadow-sm">
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-[#78819D] mb-3">What you'll see for repeat borrowers</p>
                             <div className="space-y-2.5">
                                 {[
                                     { label: 'Loan Activity', desc: 'Total applied vs. approved — approval rate at a glance' },
@@ -466,17 +466,17 @@ const SponsorshipStrengthCard: React.FC<{
                                     { label: 'Construction Reviews', desc: 'Past CM analyst notes, draw rates & completion data' },
                                 ].map(({ label, desc }) => (
                                     <div key={label} className="flex items-start gap-2.5">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[#0693e3]/50 mt-1.5 flex-shrink-0" />
+                                        <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-1.5 flex-shrink-0" />
                                         <div>
-                                            <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">{label}</span>
-                                            <span className="text-xs text-slate-400 ml-1">— {desc}</span>
+                                            <span className="text-xs font-semibold text-[#1E2D5C]">{label}</span>
+                                            <span className="text-xs text-[#78819D] ml-1">— {desc}</span>
                                         </div>
                                     </div>
                                 ))}
                             </div>
-                            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center gap-2">
-                                <div className="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0" />
-                                <p className="text-[10px] text-slate-400 italic">Underwrite conservatively — no track record to offset project risk.</p>
+                            <div className="mt-4 pt-3 border-t border-[#DFE1E5] flex items-center gap-2">
+                                <div className="w-2 h-2 rounded-full bg-[#EAA800] flex-shrink-0" />
+                                <p className="text-[10px] text-[#78819D] italic">Underwrite conservatively — no track record to offset project risk.</p>
                             </div>
                         </div>
                     </div>
@@ -488,49 +488,49 @@ const SponsorshipStrengthCard: React.FC<{
                 <div className="space-y-6">
                     
                     {/* Snowflake data indicator */}
-                    <div className="flex items-center gap-2 pb-1 border-b border-slate-100 dark:border-slate-700">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Historical Performance</span>
+                    <div className="flex items-center gap-2 pb-1 border-b border-[#DFE1E5]">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#78819D]">Historical Performance</span>
                         <SnowflakeBadge />
                     </div>
 
                     {/* Metrics Row */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="p-3 bg-[#0693e3]/10 dark:bg-[#0693e3]/10 rounded border border-[#0693e3]/20 dark:border-[#0693e3]/25">
-                            <div className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Loan Activity</div>
+                        <div className="p-3 bg-brand-50 rounded border border-brand-200">
+                            <div className="text-[10px] uppercase font-bold text-[#78819D]">Loan Activity</div>
                             <div className="flex justify-between items-baseline mt-1">
-                                <div><span className="text-xl font-bold text-slate-800 dark:text-slate-200">{borrowerData.metrics.loansApplied}</span> <span className="text-xs">Applied</span></div>
-                                <div><span className="text-xl font-bold text-green-600 dark:text-green-400">{borrowerData.metrics.loansApproved}</span> <span className="text-xs">Approved</span></div>
+                                <div><span className="text-xl font-bold text-[#1E2D5C]">{borrowerData.metrics.loansApplied}</span> <span className="text-xs">Applied</span></div>
+                                <div><span className="text-xl font-bold text-[#139B23]">{borrowerData.metrics.loansApproved}</span> <span className="text-xs">Approved</span></div>
                             </div>
                         </div>
-                        <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
-                            <div className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Borrower Risk Score</div>
+                        <div className="p-3 bg-[#F6F7F9] rounded border border-[#DFE1E5]">
+                            <div className="text-[10px] uppercase font-bold text-[#78819D]">Borrower Risk Score</div>
                             <div className="flex items-center mt-1">
-                                <span className={`text-2xl font-black ${borrowerData.metrics.riskScore < 20 ? 'text-green-600' : 'text-yellow-600'}`}>
+                                <span className={`text-2xl font-black ${borrowerData.metrics.riskScore < 20 ? 'text-[#139B23]' : 'text-[#EAA800]'}`}>
                                     {borrowerData.metrics.riskScore}
                                 </span>
-                                <span className="text-xs ml-2 text-slate-400">/ 100 (Lower is Better)</span>
+                                <span className="text-xs ml-2 text-[#78819D]">/ 100 (Lower is Better)</span>
                             </div>
                         </div>
-                        <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700 col-span-2">
-                            <div className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 mb-2">Loan Performance (Delinquency)</div>
+                        <div className="p-3 bg-[#F6F7F9] rounded border border-[#DFE1E5] col-span-2">
+                            <div className="text-[10px] uppercase font-bold text-[#78819D] mb-2">Loan Performance (Delinquency)</div>
                             <div className="flex justify-between text-xs text-center">
-                                <div><div className="font-bold text-slate-700 dark:text-slate-300">{borrowerData.metrics.delinquency.late30}</div><div className="text-[10px] text-slate-400">30 Days</div></div>
-                                <div><div className="font-bold text-slate-700 dark:text-slate-300">{borrowerData.metrics.delinquency.late60}</div><div className="text-[10px] text-slate-400">60 Days</div></div>
-                                <div><div className="font-bold text-slate-700 dark:text-slate-300">{borrowerData.metrics.delinquency.late90}</div><div className="text-[10px] text-slate-400">90 Days</div></div>
-                                <div><div className={`font-bold ${borrowerData.metrics.delinquency.pastMaturity > 0 ? 'text-red-600' : 'text-slate-700 dark:text-slate-300'}`}>{borrowerData.metrics.delinquency.pastMaturity}</div><div className="text-[10px] text-slate-400">Past Maturity</div></div>
+                                <div><div className="font-bold text-[#1E2D5C]">{borrowerData.metrics.delinquency.late30}</div><div className="text-[10px] text-[#78819D]">30 Days</div></div>
+                                <div><div className="font-bold text-[#1E2D5C]">{borrowerData.metrics.delinquency.late60}</div><div className="text-[10px] text-[#78819D]">60 Days</div></div>
+                                <div><div className="font-bold text-[#1E2D5C]">{borrowerData.metrics.delinquency.late90}</div><div className="text-[10px] text-[#78819D]">90 Days</div></div>
+                                <div><div className={`font-bold ${borrowerData.metrics.delinquency.pastMaturity > 0 ? 'text-[#B92814]' : 'text-[#1E2D5C]'}`}>{borrowerData.metrics.delinquency.pastMaturity}</div><div className="text-[10px] text-[#78819D]">Past Maturity</div></div>
                             </div>
                         </div>
                     </div>
 
                     {/* Portfolio Chips */}
                     <div>
-                        <div className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 mb-2">Portfolio Breakdown</div>
+                        <div className="text-[10px] uppercase font-bold text-[#78819D] mb-2">Portfolio Breakdown</div>
                         <div className="flex flex-wrap gap-2">
                             {borrowerData.metrics.portfolio.map((p, i) => (
-                                <div key={i} className={`flex items-center px-3 py-1.5 rounded border text-xs ${p.count > 0 ? 'bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600' : 'bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 opacity-50'}`}>
-                                    <span className="font-bold text-slate-700 dark:text-slate-200 mr-2">{p.type}</span>
-                                    <span className="bg-slate-200 dark:bg-slate-600 px-1.5 rounded text-[10px] mr-2">{p.count}</span>
-                                    <span className="text-slate-500 dark:text-slate-400">{p.avgAmount > 0 ? formatCurrencyCompact(p.avgAmount) : '-'} avg</span>
+                                <div key={i} className={`flex items-center px-3 py-1.5 rounded border text-xs ${p.count > 0 ? 'bg-white border-[#DFE1E5]' : 'bg-[#F6F7F9] border-[#DFE1E5] opacity-50'}`}>
+                                    <span className="font-bold text-[#1E2D5C] mr-2">{p.type}</span>
+                                    <span className="bg-[#F4F5F7] px-1.5 rounded text-[10px] mr-2">{p.count}</span>
+                                    <span className="text-[#78819D]">{p.avgAmount > 0 ? formatCurrencyCompact(p.avgAmount) : '-'} avg</span>
                                 </div>
                             ))}
                         </div>
@@ -538,14 +538,14 @@ const SponsorshipStrengthCard: React.FC<{
 
                     {/* Construction Performance Table */}
                     <div>
-                        <div className="bg-[#32373c] text-white p-2.5 text-sm font-bold rounded-t-md border-l-4 border-[#0693e3] flex items-center gap-2">
+                        <div className="bg-[#1E2D5C] text-white p-2.5 text-sm font-bold rounded-t-md border-l-4 border-brand-500 flex items-center gap-2">
                             Construction Performance<SnowflakeBadge />
                         </div>
-                        <div className="overflow-x-auto border border-slate-200 dark:border-slate-700 rounded-b-md">
+                        <div className="overflow-x-auto border border-[#DFE1E5] rounded-b-md">
                             <table className="min-w-full text-xs text-right">
-                                <thead className="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-600">
+                                <thead className="bg-[#F4F5F7] text-[#78819D] font-semibold border-b border-[#DFE1E5]">
                                     <tr>
-                                        <th className="p-2 text-left bg-white dark:bg-slate-800 sticky left-0 z-10 border-r border-slate-200 dark:border-slate-600">Type</th>
+                                        <th className="p-2 text-left bg-white sticky left-0 z-10 border-r border-[#DFE1E5]">Type</th>
                                         <th className="p-2 whitespace-nowrap">Rehab Funded</th>
                                         <th className="p-2 whitespace-nowrap">Rehab Drawn</th>
                                         <th className="p-2 whitespace-nowrap">% Drawn</th>
@@ -558,10 +558,10 @@ const SponsorshipStrengthCard: React.FC<{
                                         <th className="p-2 whitespace-nowrap">Avg Days to Sell</th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-100 dark:divide-slate-700">
+                                <tbody className="bg-white divide-y divide-[#DFE1E5]">
                                     {borrowerData.constructionPerformance.map((row, idx) => (
-                                        <tr key={idx} className={row.isEmpty ? 'h-8' : 'hover:bg-slate-50 dark:hover:bg-slate-700/50'}>
-                                            <td className="p-2 text-left font-bold border-r border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 sticky left-0 z-10">{row.type}</td>
+                                        <tr key={idx} className={row.isEmpty ? 'h-8' : 'hover:bg-[#F7F9FC]'}>
+                                            <td className="p-2 text-left font-bold border-r border-[#DFE1E5] bg-white sticky left-0 z-10">{row.type}</td>
                                             {row.isEmpty ? (
                                                 <td colSpan={10}></td>
                                             ) : (
@@ -587,12 +587,12 @@ const SponsorshipStrengthCard: React.FC<{
 
                     {/* Construction Reviews Table */}
                     <div>
-                        <div className="bg-[#32373c] text-white p-2.5 text-sm font-bold rounded-t-md border-l-4 border-[#0693e3] flex items-center gap-2">
+                        <div className="bg-[#1E2D5C] text-white p-2.5 text-sm font-bold rounded-t-md border-l-4 border-brand-500 flex items-center gap-2">
                             Construction Reviews<SnowflakeBadge />
                         </div>
-                        <div className="overflow-x-auto border border-slate-200 dark:border-slate-700 rounded-b-md">
+                        <div className="overflow-x-auto border border-[#DFE1E5] rounded-b-md">
                             <table className="min-w-full text-xs text-left">
-                                <thead className="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-600">
+                                <thead className="bg-[#F4F5F7] text-[#78819D] font-semibold border-b border-[#DFE1E5]">
                                     <tr>
                                         <th className="p-2 whitespace-nowrap">Loan Number</th>
                                         <th className="p-2 whitespace-nowrap">CM Analyst</th>
@@ -606,20 +606,20 @@ const SponsorshipStrengthCard: React.FC<{
                                         <th className="p-2 min-w-[200px]">Notes</th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-100 dark:divide-slate-700">
+                                <tbody className="bg-white divide-y divide-[#DFE1E5]">
                                     {borrowerData.constructionReviews.map((row, idx) => (
                                         <React.Fragment key={idx}>
-                                            <tr className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                                            <tr className="hover:bg-[#F7F9FC]">
                                                 <td className="p-2 font-bold">{row.loanNumber}</td>
-                                                <td className="p-2 text-slate-500">{row.cmAnalyst}</td>
-                                                <td className="p-2 text-slate-500">{row.reviewedDate}</td>
-                                                <td className="p-2 text-slate-500">{row.projectQuality}</td>
-                                                <td className="p-2 text-slate-500">{row.areaOfConcern}</td>
-                                                <td className="p-2 text-slate-500">{row.issues}</td>
-                                                <td className="p-2 text-slate-500">{row.estimatedCompleteDate}</td>
-                                                <td className="p-2 text-slate-500">{row.estimatedCompletePercent}%</td>
-                                                <td className="p-2 text-slate-500">{row.nextSteps}</td>
-                                                <td className="p-2 text-slate-600 italic border-l border-slate-100 dark:border-slate-700">{row.notes}</td>
+                                                <td className="p-2 text-[#78819D]">{row.cmAnalyst}</td>
+                                                <td className="p-2 text-[#78819D]">{row.reviewedDate}</td>
+                                                <td className="p-2 text-[#78819D]">{row.projectQuality}</td>
+                                                <td className="p-2 text-[#78819D]">{row.areaOfConcern}</td>
+                                                <td className="p-2 text-[#78819D]">{row.issues}</td>
+                                                <td className="p-2 text-[#78819D]">{row.estimatedCompleteDate}</td>
+                                                <td className="p-2 text-[#78819D]">{row.estimatedCompletePercent}%</td>
+                                                <td className="p-2 text-[#78819D]">{row.nextSteps}</td>
+                                                <td className="p-2 text-[#1E2D5C] italic border-l border-[#DFE1E5]">{row.notes}</td>
                                             </tr>
                                         </React.Fragment>
                                     ))}
@@ -653,10 +653,10 @@ const StickyActionHeader: React.FC<{
     // Derived Market Status Logic
     const getMarketStatusConfig = (trend: string) => {
         switch (trend) {
-            case 'Rapidly Appreciating': return { icon: '🔥', label: 'Hot Market', color: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/50 dark:text-green-300' };
-            case 'Stable': return { icon: '⚖️', label: 'Stable Market', color: 'bg-[#0693e3]/15 text-[#0578c5] border-[#0693e3]/30 dark:bg-[#0693e3]/20 dark:text-[#5bb8f5]' };
-            case 'Softening': return { icon: '☁️', label: 'Cooling', color: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-300' };
-            case 'Declining': return { icon: '📉', label: 'Declining', color: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/50 dark:text-red-300' };
+            case 'Rapidly Appreciating': return { icon: '🔥', label: 'Hot Market', color: 'bg-[#E1F7E4] text-[#139B23] border-[#ADDEB4]' };
+            case 'Stable': return { icon: '⚖️', label: 'Stable Market', color: 'bg-brand-50 text-brand-500 border-brand-200' };
+            case 'Softening': return { icon: '☁️', label: 'Cooling', color: 'bg-[#FFF5DB] text-[#EAA800] border-[#EDDDB1]' };
+            case 'Declining': return { icon: '📉', label: 'Declining', color: 'bg-[#FFF0EE] text-[#B92814] border-red-200' };
             case 'Crash': return { icon: '💥', label: 'Crash Mode', color: 'bg-red-600 text-white border-red-700' };
             default: return { icon: '❓', label: 'Unknown', color: 'bg-gray-100 text-gray-800' };
         }
@@ -666,29 +666,29 @@ const StickyActionHeader: React.FC<{
     const isNewConstruction = selectedRehabTypeValue === 'New Construction';
 
     return (
-        <div className="sticky top-0 z-30 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 shadow-md px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4 transition-all">
+        <div className="sticky top-0 z-30 bg-white border-b border-[#DFE1E5] shadow-md px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4 transition-all">
             {/* Left: Identity */}
             <div className="flex-1 min-w-0">
-                <h1 className="text-lg font-bold text-slate-900 dark:text-white truncate leading-tight">
+                <h1 className="text-lg font-bold text-[#1E2D5C] truncate leading-tight">
                     {propertyDetails.street || "Property Address"}
                 </h1>
-                <div className="flex flex-wrap items-center gap-2 mt-1 text-xs text-slate-500 dark:text-slate-400">
+                <div className="flex flex-wrap items-center gap-2 mt-1 text-xs text-[#78819D]">
                     <div className="flex items-center space-x-2">
-                        <span className="font-semibold text-[#0693e3] dark:text-[#5bb8f5]">{feasibilityData.borrowerName || "Borrower Name"}</span>
-                        <span className="text-slate-300">|</span>
+                        <span className="font-semibold text-brand-500">{feasibilityData.borrowerName || "Borrower Name"}</span>
+                        <span className="text-[#DFE1E5]">|</span>
                         <span>Loan #{feasibilityData.loanNumber || "Pending"}</span>
-                        <span className="text-slate-300">|</span>
-                        <span className="bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">{selectedRehabTypeValue || "Rehab Type"}</span>
+                        <span className="text-[#DFE1E5]">|</span>
+                        <span className="bg-[#F4F5F7] px-1.5 py-0.5 rounded text-[#78819D]">{selectedRehabTypeValue || "Rehab Type"}</span>
                     </div>
                     {/* Critical Metadata Chips */}
                     <div className="flex items-center space-x-2 ml-1">
                         {feasibilityData.strategicAccount && (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-purple-100 text-purple-800 border border-purple-200 dark:bg-purple-900/50 dark:text-purple-300 dark:border-purple-800">
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-purple-100 text-purple-800 border border-purple-200">
                                 Strategic
                             </span>
                         )}
                         {feasibilityData.isRepeatBorrower && (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-emerald-100 text-emerald-800 border border-emerald-200 dark:bg-emerald-900/50 dark:text-emerald-300 dark:border-emerald-800">
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-[#E1F7E4] text-[#139B23] border border-[#ADDEB4]">
                                 Repeat Borrower
                             </span>
                         )}
@@ -709,11 +709,11 @@ const StickyActionHeader: React.FC<{
                 {/* Logic Explanation Button */}
                 <button
                     onClick={onOpenGradingLogic}
-                    className="flex flex-col items-center justify-center p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors group"
+                    className="flex flex-col items-center justify-center p-2 rounded hover:bg-[#F7F9FC] transition-colors group"
                     aria-label="View Logic Methodology"
                 >
-                    <LogicIcon className="w-5 h-5 text-slate-400 group-hover:text-[#0693e3] transition-colors" />
-                    <span className="text-[10px] font-semibold text-slate-500 group-hover:text-[#0693e3] mt-0.5 uppercase tracking-wide">
+                    <LogicIcon className="w-5 h-5 text-[#78819D] group-hover:text-brand-500 transition-colors" />
+                    <span className="text-[10px] font-semibold text-[#78819D] group-hover:text-brand-500 mt-0.5 uppercase tracking-wide">
                         Logic
                     </span>
                 </button>
@@ -724,8 +724,8 @@ const StickyActionHeader: React.FC<{
                         onClick={() => setShowRiskInfo(!showRiskInfo)}
                         className="flex items-center space-x-1 mb-0.5 group focus:outline-none"
                     >
-                        <span className="text-[10px] uppercase text-slate-400 font-bold tracking-wider group-hover:text-[#0693e3] transition-colors">Risk Score</span>
-                        <InfoIcon className="text-slate-300 group-hover:text-[#0693e3] w-3 h-3 transition-colors" />
+                        <span className="text-[10px] uppercase text-[#78819D] font-bold tracking-wider group-hover:text-brand-500 transition-colors">Risk Score</span>
+                        <InfoIcon className="text-[#DFE1E5] group-hover:text-brand-500 w-3 h-3 transition-colors" />
                     </button>
                     <RiskGauge score={riskAnalysis.score} size="sm" showLabel={false} showLegend={true} />
 
@@ -733,28 +733,28 @@ const StickyActionHeader: React.FC<{
                     {showRiskInfo && (
                         <>
                             <div className="fixed inset-0 z-40 bg-transparent" onClick={() => setShowRiskInfo(false)}></div>
-                            <div className="absolute top-12 right-0 w-64 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-600 z-50 p-4 animate-in fade-in zoom-in-95 duration-200 text-left">
-                                <div className="flex justify-between items-start mb-3 border-b border-slate-100 dark:border-slate-700 pb-2">
+                            <div className="absolute top-12 right-0 w-64 bg-white rounded-lg shadow-xl border border-[#DFE1E5] z-50 p-4 animate-in fade-in zoom-in-95 duration-200 text-left">
+                                <div className="flex justify-between items-start mb-3 border-b border-[#DFE1E5] pb-2">
                                     <div>
-                                        <h4 className="font-bold text-slate-800 dark:text-slate-100">Risk Assessment</h4>
-                                        <span className={`text-xs font-bold ${riskAnalysis.level === 'Critical' || riskAnalysis.level === 'High' ? 'text-red-600' : 'text-slate-500'}`}>
+                                        <h4 className="font-bold text-[#1E2D5C]">Risk Assessment</h4>
+                                        <span className={`text-xs font-bold ${riskAnalysis.level === 'Critical' || riskAnalysis.level === 'High' ? 'text-[#B92814]' : 'text-[#78819D]'}`}>
                                             Level: {riskAnalysis.level}
                                         </span>
                                     </div>
-                                    <button onClick={() => setShowRiskInfo(false)} className="text-slate-400 hover:text-slate-600"><span className="sr-only">Close</span>×</button>
+                                    <button onClick={() => setShowRiskInfo(false)} className="text-[#78819D] hover:text-[#1E2D5C]"><span className="sr-only">Close</span>×</button>
                                 </div>
                                 <div className="space-y-2">
-                                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                                    <p className="text-xs text-[#78819D]">
                                         Score calculated based on weighted risk factors triggered by the budget data.
                                     </p>
                                     {riskAnalysis.factors.length > 0 ? (
-                                        <ul className="list-disc pl-4 text-xs text-slate-700 dark:text-slate-300 space-y-1">
+                                        <ul className="list-disc pl-4 text-xs text-[#1E2D5C] space-y-1">
                                             {riskAnalysis.factors.map((f, i) => (
                                                 <li key={i}>{f.message}</li>
                                             ))}
                                         </ul>
                                     ) : (
-                                        <div className="p-2 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded border border-green-100 dark:border-green-800">
+                                        <div className="p-2 bg-[#E1F7E4] text-[#139B23] text-xs rounded border border-[#ADDEB4]">
                                             No active risk factors detected.
                                         </div>
                                     )}
@@ -782,8 +782,8 @@ const StickyActionHeader: React.FC<{
                     disabled={saveStatus !== 'idle'}
                     className={`rounded-full text-sm py-1.5 px-4 shadow-sm h-fit min-w-[100px] flex items-center justify-center transition-all duration-200 font-semibold
                         ${saveStatus === 'saved'
-                            ? 'bg-green-600 hover:bg-green-700 text-white'
-                            : 'bg-[#32373c] hover:bg-[#4a5056] text-white'
+                            ? 'bg-[#139B23] hover:bg-green-700 text-white'
+                            : 'bg-brand-500 hover:bg-brand-600 text-white'
                         }`}
                 >
                     {saveStatus === 'saving' && <SpinnerIcon className="w-4 h-4 mr-2" />}
@@ -800,31 +800,31 @@ const DevelopmentInfoCard: React.FC<{ feasibilityData: FeasibilityData; onChange
     return (
         <ReportCard title="Development Info" className="mb-6">
             <div className="flex items-center justify-between mb-3">
-                <h4 className="text-xs font-bold text-slate-500 uppercase">Larger Development Info:</h4>
+                <h4 className="text-xs font-bold text-[#78819D] uppercase">Larger Development Info:</h4>
                 <label className="flex items-center cursor-pointer">
                     <input 
                         type="checkbox" 
                         checked={feasibilityData.developmentInfo.isPartOfLargerDevelopment} 
                         onChange={e => onChange('developmentInfo.isPartOfLargerDevelopment', e.target.checked)}
-                        className="mr-2 h-4 w-4 accent-[#0693e3] rounded border-slate-300" 
+                        className="mr-2 h-4 w-4 accent-brand-500 rounded border-[#DFE1E5]" 
                     />
-                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Is part of larger dev?</span>
+                    <span className="text-xs font-medium text-[#1E2D5C]">Is part of larger dev?</span>
                 </label>
             </div>
             
             {feasibilityData.developmentInfo.isPartOfLargerDevelopment && (
-                <div className="bg-slate-50 dark:bg-slate-700/30 p-3 rounded-md grid grid-cols-1 md:grid-cols-3 gap-4 border border-slate-200 dark:border-slate-600">
+                <div className="bg-[#F6F7F9] p-3 rounded-md grid grid-cols-1 md:grid-cols-3 gap-4 border border-[#DFE1E5]">
                     <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Total Phases</label>
-                        <input type="text" value={feasibilityData.developmentInfo.totalPhases} onChange={e => onChange('developmentInfo.totalPhases', e.target.value)} className="w-full text-sm border border-slate-300 rounded px-2 py-1 !text-slate-900 dark:!text-slate-100" />
+                        <label className="block text-xs font-medium text-[#78819D] mb-1">Total Phases</label>
+                        <input type="text" value={feasibilityData.developmentInfo.totalPhases} onChange={e => onChange('developmentInfo.totalPhases', e.target.value)} className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1 !text-[#1E2D5C]" />
                     </div>
                     <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Planned Homesites</label>
-                        <input type="text" value={feasibilityData.developmentInfo.plannedHomesites} onChange={e => onChange('developmentInfo.plannedHomesites', e.target.value)} className="w-full text-sm border border-slate-300 rounded px-2 py-1 !text-slate-900 dark:!text-slate-100" />
+                        <label className="block text-xs font-medium text-[#78819D] mb-1">Planned Homesites</label>
+                        <input type="text" value={feasibilityData.developmentInfo.plannedHomesites} onChange={e => onChange('developmentInfo.plannedHomesites', e.target.value)} className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1 !text-[#1E2D5C]" />
                     </div>
                     <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Sold/Under Contract</label>
-                        <input type="text" value={feasibilityData.developmentInfo.soldOrUnderContract} onChange={e => onChange('developmentInfo.developmentInfo.soldOrUnderContract', e.target.value)} className="w-full text-sm border border-slate-300 rounded px-2 py-1 !text-slate-900 dark:!text-slate-100" />
+                        <label className="block text-xs font-medium text-[#78819D] mb-1">Sold/Under Contract</label>
+                        <input type="text" value={feasibilityData.developmentInfo.soldOrUnderContract} onChange={e => onChange('developmentInfo.developmentInfo.soldOrUnderContract', e.target.value)} className="w-full text-sm border border-[#DFE1E5] rounded px-2 py-1 !text-[#1E2D5C]" />
                     </div>
                 </div>
             )}
@@ -844,21 +844,21 @@ const ClosingConditionsCard: React.FC<{ feasibilityData: FeasibilityData; onChan
 
     return (
         <ReportCard title="Closing Conditions & Requirements">
-            <div className="space-y-4 divide-y divide-slate-100 dark:divide-slate-700">
+            <div className="space-y-4 divide-y divide-[#DFE1E5]">
                 
                 {/* 1. Standard Conditions */}
                 <div>
-                    <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-2">Standard Conditions</h5>
+                    <h5 className="text-[10px] font-bold text-[#78819D] uppercase mb-2">Standard Conditions</h5>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {CONDITION_OPTIONS.map((option) => (
-                            <label key={option} className="flex items-center p-2 border border-slate-200 dark:border-slate-700 rounded hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
+                            <label key={option} className="flex items-center p-2 border border-[#DFE1E5] rounded hover:bg-[#F7F9FC] cursor-pointer">
                                 <input 
                                     type="checkbox" 
                                     checked={(feasibilityData.conditions || []).includes(option)} 
                                     onChange={() => handleConditionToggle(option)}
                                     className="h-4 w-4 accent-[#0693e3] border-gray-300 rounded"
                                 />
-                                <span className="ml-2 text-xs font-medium text-slate-700 dark:text-slate-300">{option}</span>
+                                <span className="ml-2 text-xs font-medium text-[#1E2D5C]">{option}</span>
                             </label>
                         ))}
                     </div>
@@ -866,27 +866,27 @@ const ClosingConditionsCard: React.FC<{ feasibilityData: FeasibilityData; onChan
 
                 {/* 2. Required Before First Draw */}
                 <div className="pt-4">
-                    <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-2">Required Before First Draw</h5>
+                    <h5 className="text-[10px] font-bold text-[#78819D] uppercase mb-2">Required Before First Draw</h5>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <label className="flex items-center space-x-2">
-                            <input type="checkbox" checked={feasibilityData.requiredBeforeDraw.plans} onChange={e => onChange('requiredBeforeDraw.plans', e.target.checked)} className="h-4 w-4 accent-[#0693e3] rounded" />
-                            <span className="text-xs text-slate-700 dark:text-slate-300">Plans</span>
+                            <input type="checkbox" checked={feasibilityData.requiredBeforeDraw.plans} onChange={e => onChange('requiredBeforeDraw.plans', e.target.checked)} className="h-4 w-4 accent-brand-500 rounded" />
+                            <span className="text-xs text-[#1E2D5C]">Plans</span>
                         </label>
                         <label className="flex items-center space-x-2">
-                            <input type="checkbox" checked={feasibilityData.requiredBeforeDraw.permits} onChange={e => onChange('requiredBeforeDraw.permits', e.target.checked)} className="h-4 w-4 accent-[#0693e3] rounded" />
-                            <span className="text-xs text-slate-700 dark:text-slate-300">Permits</span>
+                            <input type="checkbox" checked={feasibilityData.requiredBeforeDraw.permits} onChange={e => onChange('requiredBeforeDraw.permits', e.target.checked)} className="h-4 w-4 accent-brand-500 rounded" />
+                            <span className="text-xs text-[#1E2D5C]">Permits</span>
                         </label>
                         <div className="flex flex-col">
                             <label className="flex items-center space-x-2">
-                                <input type="checkbox" checked={feasibilityData.requiredBeforeDraw.other} onChange={e => onChange('requiredBeforeDraw.other', e.target.checked)} className="h-4 w-4 accent-[#0693e3] rounded" />
-                                <span className="text-xs text-slate-700 dark:text-slate-300">Other</span>
+                                <input type="checkbox" checked={feasibilityData.requiredBeforeDraw.other} onChange={e => onChange('requiredBeforeDraw.other', e.target.checked)} className="h-4 w-4 accent-brand-500 rounded" />
+                                <span className="text-xs text-[#1E2D5C]">Other</span>
                             </label>
                             {feasibilityData.requiredBeforeDraw.other && (
                                 <input 
                                     type="text" 
                                     value={feasibilityData.requiredBeforeDraw.otherDescription} 
                                     onChange={e => onChange('requiredBeforeDraw.otherDescription', e.target.value)} 
-                                    className="mt-1 w-full border-b border-slate-300 text-xs py-1 placeholder-slate-400 bg-transparent !text-slate-900 dark:!text-slate-100" 
+                                    className="mt-1 w-full border-b border-[#DFE1E5] text-xs py-1 placeholder-[#78819D] bg-transparent !text-[#1E2D5C]" 
                                     placeholder="Specify..." 
                                 />
                             )}
@@ -896,16 +896,16 @@ const ClosingConditionsCard: React.FC<{ feasibilityData: FeasibilityData; onChan
 
                 {/* 3. HOA Status */}
                 <div className="pt-4">
-                    <h5 className="text-[10px] font-bold text-slate-500 uppercase mb-2">HOA Status</h5>
+                    <h5 className="text-[10px] font-bold text-[#78819D] uppercase mb-2">HOA Status</h5>
                     <div className="flex items-center gap-6">
                         <label className="flex items-center space-x-2">
-                            <input type="checkbox" checked={feasibilityData.hoa.required} onChange={e => onChange('hoa.required', e.target.checked)} className="h-4 w-4 accent-[#0693e3] rounded" />
-                            <span className="text-xs text-slate-700 dark:text-slate-300">HOA Approval Required?</span>
+                            <input type="checkbox" checked={feasibilityData.hoa.required} onChange={e => onChange('hoa.required', e.target.checked)} className="h-4 w-4 accent-brand-500 rounded" />
+                            <span className="text-xs text-[#1E2D5C]">HOA Approval Required?</span>
                         </label>
                         {feasibilityData.hoa.required && (
                             <label className="flex items-center space-x-2">
                                 <input type="checkbox" checked={feasibilityData.hoa.approved} onChange={e => onChange('hoa.approved', e.target.checked)} className="h-4 w-4 text-green-600 rounded" />
-                                <span className="text-xs font-bold text-green-700 dark:text-green-400">Approved?</span>
+                                <span className="text-xs font-bold text-[#139B23]">Approved?</span>
                             </label>
                         )}
                     </div>
@@ -934,31 +934,31 @@ const VisualDeltaRow: React.FC<{ label: string; asIs: string; projected: string;
 
     if (!hasChanged) {
         return (
-            <div className="flex justify-between items-center py-2 px-3 border-b border-slate-100 dark:border-slate-700 last:border-0 opacity-50 transition-opacity hover:opacity-100">
-                <span className="text-xs font-medium text-slate-500">{label}</span>
-                <span className="text-xs font-mono text-slate-500">{asIs || '-'} {unit}</span>
+            <div className="flex justify-between items-center py-2 px-3 border-b border-[#DFE1E5] last:border-0 opacity-50 transition-opacity hover:opacity-100">
+                <span className="text-xs font-medium text-[#78819D]">{label}</span>
+                <span className="text-xs font-mono text-[#78819D]">{asIs || '-'} {unit}</span>
             </div>
         );
     }
 
     return (
-        <div className="py-2 px-3 border-b border-[#0693e3]/20 dark:border-[#0693e3]/20 bg-[#0693e3]/5 dark:bg-[#0693e3]/10 last:border-0 rounded-sm">
+        <div className="py-2 px-3 border-b border-brand-200 bg-brand-50 last:border-0 rounded-sm">
             <div className="flex justify-between items-center mb-1">
-                <span className="text-xs font-bold text-[#0578c5] dark:text-[#5bb8f5]">{label}</span>
+                <span className="text-xs font-bold text-brand-500">{label}</span>
                 {percentChange && (
-                    <span className={`text-[10px] font-bold text-white px-1.5 py-0.5 rounded-full ${diff > 0 ? 'bg-[#0693e3]' : 'bg-red-500'}`}>
+                    <span className={`text-[10px] font-bold text-white px-1.5 py-0.5 rounded-full ${diff > 0 ? 'bg-brand-500' : 'bg-[#B92814]'}`}>
                         {diff > 0 ? '+' : ''}{percentChange}%
                     </span>
                 )}
             </div>
             <div className="flex items-center justify-between text-sm">
-                <span className="font-mono text-slate-500 dark:text-slate-400">{asIs || '0'}</span>
-                <div className="flex-grow mx-2 h-px bg-[#0693e3]/30 dark:bg-[#0693e3]/40 relative">
-                    <div className="absolute right-0 -top-1.5 text-[#0693e3]/60">
+                <span className="font-mono text-[#78819D]">{asIs || '0'}</span>
+                <div className="flex-grow mx-2 h-px bg-brand-200 relative">
+                    <div className="absolute right-0 -top-1.5 text-brand-300">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
                     </div>
                 </div>
-                <span className="font-mono font-bold text-[#0693e3] dark:text-[#5bb8f5]">{projected} {unit}</span>
+                <span className="font-mono font-bold text-brand-500">{projected} {unit}</span>
             </div>
         </div>
     );
@@ -1047,10 +1047,10 @@ const BudgetNotesTable: React.FC<{
         
         return (
             <button onClick={toggle} className="flex items-center group">
-                <div className={`p-1.5 rounded-md border ${isProvided ? 'bg-[#0693e3]/10 border-[#0693e3]/30' : 'bg-gray-100 border-gray-200 group-hover:bg-gray-200'}`}>
-                    <FileIcon className={`w-5 h-5 ${isProvided ? 'text-[#0693e3]' : 'text-gray-400'}`} />
+                <div className={`p-1.5 rounded-md border ${isProvided ? 'bg-brand-50 border-brand-200' : 'bg-[#F6F7F9] border-[#DFE1E5] group-hover:bg-[#F7F9FC]'}`}>
+                    <FileIcon className={`w-5 h-5 ${isProvided ? 'text-brand-500' : 'text-[#78819D]'}`} />
                 </div>
-                <span className={`ml-2 text-xs font-medium ${isProvided ? 'text-[#0693e3]' : 'text-gray-500'}`}>
+                <span className={`ml-2 text-xs font-medium ${isProvided ? 'text-brand-500' : 'text-[#78819D]'}`}>
                     {value}
                 </span>
             </button>
@@ -1058,21 +1058,21 @@ const BudgetNotesTable: React.FC<{
     };
 
     const renderRow = (label: string, component: React.ReactNode) => (
-        <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 py-2 px-3 text-xs last:border-0">
-            <div className="font-medium text-slate-700 dark:text-slate-300">{label}:</div>
+        <div className="flex justify-between items-center border-b border-[#DFE1E5] py-2 px-3 text-xs last:border-0">
+            <div className="font-medium text-[#1E2D5C]">{label}:</div>
             <div className="w-1/2 flex justify-end">{component}</div>
         </div>
     );
 
     return (
-        <div className="border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg overflow-hidden mb-6 shadow-sm">
-            <div className="bg-[#32373c] p-2.5 font-bold text-sm uppercase text-white border-l-4 border-[#0693e3]">
+        <div className="border border-[#DFE1E5] bg-white rounded-lg overflow-hidden mb-6 shadow-sm">
+            <div className="bg-[#1E2D5C] p-2.5 font-bold text-sm uppercase text-white border-l-4 border-brand-500">
                 Budget Notes: {layoutType === 'FnF' ? 'FnF' : layoutType === 'HighRisk' ? 'High Risk' : 'New Construction'}
             </div>
             <div className="flex flex-col md:flex-row">
                 {/* Column 1: Dynamic Inputs based on Layout */}
-                <div className="w-full md:w-1/3 border-b md:border-b-0 md:border-r border-slate-300 dark:border-slate-700 p-0 bg-white dark:bg-slate-800">
-                    <div className="bg-slate-100 dark:bg-slate-700/50 font-bold text-xs text-slate-700 dark:text-slate-300 py-2 px-3 border-b border-slate-200 dark:border-slate-700 flex justify-between">
+                <div className="w-full md:w-1/3 border-b md:border-b-0 md:border-r border-[#DFE1E5] p-0 bg-white">
+                    <div className="bg-[#F4F5F7] font-bold text-xs text-[#78819D] py-2 px-3 border-b border-[#DFE1E5] flex justify-between">
                         <span>Item</span>
                         <span>Status</span>
                     </div>
@@ -1106,8 +1106,8 @@ const BudgetNotesTable: React.FC<{
                 </div>
 
                 {/* Column 2 & 3: As-Is vs Projected Visual Diff */}
-                <div className="w-full md:w-2/3 flex flex-col bg-white dark:bg-slate-800">
-                    <div className="bg-slate-100 dark:bg-slate-700/50 font-bold text-xs text-slate-700 dark:text-slate-300 py-2 px-3 border-b border-slate-200 dark:border-slate-700">
+                <div className="w-full md:w-2/3 flex flex-col bg-white">
+                    <div className="bg-[#F4F5F7] font-bold text-xs text-[#78819D] py-2 px-3 border-b border-[#DFE1E5]">
                         Project Scope Changes
                     </div>
                     <div>
@@ -1165,10 +1165,10 @@ const ConstructionManagementNotes: React.FC<{ budgetData: BudgetCategoryData[]; 
 
     const renderToggle = (label: string, field: string, value: boolean) => (
         <div className="flex items-center justify-center space-x-2 py-1">
-            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">{label}</span>
-            <button 
+            <span className="text-xs font-medium text-[#78819D]">{label}</span>
+            <button
                 onClick={() => onChange(field, !value)}
-                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#0693e3] focus:ring-offset-2 ${value ? 'bg-[#0693e3]' : 'bg-slate-200 dark:bg-slate-600'}`}
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 ${value ? 'bg-brand-500' : 'bg-[#DFE1E5]'}`}
             >
                 <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${value ? 'translate-x-5' : 'translate-x-1'}`} />
             </button>
@@ -1176,22 +1176,22 @@ const ConstructionManagementNotes: React.FC<{ budgetData: BudgetCategoryData[]; 
     );
 
     return (
-        <div className="border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg overflow-hidden mb-6 shadow-sm">
-            <div className="bg-[#32373c] p-2.5 font-bold text-sm uppercase text-white border-l-4 border-[#0693e3]">
+        <div className="border border-[#DFE1E5] bg-white rounded-lg overflow-hidden mb-6 shadow-sm">
+            <div className="bg-[#1E2D5C] p-2.5 font-bold text-sm uppercase text-white border-l-4 border-brand-500">
                 Construction Management Validation
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2">
-                <div className="p-4 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-700 space-y-4">
+                <div className="p-4 border-b md:border-b-0 md:border-r border-[#DFE1E5] space-y-4">
                     <div>
                         <div className="flex justify-between text-xs mb-1">
-                            <span className="font-semibold text-slate-700 dark:text-slate-300">Soft Costs %</span>
+                            <span className="font-semibold text-[#1E2D5C]">Soft Costs %</span>
                             <span className={`font-bold ${softCostPercent > 15 ? 'text-red-600' : 'text-green-600'}`}>
-                                {softCostPercent.toFixed(1)}% <span className="text-[10px] font-normal text-slate-400">({formatCurrency(softCosts)})</span>
+                                {softCostPercent.toFixed(1)}% <span className="text-[10px] font-normal text-[#78819D]">({formatCurrency(softCosts)})</span>
                             </span>
                         </div>
-                        <div className="w-full bg-slate-200 dark:bg-slate-600 rounded-full h-2">
-                            <div 
-                                className={`h-2 rounded-full ${softCostPercent > 15 ? 'bg-red-500' : 'bg-[#0693e3]'}`} 
+                        <div className="w-full bg-[#DFE1E5] rounded-full h-2">
+                            <div
+                                className={`h-2 rounded-full ${softCostPercent > 15 ? 'bg-[#B92814]' : 'bg-brand-500'}`} 
                                 style={{ width: `${Math.min(softCostPercent, 100)}%` }}
                             ></div>
                         </div>
@@ -1200,28 +1200,28 @@ const ConstructionManagementNotes: React.FC<{ budgetData: BudgetCategoryData[]; 
 
                     <div>
                         <div className="flex justify-between text-xs mb-1">
-                            <span className="font-semibold text-slate-700 dark:text-slate-300">Contingency %</span>
+                            <span className="font-semibold text-[#1E2D5C]">Contingency %</span>
                             <span className={`font-bold ${contingencyPercent < 5 ? 'text-red-600' : 'text-green-600'}`}>
-                                {contingencyPercent.toFixed(1)}% <span className="text-[10px] font-normal text-slate-400">({formatCurrency(contingencyAmount)})</span>
+                                {contingencyPercent.toFixed(1)}% <span className="text-[10px] font-normal text-[#78819D]">({formatCurrency(contingencyAmount)})</span>
                             </span>
                         </div>
-                        <div className="w-full bg-slate-200 dark:bg-slate-600 rounded-full h-2">
-                            <div 
-                                className={`h-2 rounded-full ${contingencyPercent < 5 ? 'bg-red-500' : 'bg-green-500'}`} 
+                        <div className="w-full bg-[#DFE1E5] rounded-full h-2">
+                            <div
+                                className={`h-2 rounded-full ${contingencyPercent < 5 ? 'bg-[#B92814]' : 'bg-[#139B23]'}`} 
                                 style={{ width: `${Math.min(contingencyPercent * 5, 100)}%` }} 
                             ></div>
                         </div>
                         {contingencyPercent < 5 && <p className="text-[10px] text-red-500 mt-0.5">Below 5% recommended</p>}
                     </div>
 
-                    <div className="flex justify-between items-center pt-2 border-t border-slate-100 dark:border-slate-700">
-                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Dollar Per SqFt:</span>
-                        <span className="text-sm font-mono font-bold text-[#0693e3] dark:text-[#5bb8f5]">{formatCurrency(ppsf)} / sf</span>
+                    <div className="flex justify-between items-center pt-2 border-t border-[#DFE1E5]">
+                        <span className="text-xs font-bold text-[#1E2D5C]">Dollar Per SqFt:</span>
+                        <span className="text-sm font-mono font-bold text-brand-500">{formatCurrency(ppsf)} / sf</span>
                     </div>
                 </div>
 
                 <div className="p-4 flex flex-col justify-center space-y-1">
-                    <h5 className="text-[10px] uppercase font-bold text-slate-400 mb-2 text-center">Analyst Actions</h5>
+                    <h5 className="text-[10px] uppercase font-bold text-[#78819D] mb-2 text-center">Analyst Actions</h5>
                     {renderToggle('Adjustments Made?', 'cmNotes.adjustmentsToBudget', feasibilityData.cmNotes.adjustmentsToBudget)}
                     {renderToggle('GC Reviewed?', 'cmNotes.gcReviewCompleted', feasibilityData.cmNotes.gcReviewCompleted)}
                     {renderToggle('GC Approved?', 'cmNotes.gcApproved', feasibilityData.cmNotes.gcApproved)}
@@ -1250,7 +1250,7 @@ const AlertsPanel: React.FC<{ riskAnalysis: RiskAnalysisResult }> = ({ riskAnaly
                 <span className="flex-1 text-center">Validation Flags</span>
                 <button
                     onClick={() => setShowInfo(!showInfo)}
-                    className="text-slate-300 hover:text-white focus:outline-none flex-shrink-0 ml-2"
+                    className="text-white/60 hover:text-white focus:outline-none flex-shrink-0 ml-2"
                     aria-label="Show explanation"
                 >
                     <InfoIcon className="w-5 h-5" />
@@ -1258,7 +1258,7 @@ const AlertsPanel: React.FC<{ riskAnalysis: RiskAnalysisResult }> = ({ riskAnaly
             </div>
         }>
             {showInfo && (
-                <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-md text-xs text-slate-700 dark:text-slate-300 shadow-inner">
+                <div className="mb-4 p-3 bg-[#FFF5DB] border border-[#EDDDB1] rounded-md text-xs text-[#1E2D5C] shadow-inner">
                     <strong>Logic Rules Explained:</strong>
                     <p className="mt-1">
                         These flags represent specific violations of Lima One's underwriting guidelines.
@@ -1277,15 +1277,15 @@ const AlertsPanel: React.FC<{ riskAnalysis: RiskAnalysisResult }> = ({ riskAnaly
                     {factors.map((item, index) => {
                         const isDismissed = dismissedAlerts[item.id || index];
                         return (
-                            <li key={index} className={`p-2 rounded-md border-l-4 transition-all duration-300 ${isDismissed ? 'bg-gray-100 border-gray-400 opacity-60' : 'bg-slate-50 border-yellow-500'}`}>
+                            <li key={index} className={`p-2 rounded-md border-l-4 transition-all duration-300 ${isDismissed ? 'bg-[#F4F5F7] border-[#BCBFC7] opacity-60' : 'bg-[#FFF5DB] border-[#EAA800]'}`}>
                                 <div className="flex items-start justify-between group">
                                     <div className="flex items-start">
                                         <WarningTriangleIcon className={`w-4 h-4 ${isDismissed ? 'text-gray-400' : (item.severity === 'critical' ? 'text-red-600' : 'text-yellow-600')} mr-2 mt-0.5`} />
-                                        <div className={`text-xs ${isDismissed ? 'text-gray-500 line-through' : 'text-slate-700'}`}>{item.message}</div>
+                                        <div className={`text-xs ${isDismissed ? 'text-[#BCBFC7] line-through' : 'text-[#1E2D5C]'}`}>{item.message}</div>
                                     </div>
                                     <button 
                                         onClick={() => toggleDismiss(item.id || String(index))}
-                                        className={`ml-2 text-[10px] px-1.5 py-0.5 rounded border transition-colors ${isDismissed ? 'text-gray-500 border-gray-300 hover:bg-white' : 'text-[#0693e3] border-[#0693e3]/30 hover:bg-[#0693e3]/10'}`}
+                                        className={`ml-2 text-[10px] px-1.5 py-0.5 rounded border transition-colors ${isDismissed ? 'text-[#78819D] border-[#DFE1E5] hover:bg-white' : 'text-brand-500 border-brand-200 hover:bg-brand-50'}`}
                                     >
                                         {isDismissed ? 'Undo' : 'Clear'}
                                     </button>
@@ -1301,22 +1301,22 @@ const AlertsPanel: React.FC<{ riskAnalysis: RiskAnalysisResult }> = ({ riskAnaly
 
 // Small badge signalling a section will be live-fed from Snowflake
 const SnowflakeBadge: React.FC = () => (
-    <span className="inline-flex items-center gap-1 bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500 text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-600 ml-1.5 select-none">
+    <span className="inline-flex items-center gap-1 bg-[#F4F5F7] text-[#78819D] text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded border border-[#DFE1E5] ml-1.5 select-none">
         ⚡ Snowflake
     </span>
 );
 
 const StatCard: React.FC<{ label: string; value: string }> = ({ label, value }) => (
-    <div className="p-2 bg-slate-50 dark:bg-slate-700/50 rounded-md text-center border border-slate-200 dark:border-slate-600">
-        <div className="text-lg font-bold text-slate-800 dark:text-slate-100">{value}</div>
-        <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wide">{label}</div>
+    <div className="p-2 bg-[#F6F7F9] rounded-md text-center border border-[#DFE1E5]">
+        <div className="text-lg font-bold text-[#1E2D5C]">{value}</div>
+        <div className="text-[10px] text-[#78819D] uppercase tracking-wide">{label}</div>
     </div>
 );
 
 const PerformanceMetric: React.FC<{ label: string; value: string; isGood: boolean; tooltipText: string }> = ({ label, value, isGood, tooltipText }) => (
-    <div className="p-2 bg-slate-50 dark:bg-slate-700/50 rounded-md text-center relative border border-slate-200 dark:border-slate-600">
-        <div className={`text-xl font-bold ${isGood ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{value}</div>
-        <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wide mt-1">{label}</div>
+    <div className="p-2 bg-[#F6F7F9] rounded-md text-center relative border border-[#DFE1E5]">
+        <div className={`text-xl font-bold ${isGood ? 'text-[#139B23]' : 'text-[#B92814]'}`}>{value}</div>
+        <div className="text-[10px] text-[#78819D] uppercase tracking-wide mt-1">{label}</div>
     </div>
 );
 
@@ -1328,12 +1328,12 @@ const GeospatialAnalysis = () => {
         <ReportCard title="Geospatial & Market Analysis">
             <div className="flex items-center gap-4 mb-4 screen-only">
                 <label className="text-xs font-medium">Radius:</label>
-                <input type="range" min="5" max="50" step="1" value={radius} onChange={(e) => setRadius(parseInt(e.target.value, 10))} className="flex-grow h-2 bg-slate-200 rounded-lg cursor-pointer" />
+                <input type="range" min="5" max="50" step="1" value={radius} onChange={(e) => setRadius(parseInt(e.target.value, 10))} className="flex-grow h-2 bg-[#DFE1E5] rounded-lg cursor-pointer" />
                 <span className="font-bold text-xs w-16 text-center">{radius} mi</span>
             </div>
             <div className="space-y-4">
                 <div>
-                    <h4 className="font-semibold text-xs text-center mb-2 uppercase text-slate-500 flex items-center justify-center">
+                    <h4 className="font-semibold text-xs text-center mb-2 uppercase text-[#78819D] flex items-center justify-center">
                         Market Snapshot ({radius} mi radius)<SnowflakeBadge />
                     </h4>
                     <div className="grid grid-cols-4 gap-2">
@@ -1344,7 +1344,7 @@ const GeospatialAnalysis = () => {
                     </div>
                 </div>
                 <div>
-                    <h4 className="font-semibold text-xs text-center mb-2 uppercase text-slate-500 flex items-center justify-center">
+                    <h4 className="font-semibold text-xs text-center mb-2 uppercase text-[#78819D] flex items-center justify-center">
                         Loan Performance<SnowflakeBadge />
                     </h4>
                     <div className="grid grid-cols-3 gap-2">
@@ -1403,22 +1403,22 @@ const AutomatedDueDiligenceDashboard = () => {
 
     const variantStyles = {
         pass: {
-            row: 'border-green-200 dark:border-green-800/50 bg-green-50/50 dark:bg-green-900/10',
-            dot: 'bg-green-500',
-            badge: 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800',
-            btn: 'bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 text-[#0693e3] hover:bg-[#0693e3] hover:text-white hover:border-[#0693e3]',
+            row: 'border-[#ADDEB4] bg-[#E1F7E4]',
+            dot: 'bg-[#139B23]',
+            badge: 'bg-[#E1F7E4] text-[#139B23] border border-[#ADDEB4]',
+            btn: 'bg-white border-[#DFE1E5] text-brand-500 hover:bg-brand-500 hover:text-white hover:border-brand-500',
         },
         fail: {
-            row: 'border-red-200 dark:border-red-800/50 bg-red-50/50 dark:bg-red-900/10',
-            dot: 'bg-red-500 animate-pulse',
-            badge: 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800',
-            btn: 'bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 text-red-600 hover:bg-red-600 hover:text-white hover:border-red-600',
+            row: 'border-red-200 bg-[#FFF0EE]',
+            dot: 'bg-[#B92814] animate-pulse',
+            badge: 'bg-[#FFF0EE] text-[#B92814] border border-red-200',
+            btn: 'bg-white border-[#DFE1E5] text-[#B92814] hover:bg-[#B92814] hover:text-white hover:border-[#B92814]',
         },
         info: {
-            row: 'border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30',
-            dot: 'bg-slate-400',
-            badge: 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600',
-            btn: 'bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 text-[#0693e3] hover:bg-[#0693e3] hover:text-white hover:border-[#0693e3]',
+            row: 'border-[#DFE1E5] bg-[#F6F7F9]',
+            dot: 'bg-[#78819D]',
+            badge: 'bg-[#F4F5F7] text-[#78819D] border border-[#DFE1E5]',
+            btn: 'bg-white border-[#DFE1E5] text-brand-500 hover:bg-brand-500 hover:text-white hover:border-brand-500',
         },
     };
 
@@ -1434,8 +1434,8 @@ const AutomatedDueDiligenceDashboard = () => {
 
                             {/* Label + note */}
                             <div className="flex-1 min-w-0">
-                                <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">{check.label}</span>
-                                <span className="text-[10px] text-slate-400 dark:text-slate-500 ml-1.5">— {check.note}</span>
+                                <span className="text-xs font-semibold text-[#1E2D5C]">{check.label}</span>
+                                <span className="text-[10px] text-[#78819D] ml-1.5">— {check.note}</span>
                             </div>
 
                             {/* Status badge */}
@@ -1457,7 +1457,7 @@ const AutomatedDueDiligenceDashboard = () => {
                     );
                 })}
             </div>
-            <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-3 italic">
+            <p className="text-[9px] text-[#78819D] mt-3 italic">
                 ⚡ Links will auto-populate with property address data when Snowflake integration is live.
             </p>
         </ReportCard>
@@ -1475,7 +1475,7 @@ const VisualVerification = () => {
                 {items.map(item => (
                     <div key={item.name} className="space-y-2 border p-2 rounded-md avoid-break">
                         <div className="flex justify-between text-sm font-bold"><span>{item.name}</span><span>{item.cost}</span></div>
-                        <div className="relative h-48 w-full bg-slate-100">
+                        <div className="relative h-48 w-full bg-[#F4F5F7]">
                             <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded" />
                             {item.annotation && <div className="absolute border-2 border-red-500" style={item.annotation}></div>}
                         </div>
@@ -1520,7 +1520,7 @@ const SmartBudgetValidator: React.FC<{
                 <span className="flex-1 text-center">Smart Budget Validator v3.0</span>
                 <button
                     onClick={(e) => { e.stopPropagation(); onOpenLogic(); }}
-                    className="flex items-center gap-1 text-slate-300 hover:text-white transition-colors group flex-shrink-0 ml-2"
+                    className="flex items-center gap-1 text-white/60 hover:text-white transition-colors group flex-shrink-0 ml-2"
                     aria-label="View Validator Logic"
                 >
                     <LogicIcon className="w-4 h-4 group-hover:text-white transition-colors" />
@@ -1531,52 +1531,52 @@ const SmartBudgetValidator: React.FC<{
             <div className="space-y-4">
                 <div>
                     <div className="flex justify-between items-center mb-2">
-                        <div className="text-xs font-medium text-slate-500">Comparison vs. Market Data</div>
-                        <button onClick={() => setShowMath(!showMath)} className="text-xs flex items-center text-[#0693e3] font-medium bg-[#0693e3]/10 dark:bg-slate-700 px-2 py-1 rounded hover:bg-[#0693e3]/15 transition-colors screen-only"><CalculatorIcon className="w-3 h-3 mr-1" />{showMath ? 'Hide Math' : 'Show Math'}</button>
+                        <div className="text-xs font-medium text-[#78819D]">Comparison vs. Market Data</div>
+                        <button onClick={() => setShowMath(!showMath)} className="text-xs flex items-center text-brand-500 font-medium bg-brand-50 px-2 py-1 rounded hover:bg-brand-50 transition-colors screen-only"><CalculatorIcon className="w-3 h-3 mr-1" />{showMath ? 'Hide Math' : 'Show Math'}</button>
                     </div>
                     
                     {(showMath || (window.matchMedia && window.matchMedia('print').matches)) && calculationBreakdown && (
-                        <div className={`mb-4 p-3 bg-slate-100 dark:bg-slate-900 rounded-md text-xs border shadow-inner animate-in fade-in zoom-in-95 duration-200 ${isOverridden ? 'border-purple-400 bg-purple-50 dark:bg-purple-900/10' : 'border-slate-300'}`}>
+                        <div className={`mb-4 p-3 rounded-md text-xs border shadow-inner animate-in fade-in zoom-in-95 duration-200 ${isOverridden ? 'border-purple-400 bg-purple-50' : 'bg-[#F6F7F9] border-[#DFE1E5]'}`}>
                             
                             {/* Manual Override Input Section */}
-                            <div className="flex justify-between items-center mb-3 pb-2 border-b border-slate-200 dark:border-slate-700">
-                                <label className="text-xs font-bold text-slate-600 dark:text-slate-300">Manual Base Rate ($/sqft):</label>
+                            <div className="flex justify-between items-center mb-3 pb-2 border-b border-[#DFE1E5]">
+                                <label className="text-xs font-bold text-[#1E2D5C]">Manual Base Rate ($/sqft):</label>
                                 <div className="flex items-center">
                                     <input 
                                         type="number" 
                                         value={manualBaseRateOverride || ''} 
                                         onChange={(e) => onManualBaseRateChange(parseFloat(e.target.value) || 0)}
                                         placeholder="0"
-                                        className="w-24 text-right text-xs p-1 border border-slate-300 rounded !bg-white dark:!bg-slate-800 !text-slate-900 dark:!text-white"
+                                        className="w-24 text-right text-xs p-1 border border-[#DFE1E5] rounded !bg-white !text-[#1E2D5C]"
                                     />
                                     {isOverridden && <span className="ml-2 text-[10px] font-bold text-purple-600 uppercase tracking-wider">Active</span>}
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-4 gap-2 mb-2 font-mono text-[10px] text-slate-500 uppercase tracking-wide border-b border-slate-200 pb-1">
+                            <div className="grid grid-cols-4 gap-2 mb-2 font-mono text-[10px] text-[#78819D] uppercase tracking-wide border-b border-[#DFE1E5] pb-1">
                                 <div>Base Rate</div>
                                 <div className="text-center">Location ({calculationBreakdown.stateAbbrev})</div>
                                 <div className="text-center">Finish Level</div>
                                 <div className="text-right">Last Mile</div>
                             </div>
-                            <div className={`grid grid-cols-4 gap-2 mb-3 font-bold ${isOverridden ? 'text-purple-900 dark:text-purple-100' : 'text-slate-800 dark:text-slate-200'}`}>
+                            <div className={`grid grid-cols-4 gap-2 mb-3 font-bold ${isOverridden ? 'text-purple-900' : 'text-[#1E2D5C]'}`}>
                                 <div className="flex flex-col">
                                     <span>{formatCurrency(calculationBreakdown.baseRate)}</span>
-                                    <span className="text-[9px] font-normal text-slate-500 dark:text-slate-400">({calculationBreakdown.baseRateSource})</span>
+                                    <span className="text-[9px] font-normal text-[#78819D]">({calculationBreakdown.baseRateSource})</span>
                                 </div>
                                 <div className="text-center flex flex-col justify-center">
                                     <span>x {calculationBreakdown.locationFactor.toFixed(2)}</span>
-                                    {isOverridden && <span className="text-[8px] font-normal text-slate-400">(Included in Override)</span>}
+                                    {isOverridden && <span className="text-[8px] font-normal text-[#78819D]">(Included in Override)</span>}
                                 </div>
                                 <div className="text-center">x {calculationBreakdown.finishFactor.toFixed(2)}</div>
                                 <div className="text-right">x {calculationBreakdown.lastMileFactor.toFixed(2)}</div>
                             </div>
-                            <div className="flex justify-between items-center pt-2 border-t border-slate-200">
-                                <span className="font-semibold text-slate-600">Calculated PPSF:</span>
-                                <span className={`font-mono font-bold ${isOverridden ? 'text-purple-600' : 'text-[#0693e3]'}`}>{formatCurrency(calculationBreakdown.calculatedPpsf)} / sqft</span>
+                            <div className="flex justify-between items-center pt-2 border-t border-[#DFE1E5]">
+                                <span className="font-semibold text-[#1E2D5C]">Calculated PPSF:</span>
+                                <span className={`font-mono font-bold ${isOverridden ? 'text-purple-600' : 'text-brand-500'}`}>{formatCurrency(calculationBreakdown.calculatedPpsf)} / sqft</span>
                             </div>
                             <div className="flex justify-between items-center mt-1">
-                                <span className="font-semibold text-slate-600">Total SqFt:</span>
+                                <span className="font-semibold text-[#1E2D5C]">Total SqFt:</span>
                                 <span className="font-mono">{calculationBreakdown.sqFt} sqft</span>
                             </div>
                             <div className={`flex justify-between items-center mt-1 pt-1 border-t border-slate-300 font-bold p-1 rounded ${isOverridden ? 'text-purple-700 bg-purple-100' : 'text-green-700 bg-green-50'}`}>
@@ -1589,11 +1589,11 @@ const SmartBudgetValidator: React.FC<{
                     <div className="space-y-3 pt-2">
                         <div>
                             <div className="flex justify-between text-xs mb-1">
-                                <span className="font-bold text-[#0693e3]">Borrower Actual</span>
+                                <span className="font-bold text-brand-500">Borrower Actual</span>
                                 <span className="font-mono font-bold">{formatCurrency(borrowerTotal)}</span>
                             </div>
-                            <div className="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
-                                <div className="bg-[#0693e3] h-2.5 rounded-full transition-all duration-1000 ease-out" style={{ width: `${actualWidth}%` }}></div>
+                            <div className="w-full bg-[#DFE1E5] rounded-full h-2.5 overflow-hidden">
+                                <div className="bg-brand-500 h-2.5 rounded-full transition-all duration-1000 ease-out" style={{ width: `${actualWidth}%` }}></div>
                             </div>
                         </div>
                         <div>
@@ -1601,29 +1601,29 @@ const SmartBudgetValidator: React.FC<{
                                 <span className={`font-bold ${isOverridden ? 'text-purple-700' : 'text-green-700'}`}>{isOverridden ? 'Analyst Target (Overridden)' : 'Feasible Target'}</span>
                                 <span className="font-mono font-bold">{formatCurrency(targetBudget)}</span>
                             </div>
-                            <div className="w-full bg-slate-200 rounded-full h-2.5 relative overflow-hidden">
+                            <div className="w-full bg-[#DFE1E5] rounded-full h-2.5 relative overflow-hidden">
                                 <div className={`${isOverridden ? 'bg-purple-500' : 'bg-green-500'} h-2.5 rounded-full opacity-80 transition-all duration-1000 ease-out`} style={{ width: `${targetWidth}%` }}></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="pt-3 border-t border-slate-200">
-                    <h4 className="text-xs font-bold text-slate-700 mb-2">"Last Mile" Adjustments</h4>
+                <div className="pt-3 border-t border-[#DFE1E5]">
+                    <h4 className="text-xs font-bold text-[#1E2D5C] mb-2">"Last Mile" Adjustments</h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {LAST_MILE_OPTIONS.map(option => (
-                            <label key={option.key} className="flex items-start p-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-600 transition-colors">
+                            <label key={option.key} className="flex items-start p-2 hover:bg-[#F7F9FC] rounded cursor-pointer border border-transparent hover:border-[#DFE1E5] transition-colors">
                                 <input 
                                     type="checkbox" 
                                     checked={riskAdjustments[option.key as keyof RiskAdjustments]} 
                                     onChange={e => onRiskAdjustmentChange(option.key as keyof RiskAdjustments, e.target.checked)} 
-                                    className="h-4 w-4 accent-[#0693e3] border-gray-300 rounded mt-0.5 flex-shrink-0" 
+                                    className="h-4 w-4 accent-brand-500 border-[#DFE1E5] rounded mt-0.5 flex-shrink-0" 
                                 />
                                 <div className="ml-2 flex-grow">
                                     <div className="flex justify-between items-center">
-                                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{option.label}</span>
-                                        <span className="text-[10px] font-bold text-[#0693e3] dark:text-[#5bb8f5] bg-[#0693e3]/10 dark:bg-[#0693e3]/20 px-1.5 py-0.5 rounded">+{Math.round(option.adjustment * 100)}%</span>
+                                        <span className="text-xs font-bold text-[#1E2D5C]">{option.label}</span>
+                                        <span className="text-[10px] font-bold text-brand-500 bg-brand-50 px-1.5 py-0.5 rounded">+{Math.round(option.adjustment * 100)}%</span>
                                     </div>
-                                    <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">{option.reason}</p>
+                                    <p className="text-[10px] text-[#78819D] mt-0.5 leading-tight">{option.reason}</p>
                                 </div>
                             </label>
                         ))}
@@ -1707,19 +1707,19 @@ const FeasibilityPrintView: React.FC<any> = ({ feasibilityData, asIsProjectedDat
                         <div className="col-span-1 text-center font-bold border-l border-b border-black p-1">Projected</div>
                         
                         <div className="text-right pr-2 py-1 border-b border-black border-gray-200">Total Sqft:</div>
-                        <div className="text-center border-l border-b border-black py-1 bg-[#0693e3]/15">{asIsProjectedData.totalBuildingSqFeet.asIs}</div>
+                        <div className="text-center border-l border-b border-black py-1 bg-brand-50">{asIsProjectedData.totalBuildingSqFeet.asIs}</div>
                         <div className="text-center border-l border-b border-black py-1 bg-red-100">{asIsProjectedData.totalBuildingSqFeet.projected}</div>
 
                         <div className="text-right pr-2 py-1 border-b border-black border-gray-200">Rooms/Units:</div>
-                        <div className="text-center border-l border-b border-black py-1 bg-[#0693e3]/15">{asIsProjectedData.unitCount.asIs}</div>
+                        <div className="text-center border-l border-b border-black py-1 bg-brand-50">{asIsProjectedData.unitCount.asIs}</div>
                         <div className="text-center border-l border-b border-black py-1 bg-red-100">{asIsProjectedData.unitCount.projected}</div>
 
                         <div className="text-right pr-2 py-1 border-b border-black border-gray-200">Bedrooms:</div>
-                        <div className="text-center border-l border-b border-black py-1 bg-[#0693e3]/15">{asIsProjectedData.bedroomCount.asIs}</div>
+                        <div className="text-center border-l border-b border-black py-1 bg-brand-50">{asIsProjectedData.bedroomCount.asIs}</div>
                         <div className="text-center border-l border-b border-black py-1 bg-red-100">{asIsProjectedData.bedroomCount.projected}</div>
 
                         <div className="text-right pr-2 py-1">Bathrooms:</div>
-                        <div className="text-center border-l border-black py-1 bg-[#0693e3]/15">{asIsProjectedData.bathroomCount.asIs}</div>
+                        <div className="text-center border-l border-black py-1 bg-brand-50">{asIsProjectedData.bathroomCount.asIs}</div>
                         <div className="text-center border-l border-black py-1 bg-red-100">{asIsProjectedData.bathroomCount.projected}</div>
                     </div>
                 </div>
@@ -1911,8 +1911,8 @@ export const AnalystReport: React.FC<AnalystReportProps> = ({
           onClick={() => setActiveTab(id as any)}
           className={`whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm transition-colors ${
               activeTab === id
-                  ? 'border-[#0693e3] text-[#0693e3] dark:text-[#5bb8f5] dark:border-[#5bb8f5]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-slate-400 dark:hover:text-slate-300'
+                  ? 'border-brand-500 text-brand-500'
+                  : 'border-transparent text-[#78819D] hover:text-[#1E2D5C] hover:border-[#DFE1E5]'
           }`}
       >
           {label}
@@ -1920,7 +1920,7 @@ export const AnalystReport: React.FC<AnalystReportProps> = ({
   );
 
   return (
-    <div className="analyst-report-container pb-10 bg-gray-50 dark:bg-slate-900 min-h-screen relative">
+    <div className="analyst-report-container pb-10 bg-[#F4F5F7] min-h-screen relative">
       
       {/* Sticky Top Header with Actions */}
       <StickyActionHeader 
@@ -1938,7 +1938,7 @@ export const AnalystReport: React.FC<AnalystReportProps> = ({
       />
 
       {/* Tab Navigation */}
-      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 md:px-6 sticky top-[60px] z-20 shadow-sm">
+      <div className="bg-white border-b border-[#DFE1E5] px-4 md:px-6 sticky top-[60px] z-20 shadow-sm">
           <nav className="-mb-px flex space-x-6 overflow-x-auto" aria-label="Analyst Sections">
              <TabButton id="risk" label="Risk & Feasibility" />
              <TabButton id="financial" label="Financial Validation" />
@@ -1955,22 +1955,22 @@ export const AnalystReport: React.FC<AnalystReportProps> = ({
 
           // Color scheme keyed by grade
           const scheme = g.startsWith('A')
-              ? { bar: 'bg-green-600', bg: 'bg-green-50 dark:bg-green-900/20', border: 'border-green-200 dark:border-green-800', text: 'text-green-800 dark:text-green-200', badge: 'bg-green-600 text-white', chip: 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300' }
+              ? { bar: 'bg-[#139B23]', bg: 'bg-[#E1F7E4]', border: 'border-[#ADDEB4]', text: 'text-[#139B23]', badge: 'bg-[#139B23] text-white', chip: 'bg-[#E1F7E4] text-[#139B23]' }
               : g.startsWith('B')
-              ? { bar: 'bg-[#0693e3]', bg: 'bg-[#0693e3]/5 dark:bg-[#0693e3]/10', border: 'border-[#0693e3]/25 dark:border-[#0693e3]/30', text: 'text-[#0578c5] dark:text-[#5bb8f5]', badge: 'bg-[#0693e3] text-white', chip: 'bg-[#0693e3]/10 dark:bg-[#0693e3]/20 text-[#0578c5] dark:text-[#5bb8f5]' }
+              ? { bar: 'bg-brand-500', bg: 'bg-brand-50', border: 'border-brand-200', text: 'text-brand-500', badge: 'bg-brand-500 text-white', chip: 'bg-brand-50 text-brand-500' }
               : g.startsWith('C')
-              ? { bar: 'bg-amber-500', bg: 'bg-amber-50 dark:bg-amber-900/20', border: 'border-amber-200 dark:border-amber-800', text: 'text-amber-800 dark:text-amber-200', badge: 'bg-amber-500 text-white', chip: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300' }
+              ? { bar: 'bg-[#EAA800]', bg: 'bg-[#FFF5DB]', border: 'border-[#EDDDB1]', text: 'text-[#EAA800]', badge: 'bg-[#EAA800] text-white', chip: 'bg-[#FFF5DB] text-[#EAA800]' }
               : g.startsWith('D')
-              ? { bar: 'bg-orange-500', bg: 'bg-orange-50 dark:bg-orange-900/20', border: 'border-orange-200 dark:border-orange-800', text: 'text-orange-800 dark:text-orange-200', badge: 'bg-orange-500 text-white', chip: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' }
-              : { bar: 'bg-red-600', bg: 'bg-red-50 dark:bg-red-900/20', border: 'border-red-300 dark:border-red-800', text: 'text-red-800 dark:text-red-200', badge: 'bg-red-600 text-white', chip: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' };
+              ? { bar: 'bg-orange-500', bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700', badge: 'bg-orange-500 text-white', chip: 'bg-orange-100 text-orange-700' }
+              : { bar: 'bg-[#B92814]', bg: 'bg-[#FFF0EE]', border: 'border-red-200', text: 'text-[#B92814]', badge: 'bg-[#B92814] text-white', chip: 'bg-[#FFF0EE] text-[#B92814]' };
 
           const recColor = rec === 'Recommended'
-              ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+              ? 'bg-[#E1F7E4] text-[#139B23]'
               : rec === 'Recommended with Conditions'
-              ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
+              ? 'bg-[#FFF5DB] text-[#EAA800]'
               : rec === 'Not Recommended'
-              ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
-              : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400';
+              ? 'bg-[#FFF0EE] text-[#B92814]'
+              : 'bg-[#F4F5F7] text-[#78819D]';
 
           return (
               <div className={`mx-4 md:mx-6 mt-4 rounded-xl border overflow-hidden shadow-sm ${scheme.bg} ${scheme.border}`}>
@@ -1978,7 +1978,7 @@ export const AnalystReport: React.FC<AnalystReportProps> = ({
                   <div className={`h-1 w-full ${scheme.bar}`} />
                   <div className="px-4 py-3 flex flex-wrap items-center gap-3 justify-between">
                       <div className="flex flex-wrap items-center gap-2.5">
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Risk Summary</span>
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-[#78819D]">Risk Summary</span>
                           {/* Grade badge */}
                           <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${scheme.chip}`}>
                               <span className="text-[9px] font-bold uppercase tracking-wider opacity-70">Grade</span>
@@ -1989,7 +1989,7 @@ export const AnalystReport: React.FC<AnalystReportProps> = ({
                               Risk Score: <span className="font-black">{riskAnalysis.score}</span>
                           </span>
                           {/* Flags */}
-                          <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${flagCount > 0 ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'}`}>
+                          <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${flagCount > 0 ? 'bg-[#FFF0EE] text-[#B92814]' : 'bg-[#E1F7E4] text-[#139B23]'}`}>
                               {flagCount > 0 ? `⚑ ${flagCount} Flag${flagCount !== 1 ? 's' : ''}` : '✓ No Flags'}
                           </span>
                           {/* Recommendation */}
@@ -1999,7 +1999,7 @@ export const AnalystReport: React.FC<AnalystReportProps> = ({
                       </div>
                       <button
                           onClick={() => setIsBannerDismissed(true)}
-                          className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 text-lg leading-none transition-colors flex-shrink-0"
+                          className="text-[#78819D] hover:text-[#1E2D5C] text-lg leading-none transition-colors flex-shrink-0"
                           title="Dismiss"
                       >×</button>
                   </div>

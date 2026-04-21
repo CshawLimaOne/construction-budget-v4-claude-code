@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { Requirement } from '../types';
 import Tooltip from './Tooltip';
@@ -38,10 +39,9 @@ const RequirementItem: React.FC<RequirementItemProps> = ({ requirement, onUpload
         </div>
       );
     }
-    // Default pending icon
     return (
-      <div className="w-6 h-6 border-2 border-slate-400 dark:border-slate-500 rounded-full flex items-center justify-center flex-shrink-0">
-        <div className="w-2 h-2 bg-slate-400 dark:bg-slate-500 rounded-full"></div>
+      <div className="w-6 h-6 border-2 border-[#DFE1E5] rounded-full flex items-center justify-center flex-shrink-0">
+        <div className="w-2 h-2 bg-[#BCBFC7] rounded-full"></div>
       </div>
     );
   };
@@ -63,7 +63,7 @@ const RequirementItem: React.FC<RequirementItemProps> = ({ requirement, onUpload
           <Tooltip text="Upload File" position="top">
             <button
               onClick={handleUploadClick}
-              className="w-10 h-10 rounded-full bg-brand-100 text-brand-600 dark:bg-sky-900 dark:text-sky-300 flex items-center justify-center hover:bg-brand-200 dark:hover:bg-sky-800 transition-colors"
+              className="w-10 h-10 rounded-full bg-brand-500 text-white flex items-center justify-center hover:bg-brand-600 transition-colors"
               aria-label={`Upload for ${requirement.label}`}
             >
               <ArrowUpTrayIcon className="w-5 h-5" />
@@ -82,13 +82,13 @@ const RequirementItem: React.FC<RequirementItemProps> = ({ requirement, onUpload
   };
 
   return (
-    <div className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+    <div className="flex items-center gap-4 p-4 bg-white rounded-lg border border-[#DFE1E5]">
       <div className="flex-shrink-0">
         {statusIcon()}
       </div>
       <div className="flex-grow">
-        <p className="font-semibold text-slate-800 dark:text-slate-100">{requirement.label}</p>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{requirement.info}</p>
+        <p className="font-semibold text-[#1E2D5C]">{requirement.label}</p>
+        <p className="text-sm text-[#78819D] mt-0.5">{requirement.info}</p>
       </div>
       <div className="flex-shrink-0 ml-4">
         {actionOrStatus()}
@@ -104,30 +104,40 @@ interface ActionableRequirementsProps {
 }
 
 export const ActionableRequirements: React.FC<ActionableRequirementsProps> = ({ requirements, onUploadFile }) => {
-  if (requirements.length === 0) {
-    return null;
-  }
-
   const completedCount = requirements.filter(r => r.status === 'completed').length;
   const totalCount = requirements.length;
 
+  if (requirements.length === 0) {
+    return (
+      <div className="flex flex-col items-center text-center gap-4 py-6">
+        <div className="w-14 h-14 rounded-full bg-[#E1F7E4] border border-[#ADDEB4] flex items-center justify-center">
+          <CheckIcon className="w-7 h-7 text-[#139B23]" />
+        </div>
+        <div>
+          <h3 className="text-lg font-bold text-[#1E2D5C] mb-1">Everything looks good</h3>
+          <p className="text-sm text-[#78819D] max-w-xs leading-relaxed">
+            No outstanding requirements were found. You're ready to submit your application for review.
+          </p>
+        </div>
+        <div className="w-full bg-[#FFF5DB] border border-[#EDDDB1] rounded-xl p-4 text-left mt-2">
+          <p className="text-sm text-[#EAA800] font-medium">Once submitted, your budget will be locked for editing until a Lima One analyst completes their review.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="section-container">
-      <h3 className="section-title flex justify-between items-center">
-        <span>Actionable Requirements</span>
-        <span className="text-sm font-medium bg-slate-600 text-white rounded-full px-2.5 py-1">
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-[#78819D]">Complete the items below before submitting.</p>
+        <span className="text-xs font-bold bg-[#F6F7F9] text-[#1E2D5C] border border-[#DFE1E5] rounded-full px-3 py-1">
           {completedCount} / {totalCount} Complete
         </span>
-      </h3>
-      <div className="p-4 bg-white dark:bg-slate-800">
-        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-            This checklist updates automatically based on your form entries.
-        </p>
-        <div className="space-y-3">
-            {requirements.map(req => (
-              <RequirementItem key={req.id} requirement={req} onUploadFile={onUploadFile} />
-            ))}
-        </div>
+      </div>
+      <div className="space-y-3">
+        {requirements.map(req => (
+          <RequirementItem key={req.id} requirement={req} onUploadFile={onUploadFile} />
+        ))}
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ export const CommentIndicator: React.FC<CommentIndicatorProps> = ({ fieldId, com
         <Tooltip text="Add a comment" position="top">
             <button
                 onClick={(e) => { e.stopPropagation(); onClick(); }}
-                className="flex items-center justify-center w-6 h-6 rounded-full transition-all duration-200 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-slate-800 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 focus:ring-brand-500"
+                className="flex items-center justify-center w-6 h-6 rounded-full transition-all duration-200 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 text-[#78819D] hover:text-[#1E2D5C] hover:bg-[#F7F9FC] focus:ring-brand-500"
                 aria-label="Add a comment on this item"
             >
                 <ChatBubbleIcon className="w-4 h-4" />
@@ -40,7 +40,7 @@ export const CommentIndicator: React.FC<CommentIndicatorProps> = ({ fieldId, com
         <Tooltip text="View resolved thread" position="top">
             <button
                 onClick={(e) => { e.stopPropagation(); onClick(); }}
-                className="flex items-center justify-center w-6 h-6 text-green-600 dark:text-green-500"
+                className="flex items-center justify-center w-6 h-6 text-[#139B23]"
                 aria-label={`View ${commentCount} resolved comments on this item`}
             >
                 <CheckCircleIcon className="w-5 h-5"/>
@@ -53,7 +53,7 @@ export const CommentIndicator: React.FC<CommentIndicatorProps> = ({ fieldId, com
     <Tooltip text={isActionableForMe ? "Action Required" : "Pending other party"} position="top">
         <button
           onClick={(e) => { e.stopPropagation(); onClick(); }}
-          className={`relative flex items-center justify-center w-6 h-6 rounded-full transition-all duration-200 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-slate-800 text-white
+          className={`relative flex items-center justify-center w-6 h-6 rounded-full transition-all duration-200 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 text-white
             ${isActionableForMe ? 'bg-red-500 focus:ring-red-500' : ''}
             ${isPendingOther ? 'bg-brand-500 focus:ring-brand-500' : ''}
           `}

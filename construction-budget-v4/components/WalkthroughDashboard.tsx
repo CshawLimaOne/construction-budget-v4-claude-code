@@ -27,7 +27,7 @@ const CircularProgress: React.FC<{ percentage: number; size?: number; color?: st
     <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
       <svg className="transform -rotate-90 w-full h-full">
         <circle
-          className="text-white/10"
+          className="text-[#DFE1E5]"
           strokeWidth="3"
           stroke="currentColor"
           fill="transparent"
@@ -49,7 +49,7 @@ const CircularProgress: React.FC<{ percentage: number; size?: number; color?: st
         />
       </svg>
       {percentage === 100 && (
-          <div className="absolute inset-0 flex items-center justify-center text-emerald-400">
+          <div className="absolute inset-0 flex items-center justify-center text-[#139B23]">
               <CheckIcon className="w-3 h-3" />
           </div>
       )}
@@ -135,11 +135,11 @@ const AddRoomModal: React.FC<{ isOpen: boolean; onClose: () => void; onConfirm: 
 
     const footer = (
         <>
-            <button onClick={onClose} className="button-base bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10">Cancel</button>
+            <button onClick={onClose} className="button-base bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC]">Cancel</button>
             <button
                 onClick={() => { if(name) onConfirm(name, type); }}
                 disabled={!name}
-                className="button-base bg-[#0693e3] text-white hover:bg-[#0578c5] disabled:opacity-50"
+                className="button-base bg-brand-500 text-white hover:bg-brand-600 disabled:opacity-50"
             >
                 Add Room
             </button>
@@ -150,7 +150,7 @@ const AddRoomModal: React.FC<{ isOpen: boolean; onClose: () => void; onConfirm: 
         <ComplexModal isOpen={isOpen} onClose={onClose} title="Add New Room" footer={footer} size="md">
             <div className="space-y-4">
                 <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Room Name</label>
+                    <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">Room Name</label>
                     <input 
                         autoFocus
                         type="text" 
@@ -161,7 +161,7 @@ const AddRoomModal: React.FC<{ isOpen: boolean; onClose: () => void; onConfirm: 
                     />
                 </div>
                 <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Room Type Template</label>
+                    <label className="block text-xs font-bold text-[#78819D] uppercase mb-1">Room Type Template</label>
                     <select 
                         value={type} 
                         onChange={e => setType(e.target.value)}
@@ -195,10 +195,10 @@ const EditProjectDetailsModal: React.FC<{
 
     const footer = (
         <>
-            <button onClick={onClose} className="button-base bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10">Cancel</button>
+            <button onClick={onClose} className="button-base bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC]">Cancel</button>
             <button
                 onClick={() => onConfirm(beds, baths)}
-                className="button-base bg-[#0693e3] text-white hover:bg-[#0578c5]"
+                className="button-base bg-brand-500 text-white hover:bg-brand-600"
             >
                 Update Layout
             </button>
@@ -208,12 +208,12 @@ const EditProjectDetailsModal: React.FC<{
     return (
         <ComplexModal isOpen={isOpen} onClose={onClose} title="Project Configuration" footer={footer} size="md">
             <div className="space-y-6">
-                <div className="p-4 bg-brand-500/15 border border-brand-400/25 rounded-xl text-sm text-brand-200">
+                <div className="p-4 bg-brand-50 border border-brand-200 rounded-xl text-sm text-[#1E2D5C]">
                     <p>Updating these counts will automatically adjust the room list to match your property.</p>
                 </div>
                 <div className="grid grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Bedrooms</label>
+                        <label className="block text-xs font-bold text-[#78819D] uppercase mb-2">Bedrooms</label>
                         <input 
                             type="number" 
                             value={beds} 
@@ -222,7 +222,7 @@ const EditProjectDetailsModal: React.FC<{
                         />
                     </div>
                     <div>
-                        <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Bathrooms</label>
+                        <label className="block text-xs font-bold text-[#78819D] uppercase mb-2">Bathrooms</label>
                         <input 
                             type="number" 
                             value={baths} 
@@ -241,33 +241,33 @@ const ExitConfirmModal: React.FC<{ isOpen: boolean; onClose: () => void; onSaveD
     if (!isOpen) return null;
     
     return (
-        <div className="fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-6 backdrop-blur-sm">
-            <div className="bg-slate-900/95 backdrop-blur-sm border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-6" style={{ backgroundColor: 'rgba(4,11,31,0.5)' }}>
+            <div className="bg-white border border-[#DFE1E5] rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200">
                 <div className="text-center mb-6">
-                    <div className="mx-auto w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mb-4">
-                        <WarningTriangleIcon className="w-6 h-6 text-yellow-500" />
+                    <div className="mx-auto w-12 h-12 bg-[#FFF5DB] border border-[#EDDDB1] rounded-full flex items-center justify-center mb-4">
+                        <WarningTriangleIcon className="w-6 h-6 text-[#EAA800]" />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">Sync before closing?</h3>
-                    <p className="text-slate-400 text-sm">
+                    <h3 className="text-xl font-bold text-[#1E2D5C] mb-2">Sync before closing?</h3>
+                    <p className="text-[#78819D] text-sm">
                         You have recorded walkthrough data. Do you want to sync these changes to your main budget now?
                     </p>
                 </div>
                 <div className="flex flex-col gap-3">
-                    <button 
+                    <button
                         onClick={onSync}
-                        className="w-full py-3 bg-[#0693e3] hover:bg-[#0578c5] text-white rounded-xl font-bold transition-colors flex items-center justify-center shadow-lg"
+                        className="w-full py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-bold transition-colors flex items-center justify-center shadow-lg"
                     >
                         Review & Sync to Budget
                     </button>
-                    <button 
+                    <button
                         onClick={onSaveDraft}
-                        className="w-full py-3 bg-white/10 hover:bg-white/15 text-white rounded-xl font-semibold transition-colors"
+                        className="w-full py-3 bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC] rounded-xl font-semibold transition-colors"
                     >
                         Save Draft & Exit
                     </button>
-                    <button 
+                    <button
                         onClick={onClose}
-                        className="w-full py-2 text-slate-500 hover:text-slate-300 text-sm transition-colors"
+                        className="w-full py-2 text-[#78819D] hover:text-[#1E2D5C] text-sm transition-colors"
                     >
                         Cancel
                     </button>
@@ -403,55 +403,49 @@ export const WalkthroughDashboard: React.FC<WalkthroughDashboardProps> = ({ walk
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-slate-900 to-[#1E2E5C] text-white animate-in fade-in duration-300 relative overflow-hidden">
+    <div className="flex flex-col h-screen bg-[#F4F5F7] text-[#1E2D5C] animate-in fade-in duration-300 relative overflow-hidden">
       
-      {/* Background Blobs */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-          <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-brand-600/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-brand-600/05 rounded-full blur-3xl"></div>
-      </div>
-
       {/* Header */}
-      <div className="relative z-10 p-6 bg-slate-800/70 backdrop-blur-sm border-b border-white/10 flex-shrink-0">
+      <div className="relative z-10 p-6 bg-white border-b border-[#DFE1E5] flex-shrink-0">
         <div className="flex justify-between items-start mb-4">
             <div>
-                <h2 className="text-xl font-black text-white tracking-tight flex items-center">
+                <h2 className="text-xl font-black text-[#1E2D5C] tracking-tight flex items-center">
                     <HomeModernIcon className="w-6 h-6 mr-2 text-brand-400" />
                     Mobile Walkthrough
                 </h2>
                 {/* Config Pill */}
                 <button 
                     onClick={() => setIsEditDetailsOpen(true)}
-                    className="mt-3 flex items-center group bg-slate-900/50 hover:bg-brand-600/20 border border-white/10 hover:border-brand-500/50 rounded-full pr-4 pl-1 py-1 transition-all duration-300"
+                    className="mt-3 flex items-center group bg-[#F6F7F9] hover:bg-brand-50 border border-[#DFE1E5] hover:border-brand-200 rounded-full pr-4 pl-1 py-1 transition-all duration-300"
                 >
                     <div className="w-8 h-8 rounded-full bg-brand-500/20 flex items-center justify-center mr-3 group-hover:bg-brand-500 group-hover:text-white transition-colors">
                         <WrenchScrewdriverIcon className="w-4 h-4 text-brand-400 group-hover:text-white" />
                     </div>
                     <div className="flex flex-col items-start mr-2">
-                        <span className="text-[10px] uppercase font-bold text-slate-400 group-hover:text-brand-200 leading-none mb-0.5">Configuration</span>
-                        <span className="text-sm font-bold text-white leading-none">
+                        <span className="text-[10px] uppercase font-bold text-[#78819D] group-hover:text-brand-500 leading-none mb-0.5">Configuration</span>
+                        <span className="text-sm font-bold text-[#1E2D5C] leading-none">
                             {projectDetails ? `${projectDetails.beds} Beds, ${projectDetails.baths} Baths` : 'Set Layout'}
                         </span>
                     </div>
-                    <div className="text-slate-500 group-hover:text-white transition-colors text-xs">Edit</div>
+                    <div className="text-[#78819D] group-hover:text-[#1E2D5C] transition-colors text-xs">Edit</div>
                 </button>
             </div>
 
             <div className="flex flex-col items-end gap-3">
                 <button 
                     onClick={handleExitRequest}
-                    className="p-2 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full transition-colors border border-white/5 hover:border-white/20"
+                    className="p-2 text-[#78819D] hover:text-[#1E2D5C] bg-[#F6F7F9] hover:bg-[#F7F9FC] rounded-full transition-colors border border-[#DFE1E5]"
                     aria-label="Exit Walkthrough"
                 >
                     <XIcon className="w-6 h-6" />
                 </button>
-                <div className="text-right bg-black/20 px-3 py-1.5 rounded-xl border border-white/10 min-w-[90px]">
-                    <div className="text-[10px] text-slate-400 uppercase font-bold">Running Total</div>
-                    <div className={`text-lg font-mono font-bold transition-colors ${currentTotal > 0 ? 'text-brand-400' : 'text-slate-600'}`}>
+                <div className="text-right bg-[#F6F7F9] px-3 py-1.5 rounded-xl border border-[#DFE1E5] min-w-[90px]">
+                    <div className="text-[10px] text-[#78819D] uppercase font-bold">Running Total</div>
+                    <div className={`text-lg font-mono font-bold transition-colors ${currentTotal > 0 ? 'text-brand-500' : 'text-[#78819D]'}`}>
                         ${currentTotal.toLocaleString()}
                     </div>
                     {currentTotal === 0 && (
-                        <div className="text-[9px] text-slate-600 leading-tight">No costs yet</div>
+                        <div className="text-[9px] text-[#78819D] leading-tight">No costs yet</div>
                     )}
                 </div>
             </div>
@@ -459,8 +453,8 @@ export const WalkthroughDashboard: React.FC<WalkthroughDashboardProps> = ({ walk
         
         {/* Progress Bar */}
         <div className="flex items-center gap-3">
-            <span className="text-xs font-bold text-slate-400 whitespace-nowrap">{completedRooms} / {totalRooms} Rooms</span>
-            <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-white/5">
+            <span className="text-xs font-bold text-[#78819D] whitespace-nowrap">{completedRooms} / {totalRooms} Rooms</span>
+            <div className="w-full bg-[#F6F7F9] h-2 rounded-full overflow-hidden border border-[#DFE1E5]">
                 <div 
                     className="bg-gradient-to-r from-brand-600 to-brand-400 h-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(6,147,227,0.5)]"
                     style={{ width: `${overallProgress}%` }}
@@ -478,36 +472,36 @@ export const WalkthroughDashboard: React.FC<WalkthroughDashboardProps> = ({ walk
                 const isComplete = percentage === 100;
 
                 // Dynamic Card Styles
-                let cardBorderClass = 'border-white/10 hover:border-white/20';
-                let bgClass = 'bg-white/5 hover:bg-white/10';
-                let iconColor = 'text-slate-400';
+                let cardBorderClass = 'border-[#DFE1E5] hover:border-brand-200';
+                let bgClass = 'bg-[#F6F7F9] hover:bg-[#F7F9FC]';
+                let iconColor = 'text-[#78819D]';
                 let progressColor = 'text-brand-500';
 
                 if (isComplete) {
-                    cardBorderClass = 'border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.15)]';
-                    bgClass = 'bg-emerald-900/20';
-                    iconColor = 'text-emerald-400';
-                    progressColor = 'text-emerald-400';
+                    cardBorderClass = 'border-[#ADDEB4]';
+                    bgClass = 'bg-[#E1F7E4]';
+                    iconColor = 'text-[#139B23]';
+                    progressColor = 'text-[#139B23]';
                 } else if (isStarted) {
-                    cardBorderClass = 'border-brand-500/50 shadow-[0_0_15px_rgba(59,130,246,0.15)]';
-                    bgClass = 'bg-brand-900/20';
-                    iconColor = 'text-brand-400';
+                    cardBorderClass = 'border-brand-200';
+                    bgClass = 'bg-brand-50';
+                    iconColor = 'text-brand-500';
                 }
 
                 return (
                     <button
                         key={room.id}
                         onClick={() => onRoomSelect(room.id)}
-                        className={`relative flex flex-col items-center justify-center p-4 rounded-2xl backdrop-blur-sm border transition-all duration-200 active:scale-95 aspect-square ${cardBorderClass} ${bgClass} ${animatingRooms.has(room.id) ? 'scale-105 shadow-[0_0_30px_rgba(16,185,129,0.35)]' : ''}`}
+                        className={`relative flex flex-col items-center justify-center p-4 rounded-2xl border transition-all duration-200 active:scale-95 aspect-square ${cardBorderClass} ${bgClass} ${animatingRooms.has(room.id) ? 'scale-105' : ''}`}
                     >
                         <div className={`p-3 rounded-2xl mb-3 transition-all duration-200 ${
                           isComplete
-                            ? `${ROOM_ICON_COLORS[room.icon]?.bgColor || 'bg-white/15'} shadow-lg`
-                            : 'bg-white/5'
+                            ? `${ROOM_ICON_COLORS[room.icon]?.bgColor || 'bg-[#F6F7F9]'} shadow-sm`
+                            : 'bg-[#F6F7F9]'
                         }`}>
                           {getRoomIcon(room.icon)}
                         </div>
-                        <h3 className={`font-bold text-sm text-center leading-tight mb-1 ${isComplete ? 'text-white' : 'text-slate-300'}`}>
+                        <h3 className={`font-bold text-sm text-center leading-tight mb-1 ${isComplete ? 'text-[#139B23]' : 'text-[#1E2D5C]'}`}>
                             {room.label}
                         </h3>
                         
@@ -519,7 +513,7 @@ export const WalkthroughDashboard: React.FC<WalkthroughDashboardProps> = ({ walk
                             />
                         </div>
                         
-                        <div className={`mt-auto text-[10px] font-bold uppercase tracking-wide ${isComplete ? 'text-emerald-400' : 'text-slate-500'}`}>
+                        <div className={`mt-auto text-[10px] font-bold uppercase tracking-wide ${isComplete ? 'text-[#139B23]' : 'text-[#78819D]'}`}>
                             {checked}/{total} Items
                         </div>
                     </button>
@@ -529,9 +523,9 @@ export const WalkthroughDashboard: React.FC<WalkthroughDashboardProps> = ({ walk
             {/* Add Room Button */}
             <button
                 onClick={() => setIsAddRoomOpen(true)}
-                className="flex flex-col items-center justify-center p-4 bg-white/[0.02] rounded-2xl border-2 border-dashed border-white/15 text-slate-500 hover:border-brand-500/60 hover:text-brand-300 hover:bg-brand-900/10 transition-all active:scale-95 aspect-square group"
+                className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border-2 border-dashed border-[#DFE1E5] text-[#78819D] hover:border-brand-200 hover:text-brand-500 hover:bg-brand-50 transition-all active:scale-95 aspect-square group"
             >
-                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-3 group-hover:bg-brand-500 group-hover:border-brand-500 group-hover:text-white transition-all">
+                <div className="w-12 h-12 rounded-2xl bg-[#F6F7F9] border border-[#DFE1E5] flex items-center justify-center mb-3 group-hover:bg-brand-500 group-hover:border-brand-500 group-hover:text-white transition-all">
                     <PlusIcon className="w-6 h-6" />
                 </div>
                 <span className="font-semibold text-sm tracking-wide">Add Room</span>
@@ -540,18 +534,18 @@ export const WalkthroughDashboard: React.FC<WalkthroughDashboardProps> = ({ walk
       </div>
 
       {/* Footer Action - Fixed at bottom */}
-      <div className="relative z-20 p-4 bg-slate-900/90 border-t border-white/10 backdrop-blur-sm safe-area-bottom shadow-[0_-4px_20px_rgba(0,0,0,0.3)]" style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}>
+      <div className="relative z-20 p-4 bg-white border-t border-[#DFE1E5] safe-area-bottom shadow-sm" style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}>
         <button
             onClick={onFinish}
             disabled={!itemsModified}
-            className={`button-base w-full text-white text-lg py-4 font-bold flex items-center justify-center transition-all duration-300 ${itemsModified ? 'bg-[#0693e3] hover:bg-[#0578c5]' : 'bg-slate-700/60 cursor-not-allowed opacity-60'}`}
+            className={`button-base w-full text-white text-lg py-4 font-bold flex items-center justify-center transition-all duration-300 ${itemsModified ? 'bg-brand-500 hover:bg-brand-600' : 'bg-[#F6F7F9] text-[#78819D] cursor-not-allowed opacity-60'}`}
             style={itemsModified ? { boxShadow: '0 4px 20px rgba(6,147,227,0.4)' } : {}}
         >
             <CheckIcon className="w-6 h-6 mr-2" />
             Review & Sync to Budget
         </button>
         {!itemsModified && (
-            <p className="text-center text-xs text-slate-500 mt-2">Complete at least one room item to enable sync</p>
+            <p className="text-center text-xs text-[#78819D] mt-2">Complete at least one room item to enable sync</p>
         )}
       </div>
 

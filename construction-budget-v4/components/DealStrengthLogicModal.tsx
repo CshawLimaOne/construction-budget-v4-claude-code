@@ -61,15 +61,14 @@ export const DealStrengthLogicModal: React.FC<DealStrengthLogicModalProps> = ({ 
   return (
     <div
       className="fixed inset-0 z-[999] flex items-center justify-center px-4 py-8 overflow-y-auto"
-      style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)' }}
+      style={{ backgroundColor: 'rgba(4,11,31,0.5)' }}
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col"
+        className="relative w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col bg-white"
         style={{
-          background: 'linear-gradient(135deg, rgba(10,15,35,0.98) 0%, rgba(15,23,50,0.98) 100%)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          borderTop: '2px solid rgba(6,147,227,0.5)',
+          border: '1px solid #DFE1E5',
+          borderTop: '2px solid #0693e3',
           animation: 'modalIn 0.2s ease-out both',
           maxHeight: 'calc(100vh - 4rem)',
         }}
@@ -78,21 +77,21 @@ export const DealStrengthLogicModal: React.FC<DealStrengthLogicModalProps> = ({ 
         {/* ── Header ── */}
         <div
           className="flex items-center justify-between px-6 py-4 border-b flex-shrink-0"
-          style={{ borderColor: 'rgba(255,255,255,0.08)' }}
+          style={{ borderColor: '#DFE1E5' }}
         >
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg" style={{ background: 'rgba(6,147,227,0.12)' }}>
-              <InfoIcon className="w-4 h-4 text-[#0693e3] !ml-0" />
+            <div className="p-2 rounded-lg" style={{ background: 'rgba(6,147,227,0.10)' }}>
+              <InfoIcon className="w-4 h-4 text-brand-500 !ml-0" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white">How Application Score is Calculated</h2>
-              <p className="text-xs text-slate-500 mt-0.5">5 categories · 100 points total</p>
+              <h2 className="text-base font-bold text-[#1E2D5C]">How Application Score is Calculated</h2>
+              <p className="text-xs text-[#78819D] mt-0.5">5 categories · 100 points total</p>
             </div>
           </div>
           <button
             onClick={onClose}
             aria-label="Close"
-            className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
+            className="p-1.5 rounded-lg text-[#78819D] hover:text-[#1E2D5C] hover:bg-[#F7F9FC] transition-all cursor-pointer"
           >
             <XIcon className="w-5 h-5" />
           </button>
@@ -102,8 +101,8 @@ export const DealStrengthLogicModal: React.FC<DealStrengthLogicModalProps> = ({ 
         <div className="p-6 overflow-y-auto flex-grow space-y-3">
 
           {/* Intro */}
-          <p className="text-sm text-slate-400 leading-relaxed">
-            The <strong className="text-white">Application Score</strong> (0–100) measures the quality and
+          <p className="text-sm text-[#78819D] leading-relaxed">
+            The <strong className="text-[#1E2D5C]">Application Score</strong> (0–100) measures the quality and
             completeness of your submission. A higher score helps analysts review your loan faster
             and reduces the likelihood of revision requests.
           </p>
@@ -117,10 +116,9 @@ export const DealStrengthLogicModal: React.FC<DealStrengthLogicModalProps> = ({ 
             return (
               <div
                 key={key}
-                className="rounded-xl p-4"
+                className="rounded-xl p-4 bg-[#F6F7F9]"
                 style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: `1px solid rgba(255,255,255,0.07)`,
+                  border: `1px solid #DFE1E5`,
                   borderLeft: `3px solid ${color}`,
                 }}
               >
@@ -130,13 +128,13 @@ export const DealStrengthLogicModal: React.FC<DealStrengthLogicModalProps> = ({ 
                     <div className="p-1.5 rounded-lg flex-shrink-0" style={{ background: `${color}18` }}>
                       <Icon className="w-3.5 h-3.5" style={{ color }} />
                     </div>
-                    <span className="text-sm font-bold text-white">{label}</span>
+                    <span className="text-sm font-bold text-[#1E2D5C]">{label}</span>
                   </div>
 
                   {/* Points badge + score */}
                   <div className="flex items-center gap-2 flex-shrink-0">
                     {earned !== null && (
-                      <span className="text-[11px] font-bold tabular-nums" style={{ color: done ? '#10b981' : '#94a3b8' }}>
+                      <span className="text-[11px] font-bold tabular-nums" style={{ color: done ? '#139B23' : '#78819D' }}>
                         {earned}/{max}
                       </span>
                     )}
@@ -151,10 +149,10 @@ export const DealStrengthLogicModal: React.FC<DealStrengthLogicModalProps> = ({ 
 
                 {/* Mini progress bar (only when strength is available) */}
                 {pct !== null && (
-                  <div className="w-full h-1.5 rounded-full overflow-hidden mb-3" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                  <div className="w-full h-1.5 rounded-full overflow-hidden mb-3" style={{ background: '#DFE1E5' }}>
                     <div
                       className="h-full rounded-full transition-all duration-700"
-                      style={{ width: `${pct}%`, backgroundColor: done ? '#10b981' : color }}
+                      style={{ width: `${pct}%`, backgroundColor: done ? '#139B23' : color }}
                     />
                   </div>
                 )}
@@ -162,7 +160,7 @@ export const DealStrengthLogicModal: React.FC<DealStrengthLogicModalProps> = ({ 
                 {/* Requirements list */}
                 <ul className="space-y-1">
                   {items.map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-slate-400">
+                    <li key={i} className="flex items-start gap-2 text-xs text-[#78819D]">
                       <span className="mt-0.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: color, marginTop: '5px' }} />
                       {item}
                     </li>
@@ -170,7 +168,7 @@ export const DealStrengthLogicModal: React.FC<DealStrengthLogicModalProps> = ({ 
                 </ul>
 
                 {footnote && (
-                  <p className="mt-2 text-[11px] text-slate-600 italic">{footnote}</p>
+                  <p className="mt-2 text-[11px] text-[#78819D] italic">{footnote}</p>
                 )}
               </div>
             );
@@ -178,20 +176,19 @@ export const DealStrengthLogicModal: React.FC<DealStrengthLogicModalProps> = ({ 
 
           {/* Deal Strength vs Deal Risk callout */}
           <div
-            className="rounded-xl p-4 mt-2"
-            style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}
+            className="rounded-xl p-4 mt-2 bg-[#FFF5DB] border border-[#EDDDB1]"
           >
-            <h4 className="text-sm font-bold text-amber-300 mb-2">
+            <h4 className="text-sm font-bold text-[#EAA800] mb-2">
               Application Score vs. Deal Risk — What's the difference?
             </h4>
             <div className="space-y-1.5">
-              <div className="flex items-start gap-2 text-xs text-amber-200/80">
-                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0" />
-                <span><strong className="text-amber-200">Application Score (You Control):</strong> Completeness, detail, and evidence. A high score means you've told the story well.</span>
+              <div className="flex items-start gap-2 text-xs text-[#EAA800]">
+                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#EAA800] flex-shrink-0" />
+                <span><strong className="text-[#EAA800]">Application Score (You Control):</strong> Completeness, detail, and evidence. A high score means you've told the story well.</span>
               </div>
-              <div className="flex items-start gap-2 text-xs text-amber-200/80">
-                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0" />
-                <span><strong className="text-amber-200">Deal Risk (Market Factors):</strong> Market trends, zip code risk, and financial feasibility. Largely outside your control but affects approval terms.</span>
+              <div className="flex items-start gap-2 text-xs text-[#EAA800]">
+                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#EAA800] flex-shrink-0" />
+                <span><strong className="text-[#EAA800]">Deal Risk (Market Factors):</strong> Market trends, zip code risk, and financial feasibility. Largely outside your control but affects approval terms.</span>
               </div>
             </div>
           </div>
@@ -200,11 +197,11 @@ export const DealStrengthLogicModal: React.FC<DealStrengthLogicModalProps> = ({ 
         {/* ── Footer ── */}
         <div
           className="px-6 py-4 flex justify-end border-t flex-shrink-0"
-          style={{ borderColor: 'rgba(255,255,255,0.08)' }}
+          style={{ borderColor: '#DFE1E5' }}
         >
           <button
             onClick={onClose}
-            className="button-base bg-brand-600 hover:bg-brand-500 text-white px-6 cursor-pointer"
+            className="button-base bg-brand-500 hover:bg-brand-600 text-white px-6 cursor-pointer"
           >
             Got it
           </button>

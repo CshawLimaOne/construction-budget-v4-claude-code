@@ -4,25 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Construction Budget Spreadsheet</title>
-  <!-- Lima One brand color token — must be defined before Tailwind CDN initializes -->
+  <!-- Retail 2.0 design tokens — must be defined before Tailwind CDN initializes -->
   <script>
     tailwind = {
       config: {
         theme: {
           extend: {
+            fontFamily: {
+              sans: ['Manrope', 'Arial', 'Helvetica', 'sans-serif'],
+            },
             colors: {
               brand: {
-                50:  '#eff8fe',
-                100: '#d5edfb',
-                200: '#a8daf7',
-                300: '#6bbff1',
-                400: '#2fa3e8',
-                500: '#0693e3',
-                600: '#0578c4',
-                700: '#0460a3',
-                800: '#074d80',
-                900: '#09406a',
-              }
+                50:  '#E5E9FF',
+                100: '#CCD4FF',
+                200: '#BEC6ED',
+                300: '#78819D',
+                400: '#4A5580',
+                500: '#1C39D8',
+                600: '#142BB9',
+                700: '#1E2D5C',
+                800: '#16225A',
+                900: '#0E1840',
+              },
+              'r2-bg':         '#F4F5F7',
+              'r2-card':       '#F6F7F9',
+              'r2-hover':      '#F7F9FC',
+              'r2-dark-hover': '#EBEDF2',
+              'r2-border':     '#DFE1E5',
+              'r2-disabled':   '#BCBFC7',
+              'r2-navy':       '#1E2D5C',
+              'r2-navy-sec':   '#78819D',
+              'r2-green':      '#139B23',
+              'r2-warning':    '#EAA800',
+              'r2-error':      '#B92814',
             }
           }
         }

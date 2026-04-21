@@ -1,16 +1,16 @@
 
-/* 
+/*
   WEB INTEGRATION STRATEGY - STEP 1 & 3: STYLE ISOLATION & BUNDLING
   All styles are scoped to #construction-budget-app.
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 /* Reset for the widget container only */
 #construction-budget-app {
-  font-family: 'Inter', Arial, Helvetica, sans-serif;
-  color: #1e293b; /* Default text for light outer background */
-  background-color: transparent;
+  font-family: 'Manrope', Arial, Helvetica, sans-serif;
+  color: #1E2D5C;
+  background-color: #F4F5F7;
   padding: 0;
   box-sizing: border-box;
   width: 100%;
@@ -20,10 +20,9 @@
 }
 
 /* --- PAGE TRANSITION ANIMATIONS --- */
-/* Professional Ease-Out Curve */
 #construction-budget-app .step-transition-wrapper {
     animation-duration: 0.6s;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); 
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
     animation-fill-mode: both;
     width: 100%;
 }
@@ -57,6 +56,7 @@
     border: none;
     min-height: 100vh;
     height: 100%;
+    background-color: #F4F5F7;
 }
 #construction-budget-app .app-shell-nav {
   flex-shrink: 0;
@@ -66,8 +66,8 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Main scroll handled by content-area */
-  height: calc(100vh - 80px); /* Approximate height minus header */
+  overflow: hidden;
+  height: calc(100vh - 80px);
 }
 #construction-budget-app .app-shell-footer {
   flex-shrink: 0;
@@ -79,7 +79,7 @@
 /* Two-column layout for budget wizard */
 #construction-budget-app .budget-wizard-layout {
   display: flex;
-  flex-direction: column; /* Mobile first: stack */
+  flex-direction: column;
   height: 100%;
   width: 100%;
   max-width: 1600px;
@@ -89,13 +89,13 @@
 
 @media (min-width: 1024px) {
   #construction-budget-app .budget-wizard-layout {
-    flex-direction: row; /* Desktop: side-by-side */
+    flex-direction: row;
   }
 }
 
-/* FLOATING SIDEBAR UPDATE */
+/* SIDEBAR */
 #construction-budget-app .sidebar {
-  width: 100%; /* Mobile: Full width */
+  width: 100%;
   flex-shrink: 0;
   padding: 1rem;
   z-index: 20;
@@ -105,43 +105,42 @@
 
 @media (min-width: 1024px) {
   #construction-budget-app .sidebar {
-    width: 340px; /* Fixed width for desktop */
+    width: 340px;
     height: 100%;
-    overflow-y: auto; /* Independent scroll for sidebar */
+    overflow-y: auto;
     position: relative;
     padding: 1.5rem;
   }
 }
 
-/* The actual Glass Card inside the sidebar */
+/* Sidebar panel — Retail 2.0 light card */
 #construction-budget-app .sidebar-glass-panel {
-    background: rgba(15, 23, 42, 0.6); /* Slate-900 with opacity */
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #FFFFFF;
+    border: 1px solid #DFE1E5;
     border-radius: 1.5rem;
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(30, 45, 92, 0.06);
 }
 
 #construction-budget-app .content-area {
   flex-grow: 1;
   padding: 1.5rem 2rem;
-  overflow-y: auto; /* Independent scroll for content */
+  overflow-y: auto;
   min-width: 0;
   height: 100%;
 }
 
 
-/* INPUT FIELDS — Clean white LO-brand style */
+/* INPUT FIELDS — Retail 2.0 */
 #construction-budget-app input,
 #construction-budget-app textarea,
 #construction-budget-app select {
   background-color: #ffffff;
-  color: #0f172a;
-  border: 1.5px solid #cbd5e1;
+  color: #1E2D5C;
+  border: 1.5px solid #DFE1E5;
   transition: all 0.2s ease;
   border-radius: 0.5rem;
   min-height: 40px;
@@ -149,140 +148,175 @@
 
 #construction-budget-app input::placeholder,
 #construction-budget-app textarea::placeholder {
-  color: #94a3b8 !important;
+  color: #BCBFC7 !important;
   opacity: 1;
 }
 
 #construction-budget-app input:not(:placeholder-shown):not(:focus),
 #construction-budget-app textarea:not(:placeholder-shown):not(:focus) {
-  background-color: #f8fafc;
-  color: #0f172a;
+  background-color: #F6F7F9;
+  color: #1E2D5C;
 }
 
 #construction-budget-app input:focus,
 #construction-budget-app textarea:focus,
 #construction-budget-app select:focus {
-  border-color: #0693e3;
+  border-color: #1C39D8;
   background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(6, 147, 227, 0.15);
+  box-shadow: 0 0 0 3px rgba(28, 57, 216, 0.12);
   outline: none;
 }
 
 #construction-budget-app input:disabled,
 #construction-budget-app textarea:disabled,
 #construction-budget-app select:disabled {
-  background-color: #f1f5f9 !important;
-  color: #94a3b8 !important;
+  background-color: #F4F5F7 !important;
+  color: #BCBFC7 !important;
   cursor: not-allowed;
-  border-color: #e2e8f0 !important;
+  border-color: #DFE1E5 !important;
 }
 
-/* Select options — light background to match new input style */
 #construction-budget-app select option {
     background-color: #ffffff;
-    color: #0f172a;
+    color: #1E2D5C;
 }
-
 
 #construction-budget-app .spreadsheet-input {
-  @apply w-full text-base; 
-  padding: 8px 10px; /* Reduced from 12px 14px */
+  width: 100%;
+  font-size: 1rem;
+  padding: 8px 10px;
 }
-/* Specific rule for inputs with placeholder '(your description)' for custom draw items */
+
 #construction-budget-app input[placeholder='(your description)'] {
-  background-color: rgba(6, 147, 227, 0.1); /* Blue tint */
+  background-color: #E5E9FF;
 }
 
 
 #construction-budget-app .table-header-dark {
-  @apply bg-slate-800 text-white font-bold text-left;
+  background-color: #F4F5F7;
+  color: #1E2D5C;
+  font-weight: 700;
+  text-align: left;
   padding: 12px 10px;
 }
 #construction-budget-app .section-title {
-  background: linear-gradient(to right, rgba(255,255,255,0.05), rgba(255,255,255,0));
-  @apply text-white p-4 font-bold text-lg mb-0 rounded-t-xl border-b border-white/10;
+  background: #F4F5F7;
+  color: #1E2D5C;
+  padding: 1rem;
+  font-weight: 700;
+  font-size: 1.125rem;
+  margin-bottom: 0;
+  border-radius: 0.75rem 0.75rem 0 0;
+  border-bottom: 1px solid #DFE1E5;
 }
 
-/* Section header h3 — LO cyan left-border accent */
+/* Section header h3 — Retail 2.0 accent left-border */
 #construction-budget-app .section-container h3 {
-  border-left: 4px solid #0693e3;
+  border-left: 4px solid #1C39D8;
   padding-left: 0.75rem !important;
-  color: #f1f5f9 !important;
+  color: #1E2D5C !important;
   letter-spacing: 0.01em;
 }
 #construction-budget-app .section-container {
-  @apply border border-white/10 mb-6 rounded-xl overflow-hidden shadow-lg bg-slate-900/85 backdrop-blur-sm;
+  border: 1px solid #DFE1E5;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(30, 45, 92, 0.05);
+  background-color: #FFFFFF;
 }
 #construction-budget-app .read-only-cell {
-  @apply bg-white/5 text-base;
-  padding: 8px 10px; /* Reduced from 12px 14px */ 
+  background-color: #F6F7F9;
+  font-size: 1rem;
+  padding: 8px 10px;
   vertical-align: middle;
-  color: #e2e8f0; 
+  color: #78819D;
 }
 #construction-budget-app .calculated-cell {
-  @apply text-base text-right;
-  padding: 8px 10px; /* Reduced */
+  font-size: 1rem;
+  text-align: right;
+  padding: 8px 10px;
   vertical-align: middle;
+  color: #1E2D5C;
 }
 #construction-budget-app .description-input-error {
-   @apply border-red-500 ring-2 ring-red-500;
+   border-color: #B92814 !important;
+   box-shadow: 0 0 0 2px rgba(185, 40, 20, 0.15) !important;
 }
 #construction-budget-app .highlight-red {
-    @apply text-red-400 font-bold;
+    color: #B92814;
+    font-weight: 700;
 }
 
-#construction-budget-app td, 
+#construction-budget-app td,
 #construction-budget-app th {
-  padding: 8px 10px; /* Reduced from 12px 14px */ 
-  vertical-align: middle; 
+  padding: 8px 10px;
+  vertical-align: middle;
 }
 #construction-budget-app td.p-0, #construction-budget-app th.p-0 { padding: 0 !important; }
-#construction-budget-app td.p-1, #construction-budget-app th.p-1 { padding: 4px !important; } /* Reduced from 6px */
+#construction-budget-app td.p-1, #construction-budget-app th.p-1 { padding: 4px !important; }
 
-/* Budget Table specific updates for Glassmorphism */
+/* Budget Table rows */
 #construction-budget-app tbody tr {
     background-color: transparent;
     transition: background-color 0.2s;
 }
 #construction-budget-app tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: #F7F9FC;
 }
 
-/* Modern Button Base */
+/* Modern Button Base — Retail 2.0 */
 #construction-budget-app .button-base {
-  @apply font-bold focus:outline-none focus:ring-4 focus:ring-opacity-50 transition-all duration-200 ease-out;
-  border-radius: 9999px; /* pill — explicit so it works in both CDN and PostCSS builds */
+  font-weight: 700;
+  font-family: 'Manrope', Arial, Helvetica, sans-serif;
+  border-radius: 8px;
   padding: 10px 20px;
   min-height: 42px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease-out;
+  box-shadow: none;
+  outline: none;
+}
+#construction-budget-app .button-base:focus {
+  box-shadow: 0 0 0 3px rgba(28, 57, 216, 0.2);
 }
 #construction-budget-app .button-base:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 45, 92, 0.12);
 }
 #construction-budget-app .button-base:active:not(:disabled) {
   transform: translateY(0);
 }
 #construction-budget-app .button-base:disabled {
-    @apply opacity-50 cursor-not-allowed transform-none shadow-none grayscale;
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    filter: grayscale(0.3);
 }
 #construction-budget-app .tutorial-button {
-  @apply text-base text-blue-400 bg-white/10 border border-blue-400/50 hover:bg-blue-900/30 focus:ring-blue-500 backdrop-blur-sm;
+  font-size: 1rem;
+  color: #1C39D8;
+  background-color: transparent;
+  border: 1px solid #1C39D8;
+  border-radius: 8px;
+}
+#construction-budget-app .tutorial-button:hover {
+  background-color: #E5E9FF;
 }
 
-/* Sidebar Styles - UPDATED */
+/* Sidebar Styles */
 #construction-budget-app .sidebar-header .property-address {
     font-size: 0.85rem;
     font-weight: 600;
     text-align: left;
     padding: 0.75rem;
     border-radius: 0.75rem;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.05);
-    color: #e2e8f0;
+    border: 1px solid #DFE1E5;
+    background: #F6F7F9;
+    color: #1E2D5C;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -297,15 +331,15 @@
     position: relative;
     padding-left: 0;
 }
-/* Updated Stepper Line */
+/* Stepper connector line */
 #construction-budget-app .vertical-stepper::before {
     content: '';
     position: absolute;
-    left: 20px; 
+    left: 20px;
     top: 24px;
     bottom: 24px;
     width: 2px;
-    background: linear-gradient(to bottom, #0693e3 40%, rgba(255,255,255,0.1) 100%); 
+    background: linear-gradient(to bottom, #1C39D8 40%, #DFE1E5 100%);
     z-index: 0;
 }
 #construction-budget-app .vertical-stepper .step {
@@ -316,7 +350,7 @@
     z-index: 1;
 }
 #construction-budget-app .vertical-stepper .step.clickable { cursor: pointer; }
-#construction-budget-app .vertical-stepper .step.clickable:hover .step-label { color: #2fa3e8; }
+#construction-budget-app .vertical-stepper .step.clickable:hover .step-label { color: #1C39D8; }
 
 #construction-budget-app .step-icon-wrapper {
     width: 40px;
@@ -324,35 +358,35 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%; /* Fully round for modern look */
+    border-radius: 50%;
     margin-right: 1rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background-color: #0f172a; 
-    border: 2px solid rgba(255,255,255,0.1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background-color: #F4F5F7;
+    border: 2px solid #DFE1E5;
+    box-shadow: none;
 }
-/* Active Step Glow */
+/* Active step */
 #construction-budget-app .step.current .step-icon-wrapper {
-    background: #0578c4;
-    border-color: #2fa3e8;
-    box-shadow: 0 0 15px rgba(6, 147, 227, 0.5);
+    background: #1C39D8;
+    border-color: #142BB9;
+    box-shadow: none;
     transform: scale(1.1);
 }
 #construction-budget-app .step.completed .step-icon-wrapper {
-    background: #0f172a;
-    border-color: #0693e3;
-    color: #0693e3;
+    background: #F4F5F7;
+    border-color: #1C39D8;
+    color: #1C39D8;
 }
 
 #construction-budget-app .step-icon { width: 18px; height: 18px; }
-#construction-budget-app .step-label { 
-    font-size: 0.95rem; 
-    font-weight: 500; 
-    color: #94a3b8;
-    transition: color 0.3s; 
+#construction-budget-app .step-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #78819D;
+    transition: color 0.3s;
 }
-#construction-budget-app .step.current .step-label { color: white; font-weight: 700; }
-#construction-budget-app .step.completed .step-label { color: #cbd5e1; }
+#construction-budget-app .step.current .step-label { color: #1E2D5C; font-weight: 700; }
+#construction-budget-app .step.completed .step-label { color: #1E2D5C; }
 
 #construction-budget-app .sidebar-sticky-bottom {
   flex-shrink: 0;
@@ -366,16 +400,15 @@
 #construction-budget-app .help-link:hover { opacity: 1; text-decoration: underline; }
 
 /* ═══════════════════════════════════════════════
-   WELCOME SCREEN — Premium Redesign
+   WELCOME SCREEN — Retail 2.0
    ═══════════════════════════════════════════════ */
 
-/* Root container */
 #construction-budget-app .welcome-root {
   min-height: 100vh;
-  background-color: #0a0f23;
+  background-color: #F4F5F7;
 }
 
-/* ── Ambient Orbs ── */
+/* Ambient Orbs — subtle light version */
 #construction-budget-app .welcome-orb {
   position: absolute;
   border-radius: 50%;
@@ -385,19 +418,19 @@
 }
 #construction-budget-app .welcome-orb-1 {
   width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(6,147,227,0.18) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(28, 57, 216, 0.06) 0%, transparent 70%);
   top: -15%; right: -10%;
   animation-delay: 0s;
 }
 #construction-budget-app .welcome-orb-2 {
   width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(30,46,92,0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(30, 45, 92, 0.05) 0%, transparent 70%);
   bottom: -10%; left: -8%;
   animation-delay: -4s;
 }
 #construction-budget-app .welcome-orb-3 {
   width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(6,147,227,0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(28, 57, 216, 0.04) 0%, transparent 70%);
   top: 40%; left: 30%;
   animation-delay: -8s;
 }
@@ -406,7 +439,7 @@
   50%       { transform: translateY(-30px) scale(1.06); }
 }
 
-/* ── Staggered Fade-Up Entrance ── */
+/* Staggered Fade-Up Entrance */
 #construction-budget-app .welcome-fade-up {
   opacity: 0;
   transform: translateY(28px);
@@ -421,32 +454,30 @@
 #construction-budget-app .welcome-delay-4 { transition-delay: 0.45s; }
 #construction-budget-app .welcome-delay-5 { transition-delay: 0.55s; }
 
-/* ── Badge ── */
+/* Badge */
 #construction-budget-app .welcome-badge {
-  background: rgba(6, 147, 227, 0.12);
-  border: 1px solid rgba(6, 147, 227, 0.3);
-  backdrop-filter: blur(8px);
+  background: #E5E9FF;
+  border: 1px solid #BEC6ED;
 }
 
-/* ── Gradient Headline Text ── */
+/* Headline — solid navy replacing gradient */
 #construction-budget-app .welcome-gradient-text {
-  background: linear-gradient(90deg, #F5A623 0%, #0693e3 60%, #38bdf8 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-fill-color: transparent;
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: #1E2D5C;
+  color: #1E2D5C;
 }
 
-/* ── Stats Strip ── */
+/* Stats Strip */
 #construction-budget-app .welcome-stats-strip {
   display: flex;
   align-items: center;
   gap: 0;
   padding: 1rem 1.25rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #FFFFFF;
+  border: 1px solid #DFE1E5;
   border-radius: 1rem;
-  backdrop-filter: blur(12px);
 }
 #construction-budget-app .welcome-stat-item {
   display: flex;
@@ -459,81 +490,67 @@
 #construction-budget-app .welcome-stat-divider {
   width: 1px;
   height: 2rem;
-  background: rgba(255, 255, 255, 0.15);
+  background: #DFE1E5;
   margin: 0 1rem;
   flex-shrink: 0;
 }
 
-/* ── Drop Zone ── */
+/* Drop Zone */
 #construction-budget-app .welcome-drop-zone {
   min-height: 100px;
 }
 
-/* Scan line animation */
+/* Scan line — hidden in Retail 2.0 */
 #construction-budget-app .welcome-scan-line {
-  position: absolute;
-  left: 0; right: 0;
-  height: 1.5px;
-  background: linear-gradient(90deg, transparent, rgba(6,147,227,0.6), transparent);
-  animation: scanLine 3s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes scanLine {
-  0%   { top: 0%;   opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
+  display: none;
 }
 
-/* ── Primary Card ── */
+/* Primary Card */
 #construction-budget-app .welcome-card-primary {
-  background: rgba(15, 23, 60, 0.75);
-  border: 1px solid rgba(6, 147, 227, 0.35);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 0 0 0 rgba(6,147,227,0);
+  background: #FFFFFF;
+  border: 1px solid #DFE1E5;
+  box-shadow: 0 2px 8px rgba(30, 45, 92, 0.06);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 #construction-budget-app .welcome-card-primary:hover {
-  border-color: rgba(6, 147, 227, 0.7);
-  background: rgba(6, 40, 90, 0.8);
-  box-shadow: 0 0 35px rgba(6, 147, 227, 0.22), 0 16px 40px rgba(0,0,0,0.35);
+  border-color: #1C39D8;
+  background: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(28, 57, 216, 0.12);
 }
 
-/* ── Primary Card Icon Gradient ── */
+/* Primary Card Icon */
 #construction-budget-app .welcome-icon-gradient {
-  background: linear-gradient(135deg, #0693e3, #0578c4);
-  box-shadow: 0 4px 20px rgba(6, 147, 227, 0.45);
+  background: linear-gradient(135deg, #1C39D8, #142BB9);
+  box-shadow: none;
 }
 
-/* ── Secondary Card ── */
+/* Secondary Card */
 #construction-budget-app .welcome-card-secondary {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
+  background: #FFFFFF;
+  border: 1px solid #DFE1E5;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 #construction-budget-app .welcome-card-secondary:hover {
-  border-color: rgba(6, 147, 227, 0.4);
-  background: rgba(15, 30, 60, 0.75);
-  box-shadow: 0 0 20px rgba(6, 147, 227, 0.12), 0 10px 30px rgba(0,0,0,0.3);
+  border-color: #1C39D8;
+  background: #F7F9FC;
+  box-shadow: 0 2px 8px rgba(28, 57, 216, 0.08);
 }
 
-/* ── Power Tool Buttons ── */
+/* Power Tool Buttons */
 #construction-budget-app .welcome-tool-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #F6F7F9;
+  border: 1px solid #DFE1E5;
 }
 #construction-budget-app .welcome-tool-btn:hover {
-  background: rgba(6, 147, 227, 0.12);
-  border-color: rgba(6, 147, 227, 0.35);
-  box-shadow: 0 0 15px rgba(6, 147, 227, 0.2);
+  background: #E5E9FF;
+  border-color: #1C39D8;
+  box-shadow: none;
 }
 
-/* ── Trust Bar ── */
+/* Trust Bar */
 #construction-budget-app .welcome-trust-bar {
-  background: rgba(0, 0, 0, 0.35);
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(8px);
+  background: #FFFFFF;
+  border-top: 1px solid #DFE1E5;
 }
 #construction-budget-app .welcome-trust-item {
   display: inline-flex;
@@ -541,7 +558,7 @@
   gap: 0.4rem;
   font-size: 0.7rem;
   font-weight: 600;
-  color: #64748b;
+  color: #78819D;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -549,7 +566,7 @@
   display: inline-block;
   width: 3px; height: 3px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.2);
+  background: #DFE1E5;
 }
 
 /* Legacy class kept for compat */
@@ -561,11 +578,10 @@
 
 /* Step hero banner */
 #construction-budget-app .step1-hero {
-  background: linear-gradient(135deg, rgba(6,147,227,0.08) 0%, rgba(15,23,42,0.6) 100%);
-  border: 1px solid rgba(6,147,227,0.2);
+  background: #E5E9FF;
+  border: 1px solid #BEC6ED;
   border-radius: 1rem;
   padding: 1.25rem 1.5rem;
-  backdrop-filter: blur(8px);
 }
 
 /* Section numbered header */
@@ -577,10 +593,9 @@
 #construction-budget-app .step1-section-number {
   font-size: 1.25rem;
   font-weight: 900;
-  color: #0693e3;
+  color: #1C39D8;
   flex-shrink: 0;
   line-height: 1.4;
-  text-shadow: 0 0 20px rgba(6,147,227,0.4);
 }
 
 /* Form label */
@@ -588,54 +603,54 @@
   display: block;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #cbd5e1;
+  color: #1E2D5C;
   margin-bottom: 0.375rem;
   letter-spacing: 0.01em;
 }
 
-/* Premium form input — replaces spreadsheet-input for Step 1 */
+/* Premium form input — Retail 2.0 light style */
 #construction-budget-app .form-input-premium {
-  background-color: rgba(15, 23, 42, 0.6);
-  color: #f1f5f9;
-  border: 1.5px solid rgba(255,255,255,0.12);
+  background-color: #FFFFFF;
+  color: #1E2D5C;
+  border: 1.5px solid #DFE1E5;
   border-radius: 0.625rem;
   padding: 0.75rem 1rem;
   font-size: 0.9375rem;
   min-height: 48px;
   width: 100%;
   transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-  backdrop-filter: blur(4px);
 }
 #construction-budget-app .form-input-premium::placeholder {
-  color: #475569;
+  color: #BCBFC7;
 }
 #construction-budget-app .form-input-premium:focus {
-  border-color: #0693e3;
-  background-color: rgba(6, 147, 227, 0.06);
-  box-shadow: 0 0 0 3px rgba(6,147,227,0.15);
+  border-color: #1C39D8;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(28, 57, 216, 0.12);
   outline: none;
-  color: #f8fafc;
+  color: #1E2D5C;
 }
 #construction-budget-app .form-input-premium:not(:placeholder-shown):not(:focus) {
-  background-color: rgba(15, 23, 42, 0.8);
-  border-color: rgba(255,255,255,0.18);
-  color: #f1f5f9;
+  background-color: #F6F7F9;
+  border-color: #DFE1E5;
+  color: #1E2D5C;
 }
 #construction-budget-app .form-input-premium:disabled {
-  opacity: 0.45;
+  opacity: 0.6;
   cursor: not-allowed;
-  background-color: rgba(15,23,42,0.3);
+  background-color: #F4F5F7;
+  color: #BCBFC7;
 }
 #construction-budget-app select.form-input-premium option {
-  background-color: #1e293b;
-  color: #f1f5f9;
+  background-color: #FFFFFF;
+  color: #1E2D5C;
 }
 
 /* Specs table inputs */
 #construction-budget-app .specs-input {
-  background-color: rgba(255,255,255,0.04);
-  color: #cbd5e1;
-  border: 1.5px solid rgba(255,255,255,0.1);
+  background-color: #FFFFFF;
+  color: #1E2D5C;
+  border: 1.5px solid #DFE1E5;
   border-radius: 0.5rem;
   padding: 0.4rem 0.5rem;
   font-size: 0.875rem;
@@ -643,21 +658,21 @@
   text-align: center;
 }
 #construction-budget-app .specs-input:focus {
-  border-color: #0693e3;
-  background-color: rgba(6,147,227,0.08);
-  box-shadow: 0 0 0 2px rgba(6,147,227,0.15);
+  border-color: #1C39D8;
+  background-color: #F7F9FC;
+  box-shadow: 0 0 0 2px rgba(28, 57, 216, 0.12);
   outline: none;
-  color: #f8fafc;
+  color: #1E2D5C;
 }
 #construction-budget-app .specs-input-projected {
-  border-color: rgba(6,147,227,0.3);
-  color: #38bdf8;
-  background-color: rgba(6,147,227,0.06);
+  border-color: #BEC6ED;
+  color: #1C39D8;
+  background-color: #E5E9FF;
 }
 #construction-budget-app .specs-input-projected:focus {
-  border-color: #0693e3;
-  background-color: rgba(6,147,227,0.12);
-  color: #7dd3fc;
+  border-color: #1C39D8;
+  background-color: #CCD4FF;
+  color: #1E2D5C;
 }
 
 /* VisualSelector card selection animation */
@@ -692,23 +707,22 @@
 
 #construction-budget-app .pts-root {
   min-height: 100vh;
-  background-color: #0a0f23;
+  background-color: #F4F5F7;
 }
 
-/* Card: shadow + transition */
 #construction-budget-app .pts-card {
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 12px rgba(30, 45, 92, 0.08);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
 }
 #construction-budget-app .pts-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(6, 147, 227, 0.2);
+  box-shadow: 0 12px 40px rgba(30, 45, 92, 0.12), 0 0 20px rgba(28, 57, 216, 0.08);
 }
 
 /* ═══════════════════════════════════════════════
-   REDUCED MOTION — respect prefers-reduced-motion
+   REDUCED MOTION
    ═══════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   #construction-budget-app .welcome-fade-up {
@@ -719,10 +733,6 @@
   #construction-budget-app .welcome-orb {
     animation: none;
   }
-  #construction-budget-app .welcome-scan-line {
-    animation: none;
-    display: none;
-  }
   #construction-budget-app .pts-card {
     transition: box-shadow 0.2s ease;
   }
@@ -731,21 +741,21 @@
   }
 }
 
-/* Role Switcher Toggle — LO pill style */
+/* Role Switcher Toggle — Retail 2.0 pill style */
 #construction-budget-app .role-switcher-container {
     display: flex;
-    border-radius: 9999px;
+    border-radius: 8px;
     padding: 0.25rem;
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid #DFE1E5;
     min-height: 42px;
-    background: rgba(255,255,255,0.06);
+    background: #F4F5F7;
     gap: 0.125rem;
 }
 #construction-budget-app .role-switcher-option {
     padding: 0.4rem 1.25rem;
     border: none;
     background-color: transparent;
-    border-radius: 9999px;
+    border-radius: 6px;
     font-weight: 600;
     font-size: 0.875rem;
     cursor: pointer;
@@ -753,35 +763,35 @@
     z-index: 1;
     text-align: center;
     flex: 1;
-    color: #94a3b8;
+    color: #78819D;
     letter-spacing: 0.01em;
 }
 #construction-budget-app .role-switcher-option:hover:not(.active) {
-    color: #e2e8f0;
-    background: rgba(255,255,255,0.06);
+    color: #1E2D5C;
+    background: #EBEDF2;
 }
 
 /* Commenting System */
 #construction-budget-app .comment-indicator-wrapper {
     position: absolute;
     top: 50%;
-    right: -2.5rem; 
+    right: -2.5rem;
     transform: translateY(-50%);
-    display: none; 
+    display: none;
     z-index: 10;
 }
 #construction-budget-app .relative:hover .comment-indicator-wrapper,
 #construction-budget-app .comment-indicator-wrapper:hover {
-    display: flex; 
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 #construction-budget-app .comment-indicator-table-cell {
-    display: none; 
+    display: none;
 }
 #construction-budget-app tr:hover .comment-indicator-table-cell,
 #construction-budget-app .comment-indicator-table-cell:hover {
-    display: flex; 
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -791,9 +801,9 @@
     display: flex;
     align-items: flex-start;
     padding: 1.5rem 1rem;
-    background-color: rgba(255,255,255,0.05);
+    background-color: #FFFFFF;
     border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid #DFE1E5;
 }
 #construction-budget-app .progress-bar-step {
     display: flex;
@@ -810,13 +820,13 @@
     position: relative;
     top: 18px;
     height: 4px;
-    background-color: rgba(255,255,255,0.1);
+    background-color: #DFE1E5;
     border-radius: 2px;
     transition: background-color 0.4s ease;
 }
 #construction-budget-app .progress-bar-line-container.completed {
-    background-color: #0693e3;
-    box-shadow: 0 0 10px rgba(6, 147, 227, 0.5);
+    background-color: #1C39D8;
+    box-shadow: none;
 }
 #construction-budget-app .progress-bar-circle {
     width: 36px;
@@ -831,14 +841,14 @@
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 #construction-budget-app .progress-bar-step.current .progress-bar-circle {
-    background: linear-gradient(135deg, #0693e3, #0578c5);
+    background: #1C39D8;
     border: 2px solid white;
     color: white;
     transform: scale(1.2);
-    box-shadow: 0 0 15px rgba(6, 147, 227, 0.4);
+    box-shadow: none;
 }
 #construction-budget-app .progress-bar-step.completed .progress-bar-circle {
-    background: linear-gradient(135deg, #0693e3, #0578c4);
+    background: #1C39D8;
     border: none;
     color: white;
 }
@@ -846,21 +856,21 @@
     margin-top: 1rem;
     font-size: 0.85rem;
     font-weight: 500;
-    color: #94a3b8;
+    color: #78819D;
     transition: color 0.4s ease;
 }
 #construction-budget-app .progress-bar-step.current .progress-bar-label {
-    color: #0693e3;
+    color: #1C39D8;
     font-weight: 700;
 }
 #construction-budget-app .progress-bar-step.completed .progress-bar-label {
-    color: #e2e8f0;
+    color: #1E2D5C;
 }
 
 /* Mobile Responsive Budget Table */
 @media (max-width: 1024px) {
-  #construction-budget-app .budget-wizard-layout { 
-      flex-direction: column; 
+  #construction-budget-app .budget-wizard-layout {
+      flex-direction: column;
       height: auto;
       overflow-y: visible;
   }
@@ -870,14 +880,14 @@
       position: static;
       overflow: visible;
   }
-  
-  #construction-budget-app .content-area { 
-      width: 100%; 
-      padding: 1rem; 
+
+  #construction-budget-app .content-area {
+      width: 100%;
+      padding: 1rem;
       height: auto;
       overflow: visible;
   }
-  
+
   #construction-budget-app .app-shell-main {
       height: auto;
       overflow-y: auto;
@@ -894,51 +904,52 @@
   #construction-budget-app .responsive-budget-table { border: 0; }
   #construction-budget-app .responsive-budget-table thead { display: none; }
   #construction-budget-app .responsive-budget-table tr,
-  #construction-budget-app .responsive-budget-table tbody tr { 
+  #construction-budget-app .responsive-budget-table tbody tr {
     display: block;
-    margin-bottom: 1.5rem; 
-    border: 1px solid rgba(255,255,255,0.1); 
+    margin-bottom: 1.5rem;
+    border: 1px solid #DFE1E5;
     border-radius: 12px;
     overflow: hidden;
-    background-color: rgba(30, 41, 59, 0.6);
+    background-color: #FFFFFF;
   }
-  
+
   #construction-budget-app .responsive-budget-table td,
   #construction-budget-app .responsive-budget-table th {
     display: flex !important;
-    flex-direction: column; 
+    flex-direction: column;
     text-align: left;
-    font-size: 1rem; 
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 1rem;
+    border-bottom: 1px solid #F4F5F7;
     position: relative;
-    padding: 1rem 1rem !important; 
+    padding: 1rem 1rem !important;
     min-height: auto;
   }
-  
+
   #construction-budget-app .responsive-budget-table td::before,
   #construction-budget-app .responsive-budget-table th::before {
     content: attr(data-label);
-    position: static; 
+    position: static;
     width: 100%;
     margin-bottom: 0.5rem;
     font-weight: 700;
-    color: #94a3b8; 
+    color: #78819D;
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 0.05em;
   }
 }
 
-/* Shepherd.js tour styles — app is always dark, no OS theme check needed */
-.shepherd-element { background: #1e293b; border: 1px solid #334155; }
-.shepherd-header { background-color: #0f172a; }
-.shepherd-text { color: #cbd5e1; }
-.shepherd-button { background: #0693e3; }
-.shepherd-button-secondary { background: #334155; color: #cbd5e1; }
-.shepherd-arrow::before { background-color: #1e293b; }
+/* Shepherd.js tour styles — Retail 2.0 light */
+.shepherd-element { background: #FFFFFF; border: 1px solid #DFE1E5; box-shadow: 0 4px 24px rgba(30, 45, 92, 0.1); }
+.shepherd-header { background-color: #F4F5F7; border-bottom: 1px solid #DFE1E5; }
+.shepherd-text { color: #1E2D5C; }
+.shepherd-button { background: #1C39D8; color: #FFFFFF; border-radius: 8px; }
+.shepherd-button:hover { background: #142BB9; }
+.shepherd-button-secondary { background: #F4F5F7; color: #1E2D5C; border-radius: 8px; }
+.shepherd-button-secondary:hover { background: #EBEDF2; }
+.shepherd-arrow::before { background-color: #FFFFFF; }
 
 @media print {
-  /* ... existing print styles preserved ... */
   html { padding: 0 !important; background-color: white !important; height: auto; }
   body { border: none !important; height: auto; }
   #construction-budget-app { padding: 0 !important; background-color: white !important; border: none !important; height: auto !important; color: black !important; }
@@ -948,16 +959,15 @@
   #construction-budget-app .content-area { width: 100% !important; padding: 0 !important; overflow: visible !important; }
   #construction-budget-app .main-content-container { box-shadow: none !important; margin: 0 !important; padding: 0 !important; border: 1px solid #ccc !important; background: white !important; }
   #construction-budget-app .app-dashboard { display: none !important; }
-  
-  #construction-budget-app input, 
+
+  #construction-budget-app input,
   #construction-budget-app textarea,
   #construction-budget-app select { border: 1px solid #999 !important; background: white !important; color: black !important; }
-  
+
   #construction-budget-app .text-white { color: black !important; }
   #construction-budget-app .bg-\[\#1E2E5C\] { background-color: #eee !important; color: black !important; }
-  
-  /* Print fix for gradients */
-  #construction-budget-app .bg-gradient-to-br, 
+
+  #construction-budget-app .bg-gradient-to-br,
   #construction-budget-app .bg-gradient-to-r {
       background: none !important;
       background-color: white !important;

@@ -170,17 +170,17 @@ export const BulkPhotoUploader: React.FC<BulkPhotoUploaderProps> = ({
   const DropZone = () => (
     <div
       className={`w-full p-8 border-2 border-dashed rounded-lg flex flex-col items-center justify-center text-center transition-colors
-        ${isDragging ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/50' : 'border-slate-300 dark:border-slate-600 hover:border-brand-400 dark:hover:border-brand-500'}`}
+        ${isDragging ? 'border-brand-500 bg-brand-50' : 'border-[#DFE1E5] hover:border-brand-400'}`}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <CloudUploadIcon className="text-slate-400 dark:text-slate-500 mb-4 h-12 w-12" />
-      <p className="text-slate-600 dark:text-slate-300">
-        <span className="font-semibold text-brand-600 dark:text-sky-400">Click to upload</span> or drag and drop
+      <CloudUploadIcon className="text-[#78819D] mb-4 h-12 w-12" />
+      <p className="text-[#78819D]">
+        <span className="font-semibold text-brand-500">Click to upload</span> or drag and drop
       </p>
-      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">PNG, JPG, GIF up to 10MB</p>
+      <p className="text-xs text-[#78819D] mt-1">PNG, JPG, GIF up to 10MB</p>
       <input
         ref={fileInputRef}
         type="file"
@@ -211,7 +211,7 @@ export const BulkPhotoUploader: React.FC<BulkPhotoUploaderProps> = ({
   const StagedPhotosGrid = () => (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {stagedPhotos.map((photo, index) => (
-        <div key={index} className={`border rounded-lg p-2 bg-slate-50 dark:bg-slate-700/50 flex flex-col space-y-2 relative transition-all duration-500 ${isAnalyzing ? 'opacity-50 scale-95' : 'opacity-100 scale-100'} ${(photo as any).isAiAssigned ? 'ring-2 ring-purple-500 ring-offset-1 dark:ring-offset-slate-800' : ''}`}>
+        <div key={index} className={`border rounded-lg p-2 bg-[#F6F7F9] flex flex-col space-y-2 relative transition-all duration-500 ${isAnalyzing ? 'opacity-50 scale-95' : 'opacity-100 scale-100'} ${(photo as any).isAiAssigned ? 'ring-2 ring-purple-500 ring-offset-1' : ''}`}>
           <div className="relative">
               <img src={photo.preview} alt={`preview ${index}`} className="w-full h-32 object-cover rounded-md" />
               {(photo as any).isAiAssigned && (
@@ -247,14 +247,14 @@ export const BulkPhotoUploader: React.FC<BulkPhotoUploaderProps> = ({
     <>
       <button
         onClick={onClose}
-        className="button-base bg-transparent text-slate-700 border border-slate-300 hover:bg-slate-100 focus:ring-slate-300 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-700"
+        className="button-base bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC]"
       >
         Cancel
       </button>
       <button
         onClick={onFinalize}
         disabled={stagedPhotos.length === 0}
-        className="button-base bg-[#32373c] text-white hover:bg-[#4a5056] focus:ring-slate-500 disabled:bg-slate-400 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+        className="button-base bg-brand-500 text-white hover:bg-brand-600 focus:ring-brand-500 disabled:bg-[#BCBFC7] disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
       >
         Done ({stagedPhotos.filter(p => p.assignment).length}/{stagedPhotos.length} Assigned)
       </button>
@@ -273,8 +273,8 @@ export const BulkPhotoUploader: React.FC<BulkPhotoUploaderProps> = ({
             <DropZone />
             {isAnalyzing && (
                 <div className="text-center py-4 animate-pulse">
-                    <p className="text-purple-400 font-bold text-lg">AI Vision is analyzing your photos...</p>
-                    <p className="text-slate-500 text-sm">Matching construction elements to budget line items.</p>
+                    <p className="text-brand-500 font-bold text-lg">AI Vision is analyzing your photos...</p>
+                    <p className="text-[#78819D] text-sm">Matching construction elements to budget line items.</p>
                 </div>
             )}
             {stagedPhotos.length > 0 && <StagedPhotosGrid />}

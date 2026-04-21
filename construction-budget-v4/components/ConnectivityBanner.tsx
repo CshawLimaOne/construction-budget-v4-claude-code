@@ -11,7 +11,7 @@ export const ConnectivityBanner: React.FC<ConnectivityBannerProps> = ({ isOnline
   if (isOnline && pendingCount === 0) return null;
 
   return (
-    <div className={`w-full py-2 px-4 text-xs font-bold text-center flex items-center justify-center transition-colors duration-500 ${isOnline ? 'bg-brand-600 text-white' : 'bg-amber-500 text-black'}`}>
+    <div className={`w-full py-2 px-4 text-xs font-bold text-center flex items-center justify-center transition-colors duration-500 ${isOnline ? 'bg-brand-500 text-white' : 'bg-[#EAA800] text-white'}`}>
       {isOnline ? (
         <>
           <CloudUploadIcon className="w-4 h-4 mr-2 animate-bounce" />

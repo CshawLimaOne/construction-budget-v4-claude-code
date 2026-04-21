@@ -60,15 +60,15 @@ export const SoftCostWizardModal: React.FC<SoftCostWizardModalProps> = ({ isOpen
   const impactItem = currentItems.find(i => i.drawItem === 'Impact Fees');
 
   const renderInput = (id: string, label: string, budget: number) => (
-      <div key={id} className="flex justify-between items-center py-3 border-b border-slate-100 dark:border-slate-700 last:border-0">
-          <label className="text-sm font-medium text-slate-700 dark:text-slate-300 w-2/3">{label}</label>
+      <div key={id} className="flex justify-between items-center py-3 border-b border-[#DFE1E5] last:border-0">
+          <label className="text-sm font-medium text-[#1E2D5C] w-2/3">{label}</label>
           <div className="w-1/3 relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">$</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#78819D] text-sm">$</span>
               <input
                   type="number"
                   value={budget === 0 ? '' : budget}
                   onChange={(e) => handleCostChange(id, e.target.value)}
-                  className="w-full pl-6 pr-3 py-2 text-right border border-slate-300 dark:border-slate-600 rounded-md text-sm focus:ring-brand-500 focus:border-brand-500 dark:bg-slate-700 dark:text-white"
+                  className="w-full pl-6 pr-3 py-2 text-right border border-[#DFE1E5] rounded-md text-sm focus:ring-brand-500 focus:border-brand-500 bg-white text-[#1E2D5C]"
                   placeholder="0"
               />
           </div>
@@ -77,13 +77,13 @@ export const SoftCostWizardModal: React.FC<SoftCostWizardModalProps> = ({ isOpen
 
   const footer = (
     <>
-        <div className="mr-auto text-sm font-bold text-slate-600 dark:text-slate-300">
-            Total: <span className="text-brand-600 dark:text-brand-400 text-lg ml-1">${totalSoftCosts.toLocaleString()}</span>
+        <div className="mr-auto text-sm font-bold text-[#1E2D5C]">
+            Total: <span className="text-brand-500 text-lg ml-1">${totalSoftCosts.toLocaleString()}</span>
         </div>
-        <button onClick={onClose} className="button-base bg-transparent text-slate-600 border border-slate-300 hover:bg-slate-100 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-700 mr-2">
+        <button onClick={onClose} className="button-base bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC] mr-2">
             Cancel
         </button>
-        <button onClick={handleSave} className="button-base bg-[#32373c] text-white hover:bg-[#4a5056] focus:ring-slate-500">
+        <button onClick={handleSave} className="button-base bg-brand-500 text-white hover:bg-brand-600">
             Update Budget
         </button>
     </>
@@ -92,13 +92,13 @@ export const SoftCostWizardModal: React.FC<SoftCostWizardModalProps> = ({ isOpen
   return (
     <ComplexModal isOpen={isOpen} onClose={onClose} title="New Construction Soft Cost Wizard" footer={footer} size="lg">
         <div className="space-y-6">
-            <div className="bg-brand-50 dark:bg-brand-900/20 p-4 rounded-lg border border-brand-100 dark:border-brand-800 flex items-start">
-                <div className="bg-brand-100 dark:bg-brand-800 p-2 rounded-full mr-3 text-brand-600 dark:text-brand-300">
+            <div className="bg-brand-50 p-4 rounded-lg border border-brand-200 flex items-start">
+                <div className="bg-brand-50 p-2 rounded-full mr-3 text-brand-500">
                     <MagicWandIcon className="w-6 h-6" />
                 </div>
                 <div>
-                    <h4 className="font-bold text-brand-900 dark:text-brand-100">Plan Your Soft Costs</h4>
-                    <p className="text-sm text-brand-700 dark:text-brand-300 mt-1">
+                    <h4 className="font-bold text-[#1E2D5C]">Plan Your Soft Costs</h4>
+                    <p className="text-sm text-[#78819D] mt-1">
                         Soft costs for new construction can be significant (often $50k+). Use this wizard to ensure you've budgeted for all necessary professional services and municipal fees.
                     </p>
                 </div>
@@ -107,20 +107,20 @@ export const SoftCostWizardModal: React.FC<SoftCostWizardModalProps> = ({ isOpen
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Column 1: Professional Services */}
                 <div>
-                    <h4 className="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-3 border-b border-slate-200 pb-1">Professional Services</h4>
+                    <h4 className="text-xs font-bold uppercase text-[#78819D] mb-3 border-b border-[#DFE1E5] pb-1">Professional Services</h4>
                     {professionalServices.map(row => renderInput(row.id, row.drawItem, costs[row.id] || 0))}
                 </div>
 
                 {/* Column 2: Municipal & Impact Fees */}
                 <div>
-                    <h4 className="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-3 border-b border-slate-200 pb-1">Municipal & Impact Fees</h4>
+                    <h4 className="text-xs font-bold uppercase text-[#78819D] mb-3 border-b border-[#DFE1E5] pb-1">Municipal & Impact Fees</h4>
                     {permitItem && renderInput(permitItem.id, "Building Permit (Base)", costs[permitItem.id] || 0)}
                     {impactItem && renderInput(impactItem.id, "General Impact Fees", costs[impactItem.id] || 0)}
                     {municipalFees.map(row => renderInput(row.id, row.drawItem, costs[row.id] || 0))}
                 </div>
             </div>
             
-            <div className="text-xs text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 p-3 rounded italic">
+            <div className="text-xs text-[#78819D] bg-[#F6F7F9] p-3 rounded italic">
                 <InfoIcon className="w-3 h-3 inline mr-1" />
                 Note: Tap fees vary wildly by district. Check with your local utility provider for exact quotes.
             </div>

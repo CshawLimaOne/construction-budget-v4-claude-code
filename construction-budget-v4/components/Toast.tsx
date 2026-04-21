@@ -30,15 +30,15 @@ export const useToast = () => {
 };
 
 const ICON_MAP: Record<ToastType, React.ReactNode> = {
-  success: <CheckCircleIcon className="w-5 h-5 text-emerald-400 flex-shrink-0" />,
-  error: <ExclamationCircleIcon className="w-5 h-5 text-red-400 flex-shrink-0" />,
-  info: <InfoIcon className="w-5 h-5 text-brand-400 flex-shrink-0" />,
+  success: <CheckCircleIcon className="w-5 h-5 text-[#139B23] flex-shrink-0" />,
+  error: <ExclamationCircleIcon className="w-5 h-5 text-[#B92814] flex-shrink-0" />,
+  info: <InfoIcon className="w-5 h-5 text-brand-500 flex-shrink-0" />,
 };
 
 const BORDER_MAP: Record<ToastType, string> = {
-  success: 'border-emerald-500/40',
-  error: 'border-red-500/40',
-  info: 'border-brand-500/40',
+  success: 'border-[#ADDEB4]',
+  error: 'border-[#F5C6BF]',
+  info: 'border-brand-200',
 };
 
 export const ToastContainer: React.FC<{
@@ -52,14 +52,14 @@ export const ToastContainer: React.FC<{
       {toasts.map(toast => (
         <div
           key={toast.id}
-          className={`flex items-start gap-3 px-4 py-3 rounded-xl border backdrop-blur-sm bg-slate-900/90 shadow-xl pointer-events-auto ${BORDER_MAP[toast.type]}`}
-          style={{ animation: 'slideInRight 0.25s ease-out' }}
+          className={`flex items-start gap-3 px-4 py-3 rounded-xl border bg-white pointer-events-auto ${BORDER_MAP[toast.type]}`}
+          style={{ animation: 'slideInRight 0.25s ease-out', boxShadow: '0 4px 20px rgba(30,45,92,0.12)' }}
         >
           {ICON_MAP[toast.type]}
-          <p className="flex-1 text-sm text-slate-200 leading-snug">{toast.message}</p>
+          <p className="flex-1 text-sm text-[#1E2D5C] leading-snug">{toast.message}</p>
           <button
             onClick={() => onDismiss(toast.id)}
-            className="flex-shrink-0 text-slate-500 hover:text-slate-300 transition-colors"
+            className="flex-shrink-0 text-[#78819D] hover:text-[#1E2D5C] transition-colors"
           >
             <XIcon className="w-4 h-4" />
           </button>

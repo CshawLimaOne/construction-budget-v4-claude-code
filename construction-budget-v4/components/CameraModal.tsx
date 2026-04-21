@@ -28,11 +28,11 @@ export const CameraModal: React.FC<CameraModalProps> = ({ isOpen, onClose, onSav
       if (stream) {
         stream.getTracks().forEach(track => track.stop());
       }
-      
+
       const newStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: facingMode }
       });
-      
+
       setStream(newStream);
       if (videoRef.current) {
         videoRef.current.srcObject = newStream;
@@ -83,10 +83,10 @@ export const CameraModal: React.FC<CameraModalProps> = ({ isOpen, onClose, onSav
         // Set canvas dimensions to match video
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        
+
         // Draw video frame to canvas
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        
+
         // Get blob
         canvas.toBlob((blob) => {
           if (blob) {
@@ -124,15 +124,15 @@ export const CameraModal: React.FC<CameraModalProps> = ({ isOpen, onClose, onSav
 
       {/* Top Bar */}
       <div className="absolute top-0 left-0 right-0 z-20 flex justify-between items-center p-4 bg-gradient-to-b from-black/60 to-transparent">
-        <button 
+        <button
             onClick={onClose}
-            className="p-2 rounded-full bg-black/20 text-white backdrop-blur-sm"
+            className="p-2 rounded-full bg-black/20 text-white"
         >
             <XIcon className="w-6 h-6" />
         </button>
-        <button 
+        <button
             onClick={handleSwitchCamera}
-            className="p-2 rounded-full bg-black/20 text-white backdrop-blur-sm"
+            className="p-2 rounded-full bg-black/20 text-white"
         >
             <SwitchCameraIcon className="w-6 h-6" />
         </button>
@@ -142,14 +142,14 @@ export const CameraModal: React.FC<CameraModalProps> = ({ isOpen, onClose, onSav
       <div className="flex-grow relative bg-black flex items-center justify-center overflow-hidden">
         {error ? (
             <div className="text-white text-center p-4">
-                <p className="mb-2 text-red-400">{error}</p>
-                <button onClick={startCamera} className="px-4 py-2 bg-slate-700 rounded text-sm">Retry</button>
+                <p className="mb-2 text-[#B92814]">{error}</p>
+                <button onClick={startCamera} className="px-4 py-2 bg-[#F6F7F9] text-[#1E2D5C] rounded text-sm">Retry</button>
             </div>
         ) : (
-            <video 
+            <video
                 ref={videoRef}
-                autoPlay 
-                playsInline 
+                autoPlay
+                playsInline
                 muted
                 className="absolute inset-0 w-full h-full object-cover"
             />
@@ -157,15 +157,15 @@ export const CameraModal: React.FC<CameraModalProps> = ({ isOpen, onClose, onSav
       </div>
 
       {/* Bottom Controls */}
-      <div className="bg-black/80 pb-8 pt-4 px-6 flex flex-col gap-4">
-        
+      <div style={{ backgroundColor: 'rgba(4,11,31,0.5)' }} className="pb-8 pt-4 px-6 flex flex-col gap-4">
+
         {/* Gallery Strip */}
         {photos.length > 0 && (
             <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
                 {photos.map((photo, idx) => (
-                    <div key={idx} className="relative flex-shrink-0 w-16 h-16 rounded overflow-hidden border border-white/20 animate-in slide-in-from-right-10 duration-200">
+                    <div key={idx} className="relative flex-shrink-0 w-16 h-16 rounded overflow-hidden border border-[#DFE1E5] animate-in slide-in-from-right-10 duration-200">
                         <img src={photo.preview} className="w-full h-full object-cover" alt="captured" />
-                        <button 
+                        <button
                             onClick={() => handleRemovePhoto(idx)}
                             className="absolute top-0 right-0 bg-red-600 p-0.5"
                         >
@@ -187,12 +187,12 @@ export const CameraModal: React.FC<CameraModalProps> = ({ isOpen, onClose, onSav
                        </span>
                    </div>
                ) : (
-                   <div className="w-12 h-12 rounded-lg bg-white/10 border border-white/20"></div>
+                   <div className="w-12 h-12 rounded-lg bg-[#F6F7F9] border border-[#DFE1E5]"></div>
                )}
             </div>
 
             {/* Shutter Button */}
-            <button 
+            <button
                 onClick={handleCapture}
                 className="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center active:scale-95 transition-transform"
             >
@@ -200,9 +200,9 @@ export const CameraModal: React.FC<CameraModalProps> = ({ isOpen, onClose, onSav
             </button>
 
             {/* Done Button */}
-            <button 
+            <button
                 onClick={handleDone}
-                className="h-12 px-4 rounded-full bg-[#32373c] text-white font-bold text-sm flex items-center justify-center hover:bg-[#4a5056] transition-colors"
+                className="h-12 px-4 rounded-full bg-brand-500 text-white font-bold text-sm flex items-center justify-center hover:bg-brand-600 transition-colors"
             >
                 Done
                 <CheckIcon className="w-4 h-4 ml-1" />

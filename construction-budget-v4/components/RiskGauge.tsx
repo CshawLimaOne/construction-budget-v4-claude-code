@@ -67,7 +67,7 @@ export const RiskGauge: React.FC<RiskGaugeProps> = ({ score, size = 'md', showLa
                 <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 120 120" style={{ transform: 'rotate(135deg)' }}>
                     {/* Background track */}
                     <circle
-                        className="stroke-slate-200 dark:stroke-slate-600"
+                        className="stroke-[#DFE1E5]"
                         cx="60" cy="60" r={radius}
                         strokeWidth={strokeWidth}
                         fill="transparent"
@@ -86,7 +86,7 @@ export const RiskGauge: React.FC<RiskGaugeProps> = ({ score, size = 'md', showLa
                     />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10">
-                    <div className={`${fontSizeNum} font-black text-slate-800 dark:text-slate-100`}>
+                    <div className={`${fontSizeNum} font-black text-[#1E2D5C]`}>
                         {displayScore}
                     </div>
                     {showLabel && (
@@ -105,7 +105,7 @@ export const RiskGauge: React.FC<RiskGaugeProps> = ({ score, size = 'md', showLa
                             title={`${seg.label}: ${seg.range}`}
                         >
                             <div className={`h-1.5 w-8 rounded-full ${seg.color}`} />
-                            <span className="text-[8px] font-bold text-slate-500 mt-0.5 leading-none">{seg.label}</span>
+                            <span className="text-[8px] font-bold text-[#78819D] mt-0.5 leading-none">{seg.label}</span>
                         </div>
                     ))}
                 </div>

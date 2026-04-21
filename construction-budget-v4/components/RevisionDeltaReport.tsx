@@ -29,27 +29,27 @@ const ChangeIndicator: React.FC<{ entry: AuditLogEntry }> = ({ entry }) => {
     switch(changeType) {
         case 'thread_resolved':
             content = 'Thread Resolved';
-            bgColor = 'bg-green-100 dark:bg-green-900/50';
-            textColor = 'text-green-800 dark:text-green-300';
+            bgColor = 'bg-[#E1F7E4]';
+            textColor = 'text-[#139B23]';
             break;
         case 'thread_reopened':
             content = 'Thread Re-opened';
-            bgColor = 'bg-brand-100 dark:bg-brand-900/50';
-            textColor = 'text-brand-800 dark:text-brand-300';
+            bgColor = 'bg-brand-50';
+            textColor = 'text-brand-500';
             break;
         case 'budget_reopened':
             content = `Budget Status: ${formatValue(oldValue)} → ${formatValue(newValue)}`;
-            bgColor = 'bg-orange-100 dark:bg-orange-900/50';
-            textColor = 'text-orange-800 dark:text-orange-300';
+            bgColor = 'bg-[#FFF5DB]';
+            textColor = 'text-[#EAA800]';
             break;
         case 'value_change':
             return (
-                <div className="mt-3 p-2.5 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800">
+                <div className="mt-3 p-2.5 border border-[#DFE1E5] rounded-md bg-[#F6F7F9]">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-                        <span className="text-slate-500 dark:text-slate-400">Changed from:</span>
-                        <span className="font-mono p-1 rounded bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300 line-through">{formatValue(oldValue)}</span>
-                        <span className="text-slate-500 dark:text-slate-400">to:</span>
-                        <span className="font-mono p-1 rounded bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300 font-bold">{formatValue(newValue)}</span>
+                        <span className="text-[#78819D]">Changed from:</span>
+                        <span className="font-mono p-1 rounded bg-[#FFF0EE] text-[#B92814] line-through">{formatValue(oldValue)}</span>
+                        <span className="text-[#78819D]">to:</span>
+                        <span className="font-mono p-1 rounded bg-[#E1F7E4] text-[#139B23] font-bold">{formatValue(newValue)}</span>
                     </div>
                 </div>
             );
@@ -67,16 +67,16 @@ const ChangeIndicator: React.FC<{ entry: AuditLogEntry }> = ({ entry }) => {
 const EntryBubble: React.FC<{ entry: AuditLogEntry }> = ({ entry }) => {
     const isAnalyst = entry.authorRole === 'analyst';
 
-    const bubbleColor = isAnalyst ? 'bg-sky-100 dark:bg-sky-900/50' : 'bg-slate-100 dark:bg-slate-700';
-    const arrowBorderColor = isAnalyst 
-        ? 'border-r-sky-100 dark:border-r-sky-900/50' 
-        : 'border-r-slate-100 dark:border-r-slate-700';
-    
-    const textColor = isAnalyst ? 'text-sky-800 dark:text-sky-300' : 'text-slate-800 dark:text-slate-200';
+    const bubbleColor = isAnalyst ? 'bg-brand-50' : 'bg-[#F6F7F9]';
+    const arrowBorderColor = isAnalyst
+        ? 'border-r-brand-50'
+        : 'border-r-[#F6F7F9]';
+
+    const textColor = isAnalyst ? 'text-brand-700' : 'text-[#1E2D5C]';
 
     return (
         <div className="flex items-start gap-3">
-            <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-white font-bold ${isAnalyst ? 'bg-sky-500' : 'bg-slate-500'}`}>
+            <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-white font-bold ${isAnalyst ? 'bg-brand-500' : 'bg-[#78819D]'}`}>
                 {isAnalyst ? 'A' : 'B'}
             </div>
             
@@ -86,12 +86,12 @@ const EntryBubble: React.FC<{ entry: AuditLogEntry }> = ({ entry }) => {
                     
                     <div className="flex items-baseline justify-between">
                          <span className={`font-semibold text-sm ${textColor}`}>{entry.authorName}</span>
-                         <span className="text-xs text-slate-500 dark:text-slate-400 pl-4">{formatTimestamp(entry.timestamp)}</span>
+                         <span className="text-xs text-[#78819D] pl-4">{formatTimestamp(entry.timestamp)}</span>
                     </div>
 
                     {entry.changeType !== 'comment' && <ChangeIndicator entry={entry} />}
-                    
-                    <p className="mt-2 text-sm text-slate-800 dark:text-slate-100 whitespace-pre-wrap">
+
+                    <p className="mt-2 text-sm text-[#1E2D5C] whitespace-pre-wrap">
                         {entry.commentText}
                     </p>
                 </div>
@@ -128,15 +128,15 @@ export const RevisionDeltaReport: React.FC<RevisionDeltaReportProps> = ({ auditL
     return (
         <div>
             <div className="text-center mb-8">
-                <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Revision Report</h2>
-                 <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl mx-auto">
+                <h2 className="text-xl font-bold text-[#1E2D5C]">Revision Report</h2>
+                 <p className="text-sm text-[#78819D] mt-1 max-w-2xl mx-auto">
                     This report provides a complete history of all comments and value changes made on the budget, serving as a record for all communications and requested changes.
                 </p>
             </div>
 
             {groupedAndSortedLog.length === 0 ? (
-                <div className="text-center py-16 bg-white dark:bg-slate-800 rounded-lg section-container">
-                    <p className="text-slate-500 dark:text-slate-400">No comments or changes have been logged yet.</p>
+                <div className="text-center py-16 bg-white rounded-lg section-container">
+                    <p className="text-[#78819D]">No comments or changes have been logged yet.</p>
                 </div>
             ) : (
                 <div className="space-y-8">
@@ -146,7 +146,7 @@ export const RevisionDeltaReport: React.FC<RevisionDeltaReportProps> = ({ auditL
                                 <span className="font-normal opacity-80 mr-2">Field:</span>
                                 <span className="font-semibold">{group.fieldLabel}</span>
                             </h3>
-                            <div className="p-4 bg-white dark:bg-slate-800 space-y-6">
+                            <div className="p-4 bg-white  space-y-6">
                                 {group.entries.map(entry => (
                                     <EntryBubble key={entry.id} entry={entry} />
                                 ))}

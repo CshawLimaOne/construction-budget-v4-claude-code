@@ -310,36 +310,38 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             {(onStartTutorial || onOpenEstimator || onStartWalkthrough) && (
               <div className={`welcome-fade-up welcome-delay-5 ${cardsVisible ? 'visible' : ''}`}>
                 <div className="mt-2 pt-5 border-t border-white/10">
-                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 text-center lg:text-left">
-                    Advanced Tools
-                  </p>
+                  <div className="flex items-center gap-2 mb-3 justify-center lg:justify-start">
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em]">
+                      Advanced Tools
+                    </p>
+                    <span className="text-[9px] font-bold text-amber-400/90 uppercase tracking-widest bg-amber-400/10 border border-amber-400/25 px-1.5 py-0.5 rounded-full">
+                      Coming Soon
+                    </span>
+                  </div>
                   <div className="flex gap-3">
                     {onStartTutorial && (
-                      <button
-                        onClick={() => handleAction(onStartTutorial)}
-                        className="welcome-tool-btn group flex-1 flex flex-col items-center gap-2 p-3.5 rounded-xl transition-all duration-300"
+                      <div
+                        className="welcome-tool-btn flex-1 flex flex-col items-center gap-2 p-3.5 rounded-xl opacity-50 cursor-not-allowed select-none"
                       >
-                        <CompassIcon className="w-5 h-5 text-brand-400 group-hover:scale-110 group-hover:text-brand-300 transition-all" />
-                        <span className="text-[11px] font-bold text-slate-400 group-hover:text-white leading-tight text-center transition-colors">Guided<br/>Tutorial</span>
-                      </button>
+                        <CompassIcon className="w-5 h-5 text-brand-400" />
+                        <span className="text-[11px] font-bold text-slate-400 leading-tight text-center">Guided<br/>Tutorial</span>
+                      </div>
                     )}
                     {onOpenEstimator && (
-                      <button
-                        onClick={() => handleAction(onOpenEstimator)}
-                        className="welcome-tool-btn group flex-1 flex flex-col items-center gap-2 p-3.5 rounded-xl transition-all duration-300"
+                      <div
+                        className="welcome-tool-btn flex-1 flex flex-col items-center gap-2 p-3.5 rounded-xl opacity-50 cursor-not-allowed select-none"
                       >
-                        <CalculatorIcon className="w-5 h-5 text-brand-400 group-hover:scale-110 group-hover:text-brand-300 transition-all" />
-                        <span className="text-[11px] font-bold text-slate-400 group-hover:text-white leading-tight text-center transition-colors">AI<br/>Estimator</span>
-                      </button>
+                        <CalculatorIcon className="w-5 h-5 text-brand-400" />
+                        <span className="text-[11px] font-bold text-slate-400 leading-tight text-center">AI<br/>Estimator</span>
+                      </div>
                     )}
                     {onStartWalkthrough && (
-                      <button
-                        onClick={() => handleAction(onStartWalkthrough)}
-                        className="welcome-tool-btn group flex-1 flex flex-col items-center gap-2 p-3.5 rounded-xl transition-all duration-300"
+                      <div
+                        className="welcome-tool-btn flex-1 flex flex-col items-center gap-2 p-3.5 rounded-xl opacity-50 cursor-not-allowed select-none"
                       >
-                        <CameraIcon className="w-5 h-5 text-brand-400 group-hover:scale-110 group-hover:text-brand-300 transition-all" />
-                        <span className="text-[11px] font-bold text-slate-400 group-hover:text-white leading-tight text-center transition-colors">Mobile<br/>Walkthrough</span>
-                      </button>
+                        <CameraIcon className="w-5 h-5 text-brand-400" />
+                        <span className="text-[11px] font-bold text-slate-400 leading-tight text-center">Mobile<br/>Walkthrough</span>
+                      </div>
                     )}
                   </div>
                 </div>

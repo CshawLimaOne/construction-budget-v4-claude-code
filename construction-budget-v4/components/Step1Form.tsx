@@ -51,8 +51,8 @@ const SectionHeader: React.FC<{ number: string; title: string; subtitle: string 
   <div className="step1-section-header">
     <div className="step1-section-number">{number}</div>
     <div>
-      <h2 className="text-lg font-bold text-white leading-tight">{title}</h2>
-      <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p>
+      <h2 className="text-lg font-bold text-[#1E2D5C] leading-tight">{title}</h2>
+      <p className="text-xs text-[#78819D] mt-0.5">{subtitle}</p>
     </div>
   </div>
 );
@@ -65,13 +65,13 @@ const FieldError: React.FC<{ show?: boolean; message?: string }> = ({ show, mess
 const VerificationStatusIndicator: React.FC<{ status: 'idle' | 'verifying' | 'verified' | 'mismatch' }> = ({ status }) => {
   if (status === 'idle') return null;
   const map = {
-    verifying: { icon: <SpinnerIcon className="text-brand-400" />, text: 'Verifying...', cls: 'bg-white/10' },
-    verified:  { icon: <CheckCircleIcon className="text-green-400" />, text: 'Verified', cls: 'bg-green-900/30 border border-green-500/30' },
-    mismatch:  { icon: <ExclamationCircleIcon className="text-red-400" />, text: 'Mismatch Found', cls: 'bg-red-900/30 border border-red-500/30' },
+    verifying: { icon: <SpinnerIcon className="text-brand-400" />, text: 'Verifying...', cls: 'bg-[#F6F7F9]' },
+    verified:  { icon: <CheckCircleIcon className="text-[#139B23]" />, text: 'Verified', cls: 'bg-[#E1F7E4] border border-[#ADDEB4]' },
+    mismatch:  { icon: <ExclamationCircleIcon className="text-[#B92814]" />, text: 'Mismatch Found', cls: 'bg-[#FFF0EE] border border-[#B92814]/30' },
   };
   const { icon, text, cls } = map[status];
   return (
-    <div className={`absolute right-3 top-3 flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm backdrop-blur-sm text-white ${cls}`}>
+    <div className={`absolute right-3 top-3 flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm text-[#1E2D5C] ${cls}`}>
       {icon}{text}
     </div>
   );
@@ -108,7 +108,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({ name, value, onChange, pl
       onFocus={() => { setIsFocused(true); setDisplayValue(parseCurrencyForStorage(value)); }}
       onBlur={() => { setIsFocused(false); setDisplayValue(value ? formatCurrencyForDisplay(value) : ''); }}
       placeholder={placeholder}
-      className={`form-input-premium w-full font-bold text-lg ${requiredHighlight ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''} ${className || ''}`}
+      className={`form-input-premium w-full font-bold text-lg ${requiredHighlight ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''} ${className || ''}`}
       step={isFocused ? '1' : undefined}
       aria-label="Purchase Price"
       disabled={disabled}
@@ -167,7 +167,7 @@ const VisualSelector: React.FC<{
 
   return (
     <div id={id} className={`section-container overflow-hidden ${requiredHighlight ? 'border-red-500/60 shadow-[0_0_20px_rgba(239,68,68,0.15)]' : ''}`}>
-      <div className="p-5 border-b border-white/10 bg-white/[0.02]">
+      <div className="p-5 border-b border-[#DFE1E5] bg-white">
         <SectionHeader number={sectionNumber} title={title} subtitle={subtitle} />
         {requiredHighlight && (
           <p className="text-xs text-red-400 mt-2 flex items-center gap-1.5 ml-10">
@@ -188,10 +188,10 @@ const VisualSelector: React.FC<{
               disabled={isOptDisabled}
               aria-pressed={isSelected}
               aria-label={`Select ${opt.label}`}
-              className={`vs-card relative flex flex-col items-center p-4 rounded-xl border-2 text-center transition-all duration-200 min-h-[160px] backdrop-blur-sm
+              className={`vs-card relative flex flex-col items-center p-4 rounded-xl border-2 text-center transition-all duration-200 min-h-[160px]
                 ${isSelected
-                  ? 'border-brand-400 bg-brand-500/10 ring-2 ring-brand-400/30 vs-card-selected'
-                  : 'border-white/10 bg-white/[0.03] hover:border-white/30 hover:bg-white/[0.06]'}
+                  ? 'border-brand-500 bg-brand-50 vs-card-selected'
+                  : 'border-[#DFE1E5] bg-white hover:border-brand-200 hover:bg-brand-50/50'}
                 ${isOptDisabled ? 'opacity-40 cursor-not-allowed grayscale' : 'cursor-pointer'}`}
               style={{ '--accent-color': accentColor } as React.CSSProperties}
             >
@@ -207,14 +207,14 @@ const VisualSelector: React.FC<{
               )}
 
               {/* Icon — centered */}
-              <div className={`p-3 rounded-xl transition-all duration-200 mb-3 ${isSelected ? 'bg-brand-500/25' : 'bg-white/8'}`}
+              <div className={`p-3 rounded-xl transition-all duration-200 mb-3 ${isSelected ? 'bg-brand-100' : 'bg-[#F4F5F7]'}`}
                 style={isSelected ? { boxShadow: `0 0 16px ${accentColor}40` } : {}}>
-                <div className={`transition-colors duration-200 ${isSelected ? 'text-brand-300' : 'text-slate-400'}`}>
+                <div className={`transition-colors duration-200 ${isSelected ? 'text-brand-500' : 'text-[#78819D]'}`}>
                   {getIcon(opt)}
                 </div>
               </div>
-              <h4 className={`font-bold text-sm leading-tight mb-1 transition-colors ${isSelected ? 'text-white' : 'text-slate-200'}`}>{opt.label}</h4>
-              <p className="text-xs text-slate-400 leading-relaxed line-clamp-3">{opt.description}</p>
+              <h4 className={`font-bold text-sm leading-tight mb-1 transition-colors ${isSelected ? 'text-[#1E2D5C]' : 'text-[#1E2D5C]'}`}>{opt.label}</h4>
+              <p className="text-xs text-[#78819D] leading-relaxed line-clamp-3">{opt.description}</p>
             </button>
           );
         })}
@@ -252,32 +252,32 @@ const SmartHintsPanel: React.FC<{
   }, [isNC, hasPrice, selectedRehabType]);
 
   return (
-    <div className="h-full w-full rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-sm overflow-hidden flex flex-col">
+    <div className="h-full w-full rounded-xl border border-[#DFE1E5] bg-white overflow-hidden flex flex-col">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-white/10 bg-white/[0.02] flex items-center gap-2">
-        <InfoIcon className="w-4 h-4 text-brand-400 flex-shrink-0" />
-        <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">Project Hints</span>
+      <div className="px-4 py-3 border-b border-[#DFE1E5] bg-[#F6F7F9] flex items-center gap-2">
+        <InfoIcon className="w-4 h-4 text-brand-500 flex-shrink-0" />
+        <span className="text-xs font-bold text-[#78819D] uppercase tracking-wider">Project Hints</span>
       </div>
       {/* Live summary if address entered */}
       {hasAddress && (
-        <div className="px-4 py-3 border-b border-white/10 bg-brand-900/20">
+        <div className="px-4 py-3 border-b border-[#DFE1E5] bg-brand-50">
           <div className="flex items-start gap-2">
-            <MapPinIcon className="w-4 h-4 text-brand-400 mt-0.5 flex-shrink-0" />
+            <MapPinIcon className="w-4 h-4 text-brand-500 mt-0.5 flex-shrink-0" />
             <div>
-              <p className="text-xs font-semibold text-white">{propertyDetails.street}</p>
+              <p className="text-xs font-semibold text-[#1E2D5C]">{propertyDetails.street}</p>
               {(propertyDetails.city || propertyDetails.state) && (
-                <p className="text-[11px] text-slate-400">{[propertyDetails.city, propertyDetails.state, propertyDetails.zip].filter(Boolean).join(', ')}</p>
+                <p className="text-[11px] text-[#78819D]">{[propertyDetails.city, propertyDetails.state, propertyDetails.zip].filter(Boolean).join(', ')}</p>
               )}
             </div>
           </div>
           {hasPrice && (
             <div className="mt-2 flex items-center gap-2">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Purchase Price</span>
-              <span className="text-sm font-black text-brand-300">{formatCurrencyForDisplay(propertyDetails.purchasePrice)}</span>
+              <span className="text-[10px] font-bold text-[#78819D] uppercase tracking-wider">Purchase Price</span>
+              <span className="text-sm font-black text-brand-500">{formatCurrencyForDisplay(propertyDetails.purchasePrice)}</span>
             </div>
           )}
           <div className="mt-2">
-            <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-500/20 border border-brand-400/30 text-brand-300">
+            <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-50 border border-brand-200 text-brand-500">
               {isNC ? 'New Construction' : 'Renovation / Value Add'}
             </span>
           </div>
@@ -286,9 +286,9 @@ const SmartHintsPanel: React.FC<{
       {/* Hints list */}
       <div className="flex-1 px-4 py-3 space-y-3 overflow-y-auto">
         {hints.map((h, i) => (
-          <div key={i} className={`flex items-start gap-2.5 p-2.5 rounded-lg transition-all ${h.active ? 'bg-brand-500/10 border border-brand-400/20' : ''}`}>
+          <div key={i} className={`flex items-start gap-2.5 p-2.5 rounded-lg transition-all ${h.active ? 'bg-brand-50 border border-brand-200' : ''}`}>
             <span className="text-base flex-shrink-0 leading-none mt-0.5">{h.icon}</span>
-            <p className="text-xs text-slate-300 leading-relaxed">{h.text}</p>
+            <p className="text-xs text-[#78819D] leading-relaxed">{h.text}</p>
           </div>
         ))}
       </div>
@@ -367,15 +367,15 @@ export const Step1Form: React.FC<Step1FormProps> = ({
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest bg-brand-500/15 border border-brand-400/25 text-brand-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest bg-brand-50 border border-brand-200 text-brand-500">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
                 {isNewConstructionMode ? 'New Construction' : 'Renovation / Value Add'}
               </span>
-              <span className="text-xs text-slate-500">·</span>
-              <span className="text-xs text-slate-400 font-medium">Step 1 of 4</span>
+              <span className="text-xs text-[#78819D]">·</span>
+              <span className="text-xs text-[#78819D] font-medium">Step 1 of 4</span>
             </div>
-            <h1 className="text-2xl font-black text-white tracking-tight">Property Details</h1>
-            <p className="text-sm text-slate-400 mt-1 max-w-xl">
+            <h1 className="text-2xl font-black text-[#1E2D5C] tracking-tight">Property Details</h1>
+            <p className="text-sm text-[#78819D] mt-1 max-w-xl">
               Tell us about the property. This shapes your budget categories, line items, and AI estimates.
             </p>
           </div>
@@ -383,37 +383,37 @@ export const Step1Form: React.FC<Step1FormProps> = ({
           <div className="flex flex-col items-center gap-1 flex-shrink-0">
             <div className="relative w-12 h-12">
               <svg className="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
-                <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="4" />
-                <circle cx="24" cy="24" r="20" fill="none" stroke="#0693e3" strokeWidth="4"
+                <circle cx="24" cy="24" r="20" fill="none" stroke="#DFE1E5" strokeWidth="4" />
+                <circle cx="24" cy="24" r="20" fill="none" stroke="#1C39D8" strokeWidth="4"
                   strokeDasharray={`${2 * Math.PI * 20}`}
                   strokeDashoffset={`${2 * Math.PI * 20 * (1 - completedRequired / totalRequired)}`}
                   strokeLinecap="round"
                   style={{ transition: 'stroke-dashoffset 0.4s ease' }}
                 />
               </svg>
-              <span className="absolute inset-0 flex items-center justify-center text-[11px] font-black text-white">{completedRequired}/{totalRequired}</span>
+              <span className="absolute inset-0 flex items-center justify-center text-[11px] font-black text-[#1E2D5C]">{completedRequired}/{totalRequired}</span>
             </div>
-            <span className="text-[10px] text-slate-500 font-medium">complete</span>
+            <span className="text-[10px] text-[#78819D] font-medium">complete</span>
           </div>
         </div>
       </div>
 
       {/* ── ① Property Information ──────────────────────────────────────── */}
       <div id="property-address-section" className="section-container overflow-hidden">
-        <div className="p-5 border-b border-white/10 bg-white/[0.02]">
+        <div className="p-5 border-b border-[#DFE1E5] bg-white">
           <SectionHeader number="①" title="Property Information" subtitle="Location & purchase price for the subject property" />
         </div>
         <div className="p-5">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             {/* Left: Address Form */}
-            <div className="lg:col-span-2 bg-white/[0.03] p-5 rounded-xl border border-white/10 relative backdrop-blur-sm">
+            <div className="lg:col-span-2 bg-[#F6F7F9] p-5 rounded-xl border border-[#DFE1E5] relative">
               <VerificationStatusIndicator status={verificationStatus} />
               <div className="space-y-4">
                 <div>
                   <label htmlFor="step1-street-input" className="step1-label">Street Address <span className="text-red-400">*</span></label>
                   <div className="relative">
-                    <MapPinIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+                    <MapPinIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78819D] pointer-events-none" />
                     <input
                       id="step1-street-input"
                       type="text" name="street"
@@ -421,7 +421,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                       onChange={e => onPropertyDetailChange('street', e.target.value)}
                       placeholder="123 Main St"
                       autoComplete="street-address"
-                      className={`form-input-premium w-full pl-10 ${getInputError(propertyDetails.street) ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''}`}
+                      className={`form-input-premium w-full pl-10 ${getInputError(propertyDetails.street) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
                       disabled={isLocked}
                     />
                   </div>
@@ -437,7 +437,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                       onChange={e => onPropertyDetailChange('city', e.target.value)}
                       placeholder="City"
                       autoComplete="address-level2"
-                      className={`form-input-premium w-full ${getInputError(propertyDetails.city) ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''}`}
+                      className={`form-input-premium w-full ${getInputError(propertyDetails.city) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
                       disabled={isLocked}
                     />
                     <FieldError show={getInputError(propertyDetails.city)} />
@@ -451,7 +451,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                       placeholder="ST"
                       autoComplete="address-level1"
                       maxLength={2}
-                      className={`form-input-premium w-full uppercase ${getInputError(propertyDetails.state) ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''}`}
+                      className={`form-input-premium w-full uppercase ${getInputError(propertyDetails.state) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
                       disabled={isLocked}
                     />
                     <FieldError show={getInputError(propertyDetails.state)} />
@@ -465,7 +465,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                       onChange={e => onPropertyDetailChange('zip', e.target.value)}
                       placeholder="12345"
                       autoComplete="postal-code"
-                      className={`form-input-premium w-full ${getInputError(propertyDetails.zip) ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''}`}
+                      className={`form-input-premium w-full ${getInputError(propertyDetails.zip) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
                       disabled={isLocked}
                     />
                     <FieldError show={getInputError(propertyDetails.zip)} />
@@ -475,7 +475,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                 <div>
                   <label htmlFor="step1-price-input" className="step1-label">
                     Purchase Price <span className="text-red-400">*</span>
-                    <span className="ml-2 text-[10px] font-normal text-slate-500">— Contract price including concessions</span>
+                    <span className="ml-2 text-[10px] font-normal text-[#78819D]">— Contract price including concessions</span>
                   </label>
                   <CurrencyInput
                     id="step1-price-input"
@@ -506,7 +506,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
       {/* ── ② Land Details (New Construction only) ──────────────────────── */}
       {isNewConstructionMode && landDetails && onLandDetailsChange && (
         <div id="land-details-section" className="section-container overflow-hidden">
-          <div className="p-5 border-b border-white/10 bg-white/[0.02]">
+          <div className="p-5 border-b border-[#DFE1E5] bg-white">
             <SectionHeader number="②" title="Land Information" subtitle="Lot details, zoning, and entitlement status" />
           </div>
           <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -517,7 +517,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                 value={landDetails.lotSize}
                 onChange={e => onLandDetailsChange('lotSize', e.target.value)}
                 placeholder="e.g. 0.5 Acres or 5,000 sqft"
-                className={`form-input-premium w-full ${getInputError(landDetails.lotSize) ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''}`}
+                className={`form-input-premium w-full ${getInputError(landDetails.lotSize) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
                 disabled={isLocked}
               />
               <FieldError show={getInputError(landDetails.lotSize)} />
@@ -529,7 +529,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                 value={landDetails.zoning}
                 onChange={e => onLandDetailsChange('zoning', e.target.value)}
                 placeholder="e.g. Residential, R-1"
-                className={`form-input-premium w-full ${getInputError(landDetails.zoning) ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''}`}
+                className={`form-input-premium w-full ${getInputError(landDetails.zoning) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
                 disabled={isLocked}
               />
               <FieldError show={getInputError(landDetails.zoning)} />
@@ -539,7 +539,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
               <select
                 value={landDetails.entitlementStatus}
                 onChange={e => onLandDetailsChange('entitlementStatus', e.target.value)}
-                className={`form-input-premium w-full ${getInputError(landDetails.entitlementStatus) ? 'border-red-500 ring-1 ring-red-500 bg-red-900/10' : ''}`}
+                className={`form-input-premium w-full ${getInputError(landDetails.entitlementStatus) ? 'border-red-500 ring-1 ring-red-500 bg-[#FFF0EE]' : ''}`}
                 disabled={isLocked}
               >
                 <option value="">Select status...</option>
@@ -553,7 +553,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
 
       {/* ── ③ Property Specifications Table ─────────────────────────────── */}
       <div id="property-info-table-section" className="section-container overflow-hidden">
-        <div className="p-5 border-b border-white/10 bg-white/[0.02]">
+        <div className="p-5 border-b border-[#DFE1E5] bg-white">
           <SectionHeader
             number={isNewConstructionMode && landDetails ? '③' : '②'}
             title={isNewConstructionMode ? 'Proposed Build Specifications' : 'Property Specifications'}
@@ -563,28 +563,28 @@ export const Step1Form: React.FC<Step1FormProps> = ({
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead>
-              <tr className="border-b border-white/10 bg-white/[0.02]">
-                <th className="px-5 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider w-1/3">Specification</th>
+              <tr className="border-b border-[#DFE1E5] bg-[#F6F7F9]">
+                <th className="px-5 py-3 text-left text-xs font-bold text-[#78819D] uppercase tracking-wider w-1/3">Specification</th>
                 {!isNewConstructionMode && (
                   <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider w-1/3">
                     <div className="flex items-center justify-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-slate-500 inline-block" />
-                      <span className="text-slate-500">Current (As-Is)</span>
+                      <span className="w-2 h-2 rounded-full bg-[#BCBFC7] inline-block" />
+                      <span className="text-[#78819D]">Current (As-Is)</span>
                     </div>
                   </th>
                 )}
                 <th className="px-5 py-3 text-center text-xs font-bold uppercase tracking-wider w-1/3">
                   <div className="flex items-center justify-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-brand-400 inline-block" />
-                    <span className="text-brand-300">{isNewConstructionMode ? 'Proposed Value' : 'Target (After Repair)'}</span>
+                    <span className="w-2 h-2 rounded-full bg-brand-500 inline-block" />
+                    <span className="text-brand-500">{isNewConstructionMode ? 'Proposed Value' : 'Target (After Repair)'}</span>
                   </div>
                 </th>
                 {!isNewConstructionMode && (
-                  <th className="px-5 py-3 text-center text-xs font-bold text-slate-500 uppercase tracking-wider w-20">Delta</th>
+                  <th className="px-5 py-3 text-center text-xs font-bold text-[#78819D] uppercase tracking-wider w-20">Delta</th>
                 )}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/[0.04]">
+            <tbody className="divide-y divide-[#DFE1E5]">
               {asIsProjectedKeys.map((key, idx) => {
                 const fieldData = asIsProjectedData[key];
                 if (!fieldData) return null;
@@ -598,8 +598,8 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                 const delta = !isNaN(asIsNum) && !isNaN(projNum) ? projNum - asIsNum : null;
 
                 return (
-                  <tr key={key} className={`transition-colors hover:bg-white/[0.03] ${idx % 2 === 0 ? 'bg-transparent' : 'bg-white/[0.015]'}`}>
-                    <td className="px-5 py-3.5 text-sm font-medium text-slate-200 whitespace-nowrap">
+                  <tr key={key} className={`transition-colors hover:bg-[#F7F9FC] ${idx % 2 === 0 ? 'bg-white' : 'bg-[#F6F7F9]'}`}>
+                    <td className="px-5 py-3.5 text-sm font-medium text-[#1E2D5C] whitespace-nowrap">
                       {fieldData.label}
                     </td>
 
@@ -625,7 +625,7 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                             <input type="text"
                               value={simpleField.asIs || ''}
                               onChange={e => onAsIsProjectedChange(key, 'asIs', e.target.value)}
-                              className="specs-input w-28 text-center text-slate-300"
+                              className="specs-input w-28 text-center text-[#78819D]"
                               placeholder="--" disabled={isLocked}
                             />
                           </div>
@@ -665,11 +665,11 @@ export const Step1Form: React.FC<Step1FormProps> = ({
                     {!isNewConstructionMode && (
                       <td className="px-5 py-3.5 text-center whitespace-nowrap">
                         {delta !== null ? (
-                          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${delta > 0 ? 'text-emerald-400 bg-emerald-900/30' : delta < 0 ? 'text-red-400 bg-red-900/30' : 'text-slate-500 bg-white/5'}`}>
+                          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${delta > 0 ? 'text-[#139B23] bg-[#E1F7E4]' : delta < 0 ? 'text-[#B92814] bg-[#FFF0EE]' : 'text-[#78819D] bg-[#F6F7F9]'}`}>
                             {delta > 0 ? '+' : ''}{delta}
                           </span>
                         ) : (
-                          <span className="text-slate-600 text-xs">—</span>
+                          <span className="text-[#BCBFC7] text-xs">—</span>
                         )}
                       </td>
                     )}
@@ -679,8 +679,8 @@ export const Step1Form: React.FC<Step1FormProps> = ({
             </tbody>
           </table>
         </div>
-        <div className="px-5 py-3 border-t border-white/10 bg-white/[0.02] flex items-center gap-2 text-xs text-slate-500">
-          <InfoIcon className="w-3.5 h-3.5 flex-shrink-0 text-brand-500/60" />
+        <div className="px-5 py-3 border-t border-[#DFE1E5] bg-[#F6F7F9] flex items-center gap-2 text-xs text-[#78819D]">
+          <InfoIcon className="w-3.5 h-3.5 flex-shrink-0 text-brand-500" />
           Accurate square footage is the most important field — it directly drives AI cost estimates.
         </div>
       </div>

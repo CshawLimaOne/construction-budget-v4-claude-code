@@ -358,10 +358,10 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
 
   const footer = (
     <>
-      <button onClick={onClose} className="button-base bg-transparent text-slate-300 border border-slate-600 hover:bg-slate-700 focus:ring-slate-500">
+      <button onClick={onClose} className="button-base bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC]">
         Cancel
       </button>
-      <button onClick={handleConfirmClick} className="button-base bg-[#32373c] text-white hover:bg-[#4a5056] focus:ring-slate-500">
+      <button onClick={handleConfirmClick} className="button-base bg-brand-500 text-white hover:bg-brand-600">
         Apply Accepted Items
       </button>
     </>
@@ -369,22 +369,22 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
 
   return (
     <ComplexModal isOpen={isOpen} onClose={onClose} title="Review AI Budget Suggestions" footer={footer} size="xl">
-        <div className="text-sm text-slate-400 mb-4">
+        <div className="text-sm text-[#78819D] mb-4">
             <p>The AI has analyzed your uploaded file. Please review its interpretation for each line item.</p>
             <p className="mt-2">You can correct any mappings, adjust budgets, or uncheck items to ignore them before applying changes.</p>
         </div>
         
         {(hasAddress || hasDimensions || hasProjectInfo) && (
-            <div className="rounded-xl border border-slate-700 bg-slate-800 mb-6 overflow-hidden">
+            <div className="rounded-xl border border-[#DFE1E5] bg-[#F6F7F9] mb-6 overflow-hidden">
 
                 {/* ── Header ── */}
-                <div className="flex items-center justify-between px-4 py-3 bg-slate-750 border-b border-slate-700">
-                    <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">
+                <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-[#DFE1E5]">
+                    <h3 className="text-sm font-bold text-[#1E2D5C] uppercase tracking-wider">
                         Project Details Found in File
                     </h3>
                     <button
                         onClick={() => toggleGroup(detailEntries.map(([k]) => k), !allDetailsAccepted)}
-                        className="text-xs font-semibold text-brand-400 hover:text-brand-300 transition-colors"
+                        className="text-xs font-semibold text-brand-500 hover:text-brand-600 transition-colors"
                     >
                         {allDetailsAccepted ? 'Deselect All' : 'Accept All'}
                     </button>
@@ -392,24 +392,24 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
 
                 {/* ── Section 1: Property Address ── */}
                 {hasAddress && (
-                    <div className="px-4 py-4 border-b border-slate-700">
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Property Address</p>
+                    <div className="px-4 py-4 border-b border-[#DFE1E5]">
+                        <p className="text-xs font-bold text-[#78819D] uppercase tracking-wider mb-3">Property Address</p>
                         <div className="flex items-start gap-3">
                             <input
                                 type="checkbox"
                                 checked={isAddressAccepted}
                                 onChange={e => toggleGroup(ADDRESS_KEYS, e.target.checked)}
-                                className="h-5 w-5 rounded border-slate-500 bg-slate-700 text-brand-500 focus:ring-brand-500 mt-0.5 flex-shrink-0"
+                                className="h-5 w-5 rounded border-[#DFE1E5] bg-white text-brand-500 focus:ring-brand-500 mt-0.5 flex-shrink-0"
                             />
                             <div>
                                 {formattedAddress.street && (
-                                    <p className="text-base font-semibold text-white leading-snug">{formattedAddress.street}</p>
+                                    <p className="text-base font-semibold text-[#1E2D5C] leading-snug">{formattedAddress.street}</p>
                                 )}
                                 {formattedAddress.line2 && (
-                                    <p className="text-sm text-slate-300 leading-snug">{formattedAddress.line2}</p>
+                                    <p className="text-sm text-[#1E2D5C] leading-snug">{formattedAddress.line2}</p>
                                 )}
                                 {!formattedAddress.street && !formattedAddress.line2 && (
-                                    <p className="text-sm text-slate-500 italic">No address found</p>
+                                    <p className="text-sm text-[#78819D] italic">No address found</p>
                                 )}
                             </div>
                         </div>
@@ -418,8 +418,8 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
 
                 {/* ── Section 2: Dimensions ── */}
                 {hasDimensions && (
-                    <div className="px-4 py-4 border-b border-slate-700">
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Dimensions</p>
+                    <div className="px-4 py-4 border-b border-[#DFE1E5]">
+                        <p className="text-xs font-bold text-[#78819D] uppercase tracking-wider mb-3">Dimensions</p>
                         <div className="grid grid-cols-3 gap-3">
                             {DIMENSION_PAIRS.map(({ label, asIsKey, projectedKey, unit }) => {
                                 const asIsVal      = editableProjectDetails[asIsKey]?.value;
@@ -431,33 +431,33 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                                         key={label}
                                         className={`rounded-lg border p-3 transition-colors ${
                                             pairAccepted
-                                                ? 'border-brand-600/60 bg-slate-700/60'
-                                                : 'border-slate-600 bg-slate-700/30 opacity-50'
+                                                ? 'border-brand-200 bg-brand-50'
+                                                : 'border-[#DFE1E5] bg-[#F6F7F9] opacity-50'
                                         }`}
                                     >
                                         <div className="flex items-center justify-between mb-2">
-                                            <p className="text-xs font-semibold text-slate-300">{label}</p>
+                                            <p className="text-xs font-semibold text-[#1E2D5C]">{label}</p>
                                             <input
                                                 type="checkbox"
                                                 checked={pairAccepted}
                                                 onChange={e => toggleDimPair(asIsKey, projectedKey, e.target.checked)}
-                                                className="h-4 w-4 rounded border-slate-500 bg-slate-600 text-brand-500 focus:ring-brand-500"
+                                                className="h-4 w-4 rounded border-[#DFE1E5] bg-white text-brand-500 focus:ring-brand-500"
                                             />
                                         </div>
                                         <div className="grid grid-cols-2 gap-1 text-center">
                                             <div>
-                                                <p className="text-xs text-slate-500 mb-0.5">As-Is</p>
-                                                <p className="text-lg font-bold text-white leading-none">
+                                                <p className="text-xs text-[#78819D] mb-0.5">As-Is</p>
+                                                <p className="text-lg font-bold text-[#1E2D5C] leading-none">
                                                     {asIsVal ? Number(asIsVal).toLocaleString() : '—'}
                                                 </p>
-                                                <p className="text-xs text-slate-500 mt-0.5">{unit}</p>
+                                                <p className="text-xs text-[#78819D] mt-0.5">{unit}</p>
                                             </div>
                                             <div>
-                                                <p className="text-xs text-slate-500 mb-0.5">After Repair</p>
-                                                <p className="text-lg font-bold text-brand-400 leading-none">
+                                                <p className="text-xs text-[#78819D] mb-0.5">After Repair</p>
+                                                <p className="text-lg font-bold text-brand-500 leading-none">
                                                     {projectedVal ? Number(projectedVal).toLocaleString() : '—'}
                                                 </p>
-                                                <p className="text-xs text-slate-500 mt-0.5">{unit}</p>
+                                                <p className="text-xs text-[#78819D] mt-0.5">{unit}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -470,7 +470,7 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                 {/* ── Section 3: Project Info ── */}
                 {hasProjectInfo && (
                     <div className="px-4 py-4">
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Project Info</p>
+                        <p className="text-xs font-bold text-[#78819D] uppercase tracking-wider mb-3">Project Info</p>
                         <div className="grid grid-cols-3 gap-3 mb-3">
                             {(['conditionOfProperty', 'typeOfRehab', 'materialQuality'] as const).map(key => {
                                 const detail = editableProjectDetails[key];
@@ -483,28 +483,28 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                                         className={`rounded-lg border p-3 transition-colors ${
                                             detail.accepted
                                                 ? isRecognized
-                                                    ? 'border-brand-600/60 bg-slate-700/60'
-                                                    : 'border-amber-500/60 bg-amber-900/20'
-                                                : 'border-slate-600 bg-slate-700/30 opacity-50'
+                                                    ? 'border-brand-200 bg-brand-50'
+                                                    : 'border-[#EDDDB1] bg-[#FFF5DB]'
+                                                : 'border-[#DFE1E5] bg-[#F6F7F9] opacity-50'
                                         }`}
                                     >
                                         <div className="flex items-center justify-between mb-1">
-                                            <p className="text-xs font-semibold text-slate-400">{sectionLabel}</p>
+                                            <p className="text-xs font-semibold text-[#78819D]">{sectionLabel}</p>
                                             <input
                                                 type="checkbox"
                                                 checked={detail.accepted}
                                                 onChange={e => handleDetailChange(key, 'accepted', e.target.checked)}
-                                                className="h-4 w-4 rounded border-slate-500 bg-slate-600 text-brand-500 focus:ring-brand-500"
+                                                className="h-4 w-4 rounded border-[#DFE1E5] bg-white text-brand-500 focus:ring-brand-500"
                                             />
                                         </div>
 
                                         {isRecognized ? (
-                                            <p className="text-sm font-bold text-white leading-snug">{displayVal}</p>
+                                            <p className="text-sm font-bold text-[#1E2D5C] leading-snug">{displayVal}</p>
                                         ) : (
                                             <div className="space-y-1.5">
                                                 <div className="flex items-center gap-1.5">
-                                                    <p className="text-xs italic text-amber-300 truncate" title={displayVal}>"{displayVal}"</p>
-                                                    <span className="flex-shrink-0 text-[10px] font-bold uppercase tracking-wide text-amber-400 bg-amber-900/50 border border-amber-600/50 rounded px-1 py-0.5">
+                                                    <p className="text-xs italic text-[#EAA800] truncate" title={displayVal}>"{displayVal}"</p>
+                                                    <span className="flex-shrink-0 text-[10px] font-bold uppercase tracking-wide text-[#EAA800] bg-[#FFF5DB] border border-[#EDDDB1] rounded px-1 py-0.5">
                                                         Unrecognized
                                                     </span>
                                                 </div>
@@ -513,7 +513,7 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                                                     onChange={e => {
                                                         if (e.target.value) handleDetailChange(key, 'value', e.target.value);
                                                     }}
-                                                    className="w-full text-xs rounded-md bg-slate-800 border border-amber-600/60 text-slate-200 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                                                    className="w-full text-xs rounded-md bg-white border border-[#EDDDB1] text-[#1E2D5C] px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
                                                 >
                                                     <option value="" disabled>— Select correct value —</option>
                                                     {selectOptions.map(o => (
@@ -533,19 +533,19 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                             return (
                                 <div className={`rounded-lg border p-3 transition-colors ${
                                     detail.accepted
-                                        ? 'border-brand-600/60 bg-slate-700/60'
-                                        : 'border-slate-600 bg-slate-700/30 opacity-50'
+                                        ? 'border-brand-200 bg-brand-50'
+                                        : 'border-[#DFE1E5] bg-[#F6F7F9] opacity-50'
                                 }`}>
                                     <div className="flex items-center justify-between mb-2">
-                                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Scope of Work</p>
+                                        <p className="text-xs font-semibold text-[#78819D] uppercase tracking-wider">Scope of Work</p>
                                         <input
                                             type="checkbox"
                                             checked={detail.accepted}
                                             onChange={e => handleDetailChange('projectScopeStatement', 'accepted', e.target.checked)}
-                                            className="h-4 w-4 rounded border-slate-500 bg-slate-600 text-brand-500 focus:ring-brand-500"
+                                            className="h-4 w-4 rounded border-[#DFE1E5] bg-white text-brand-500 focus:ring-brand-500"
                                         />
                                     </div>
-                                    <p className="text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">{detail.value}</p>
+                                    <p className="text-sm text-[#1E2D5C] leading-relaxed whitespace-pre-wrap">{detail.value}</p>
                                 </div>
                             );
                         })()}
@@ -554,78 +554,78 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
             </div>
         )}
 
-        <div className="p-4 rounded-lg bg-slate-800 border border-slate-700 mb-6 space-y-2">
+        <div className="p-4 rounded-lg bg-[#F6F7F9] border border-[#DFE1E5] mb-6 space-y-2">
             <div className="flex justify-between items-center">
-                <span className="font-semibold text-slate-200">Total Detected in File:</span>
-                <span className="font-bold text-lg text-slate-100">{formatCurrency(totalFromFile)}</span>
+                <span className="font-semibold text-[#1E2D5C]">Total Detected in File:</span>
+                <span className="font-bold text-lg text-[#1E2D5C]">{formatCurrency(totalFromFile)}</span>
             </div>
             <div className="flex justify-between items-center">
-                <span className="font-semibold text-slate-200">Total of Accepted Items:</span>
-                <span className={`font-bold text-lg ${totalsMismatch ? 'text-red-400' : 'text-green-400'}`}>
+                <span className="font-semibold text-[#1E2D5C]">Total of Accepted Items:</span>
+                <span className={`font-bold text-lg ${totalsMismatch ? 'text-[#B92814]' : 'text-[#139B23]'}`}>
                     {formatCurrency(acceptedTotal)}
                 </span>
             </div>
             {totalsMismatch && (
-                <div className="pt-2 mt-2 border-t border-slate-600 text-center text-xs p-2 rounded-md bg-yellow-900/50 text-yellow-200">
+                <div className="pt-2 mt-2 border-t border-[#EDDDB1] text-center text-xs p-2 rounded-md bg-[#FFF5DB] text-[#EAA800]">
                     <strong>Note:</strong> The accepted total differs from the file total. This usually happens if you uncheck items (like 'Grand Total' lines) or if the AI skipped purely summary rows.
                 </div>
             )}
         </div>
         
-        <div className="p-4 rounded-lg bg-slate-800 border border-slate-700 mb-6">
-            <h4 className="font-semibold text-sky-300 mb-3 text-center text-base">Calculation Breakdown</h4>
+        <div className="p-4 rounded-lg bg-[#F6F7F9] border border-[#DFE1E5] mb-6">
+            <h4 className="font-semibold text-brand-500 mb-3 text-center text-base">Calculation Breakdown</h4>
             <div className="space-y-2 text-sm max-w-md mx-auto">
-                <div className="flex justify-between py-1 border-b border-slate-700">
-                    <span className="text-slate-300">Subtotal (Items + Profit + Overhead)</span>
-                    <span className="font-medium text-slate-200">{formatCurrency(breakdown.baseSubTotal)}</span>
+                <div className="flex justify-between py-1 border-b border-[#DFE1E5]">
+                    <span className="text-[#1E2D5C]">Subtotal (Items + Profit + Overhead)</span>
+                    <span className="font-medium text-[#1E2D5C]">{formatCurrency(breakdown.baseSubTotal)}</span>
                 </div>
                 {(breakdown.profitFromFile > 0 || breakdown.overheadFromFile > 0) && (
-                    <div className="text-xs text-slate-500 pl-4 pb-1">
+                    <div className="text-xs text-[#78819D] pl-4 pb-1">
                         {breakdown.profitFromFile > 0 && <div>• Includes Profit: {formatCurrency(breakdown.profitFromFile)}</div>}
                         {breakdown.overheadFromFile > 0 && <div>• Includes Overhead: {formatCurrency(breakdown.overheadFromFile)}</div>}
                     </div>
                 )}
-                <div className="flex justify-between py-1 border-b border-slate-700">
-                    <span className="text-slate-300">GC/Builder Fee</span>
+                <div className="flex justify-between py-1 border-b border-[#DFE1E5]">
+                    <span className="text-[#1E2D5C]">GC/Builder Fee</span>
                     <div className="text-right">
                         {breakdown.gcFeeFromFile > breakdown.effectiveGcFee && (
                             <Tooltip text="Capped at 10% of subtotal.">
-                                <span className="text-xs line-through text-red-400 mr-2">{formatCurrency(breakdown.gcFeeFromFile)}</span>
+                                <span className="text-xs line-through text-[#B92814] mr-2">{formatCurrency(breakdown.gcFeeFromFile)}</span>
                             </Tooltip>
                         )}
-                        <span className="font-medium text-slate-200">{formatCurrency(breakdown.effectiveGcFee)}</span>
+                        <span className="font-medium text-[#1E2D5C]">{formatCurrency(breakdown.effectiveGcFee)}</span>
                     </div>
                 </div>
-                <div className="flex justify-between py-1 border-b border-slate-700">
-                    <span className="text-slate-300">Contingency</span>
+                <div className="flex justify-between py-1 border-b border-[#DFE1E5]">
+                    <span className="text-[#1E2D5C]">Contingency</span>
                     <div className="text-right">
-                        <span className="font-medium text-slate-200">{formatCurrency(breakdown.effectiveContingency)}</span>
-                        <span className="block text-xs text-slate-500">
+                        <span className="font-medium text-[#1E2D5C]">{formatCurrency(breakdown.effectiveContingency)}</span>
+                        <span className="block text-xs text-[#78819D]">
                             ({breakdown.contingencySource === 'auto-calculated' ? `${scopeSummary.contingencyPercentage}% Auto-Calc` : 'From File'})
                         </span>
                     </div>
                 </div>
                 <div className="flex justify-between pt-2">
-                    <span className="font-bold text-sky-300">Final Estimated Total</span>
-                    <span className="font-bold text-lg text-sky-300">{formatCurrency(finalBudgetTotal)}</span>
+                    <span className="font-bold text-brand-500">Final Estimated Total</span>
+                    <span className="font-bold text-lg text-brand-500">{formatCurrency(finalBudgetTotal)}</span>
                 </div>
             </div>
         </div>
         
-        <h3 className="text-base font-semibold text-slate-200 mt-6 mb-2">Budget Line Items</h3>
-        <div className="overflow-x-auto border border-slate-700 rounded-lg">
-            <table className="min-w-full divide-y divide-slate-700">
-                <thead className="bg-slate-700">
+        <h3 className="text-base font-semibold text-[#1E2D5C] mt-6 mb-2">Budget Line Items</h3>
+        <div className="overflow-x-auto border border-[#DFE1E5] rounded-lg">
+            <table className="min-w-full divide-y divide-[#DFE1E5]">
+                <thead className="bg-[#F6F7F9]">
                     <tr>
                         <th scope="col" className="py-2 px-3 w-8 text-center"><span className="sr-only">Accept</span></th>
-                        <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">Original Item from File</th>
-                        <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider w-28">Category</th>
-                        <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">AI Interpretation</th>
-                        <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider w-36">New Item Name</th>
-                        <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider w-28">Budget</th>
+                        <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-[#78819D] uppercase tracking-wider">Original Item from File</th>
+                        <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-[#78819D] uppercase tracking-wider w-28">Category</th>
+                        <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-[#78819D] uppercase tracking-wider">AI Interpretation</th>
+                        <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-[#78819D] uppercase tracking-wider w-36">New Item Name</th>
+                        <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-[#78819D] uppercase tracking-wider w-28">Budget</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-700">
+                <tbody className="divide-y divide-[#DFE1E5]">
                     {editableSuggestions.length > 0 ? editableSuggestions.map((suggestion, index) => {
                         const interpretationValue = suggestion.suggestionType === 'new'
                             ? `NEW:${suggestion.categoryName}`
@@ -643,41 +643,41 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                         // Consistent badge color per category using index in the list
                         const catIndex = budgetCategoryData.findIndex(c => c.name === categoryLabel);
                         const badgeColors = [
-                            'bg-blue-900/60 text-blue-300 border-blue-700',
-                            'bg-purple-900/60 text-purple-300 border-purple-700',
-                            'bg-green-900/60 text-green-300 border-green-700',
-                            'bg-orange-900/60 text-orange-300 border-orange-700',
-                            'bg-pink-900/60 text-pink-300 border-pink-700',
-                            'bg-teal-900/60 text-teal-300 border-teal-700',
-                            'bg-yellow-900/60 text-yellow-300 border-yellow-700',
-                            'bg-red-900/60 text-red-300 border-red-700',
-                            'bg-indigo-900/60 text-indigo-300 border-indigo-700',
-                            'bg-cyan-900/60 text-cyan-300 border-cyan-700',
+                            'bg-blue-50 text-blue-700 border-blue-200',
+                            'bg-purple-50 text-purple-700 border-purple-200',
+                            'bg-[#E1F7E4] text-[#139B23] border-[#ADDEB4]',
+                            'bg-orange-50 text-orange-700 border-orange-200',
+                            'bg-pink-50 text-pink-700 border-pink-200',
+                            'bg-teal-50 text-teal-700 border-teal-200',
+                            'bg-[#FFF5DB] text-[#EAA800] border-[#EDDDB1]',
+                            'bg-red-50 text-[#B92814] border-red-200',
+                            'bg-indigo-50 text-indigo-700 border-indigo-200',
+                            'bg-cyan-50 text-cyan-700 border-cyan-200',
                         ];
                         const badgeColor = catIndex >= 0
                             ? badgeColors[catIndex % badgeColors.length]
-                            : 'bg-slate-700 text-slate-400 border-slate-600';
+                            : 'bg-[#F6F7F9] text-[#78819D] border-[#DFE1E5]';
 
-                        // Row background: uncertain → amber, deselected → dimmed, alternating
+                        // Row background: uncertain → warning, deselected → dimmed, alternating
                         const rowBg = suggestion.isUncertain
-                            ? 'bg-yellow-900/20'
-                            : index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-800/60';
+                            ? 'bg-[#FFF5DB]'
+                            : index % 2 === 0 ? 'bg-white' : 'bg-[#F6F7F9]';
                         const rowOpacity = !suggestion.accepted ? 'opacity-40' : '';
 
                         return (
-                            <tr key={index} className={`${rowBg} ${rowOpacity} hover:bg-slate-700/60 transition-opacity`}>
+                            <tr key={index} className={`${rowBg} ${rowOpacity} hover:bg-[#F7F9FC] transition-opacity`}>
                                 <td className="py-2 px-3 text-center align-middle">
                                     <input
                                         type="checkbox"
                                         checked={suggestion.accepted}
                                         onChange={e => handleSuggestionChange(index, 'accepted', e.target.checked)}
-                                        className="h-4 w-4 rounded border-slate-500 bg-slate-600 text-brand-500 focus:ring-brand-500"
+                                        className="h-4 w-4 rounded border-[#DFE1E5] bg-white text-brand-500 focus:ring-brand-500"
                                     />
                                 </td>
-                                <td className="py-2 px-3 text-sm text-slate-200 align-middle">
+                                <td className="py-2 px-3 text-sm text-[#1E2D5C] align-middle">
                                     {suggestion.isUncertain && (
                                         <Tooltip text="AI is uncertain about this item. Please review carefully.">
-                                            <FlagIcon className="text-yellow-400 inline-block mr-1 flex-shrink-0" />
+                                            <FlagIcon className="text-[#EAA800] inline-block mr-1 flex-shrink-0" />
                                         </Tooltip>
                                     )}
                                     <span>{suggestion.originalText}</span>
@@ -688,14 +688,14 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                                             {categoryLabel}
                                         </span>
                                     ) : (
-                                        <span className="text-slate-600 text-xs">—</span>
+                                        <span className="text-[#78819D] text-xs">—</span>
                                     )}
                                 </td>
                                 <td className="py-2 px-3 text-sm align-middle">
                                     <select
                                         value={interpretationValue}
                                         onChange={e => handleInterpretationChange(index, e.target.value)}
-                                        className="w-full text-xs rounded bg-slate-700 border border-slate-600 text-slate-200 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                                        className="w-full text-xs rounded bg-white border border-[#DFE1E5] text-[#1E2D5C] px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
                                     >
                                         <optgroup label="Create New Item">
                                             {categoryNames.map(name => (
@@ -718,7 +718,7 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                                         type="text"
                                         value={suggestion.drawItem}
                                         onChange={e => handleSuggestionChange(index, 'drawItem', e.target.value)}
-                                        className="w-full text-xs rounded bg-slate-700 border border-slate-600 text-slate-200 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:opacity-30 disabled:cursor-not-allowed"
+                                        className="w-full text-xs rounded bg-white border border-[#DFE1E5] text-[#1E2D5C] px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:opacity-30 disabled:cursor-not-allowed"
                                         disabled={suggestion.suggestionType === 'mapped'}
                                         placeholder={suggestion.suggestionType === 'mapped' ? '' : 'Item name…'}
                                     />
@@ -728,13 +728,13 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                                         type="number"
                                         value={suggestion.budget}
                                         onChange={e => handleSuggestionChange(index, 'budget', parseFloat(e.target.value) || 0)}
-                                        className="w-full text-xs rounded bg-slate-700 border border-slate-600 text-slate-200 text-right px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                                        className="w-full text-xs rounded bg-white border border-[#DFE1E5] text-[#1E2D5C] text-right px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
                                     />
                                 </td>
                             </tr>
                         );
                     }) : (
-                        <tr><td colSpan={6} className="text-center py-6 text-slate-400 italic">No items were found in the uploaded file.</td></tr>
+                        <tr><td colSpan={6} className="text-center py-6 text-[#78819D] italic">No items were found in the uploaded file.</td></tr>
                     )}
                 </tbody>
             </table>
@@ -766,7 +766,7 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({ isOpen
     const droppedTotal = droppedItems.reduce((sum: number, item: any) => sum + (item.budget || 0), 0);
 
     const footer = (
-        <button onClick={onClose} className="button-base bg-[#32373c] text-white hover:bg-[#4a5056] focus:ring-slate-500">
+        <button onClick={onClose} className="button-base bg-brand-500 text-white hover:bg-brand-600">
             Continue to Project Setup
         </button>
     );
@@ -776,63 +776,63 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({ isOpen
             <div className="space-y-5">
 
                 {/* ── Success banner ── */}
-                <div className="flex items-center gap-4 p-4 rounded-xl bg-green-900/20 border border-green-700/50">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-900/50 border border-green-600/50 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-green-400">
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-[#E1F7E4] border border-[#ADDEB4]">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#ADDEB4]/40 border border-[#ADDEB4] flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-[#139B23]">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                         </svg>
                     </div>
                     <div>
-                        <p className="text-base font-bold text-green-300">Budget Successfully Updated</p>
-                        <p className="text-xs text-green-500 mt-0.5">All accepted items have been applied to your budget.</p>
+                        <p className="text-base font-bold text-[#139B23]">Budget Successfully Updated</p>
+                        <p className="text-xs text-[#139B23]/80 mt-0.5">All accepted items have been applied to your budget.</p>
                     </div>
                 </div>
 
                 {/* ── Stat pills ── */}
                 <div className="grid grid-cols-2 gap-3">
                     {/* Existing items updated */}
-                    <div className="rounded-xl bg-slate-800 border border-slate-700 p-4 flex flex-col items-center gap-2">
-                        <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-brand-900/60 text-brand-300 border border-brand-700/60">
+                    <div className="rounded-xl bg-[#F6F7F9] border border-[#DFE1E5] p-4 flex flex-col items-center gap-2">
+                        <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-brand-50 text-brand-500 border border-brand-200">
                             Updated
                         </span>
-                        <p className="text-5xl font-black text-brand-400 leading-none">{mappedCount}</p>
-                        <p className="text-xs text-slate-400 text-center">existing line items</p>
+                        <p className="text-5xl font-black text-brand-500 leading-none">{mappedCount}</p>
+                        <p className="text-xs text-[#78819D] text-center">existing line items</p>
                     </div>
 
                     {/* New items added */}
-                    <div className="rounded-xl bg-slate-800 border border-slate-700 p-4 flex flex-col items-center gap-2">
-                        <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-purple-900/60 text-purple-300 border border-purple-700/60">
+                    <div className="rounded-xl bg-[#F6F7F9] border border-[#DFE1E5] p-4 flex flex-col items-center gap-2">
+                        <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
                             Added
                         </span>
-                        <p className="text-5xl font-black text-purple-400 leading-none">{newCount - droppedItems.length}</p>
-                        <p className="text-xs text-slate-400 text-center">new line items</p>
+                        <p className="text-5xl font-black text-purple-600 leading-none">{newCount - droppedItems.length}</p>
+                        <p className="text-xs text-[#78819D] text-center">new line items</p>
                     </div>
                 </div>
 
                 {/* ── Total value ── */}
-                <div className="rounded-xl bg-slate-800 border border-slate-700 p-4 text-center">
-                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Total Budget Applied</p>
-                    <p className="text-4xl font-black font-mono text-green-400">{formatCurrency(totalApplied - droppedTotal)}</p>
+                <div className="rounded-xl bg-[#F6F7F9] border border-[#DFE1E5] p-4 text-center">
+                    <p className="text-xs font-bold uppercase tracking-wider text-[#78819D] mb-1">Total Budget Applied</p>
+                    <p className="text-4xl font-black font-mono text-[#139B23]">{formatCurrency(totalApplied - droppedTotal)}</p>
                 </div>
 
                 {/* ── Dropped items warning ── */}
                 {droppedItems.length > 0 && (
-                    <div className="text-left p-4 rounded-xl bg-yellow-900/20 border border-yellow-700/60">
+                    <div className="text-left p-4 rounded-xl bg-[#FFF5DB] border border-[#EDDDB1]">
                         <div className="flex items-start gap-3 mb-3">
-                            <span className="flex-shrink-0 text-yellow-400 text-xl leading-none mt-0.5">⚠</span>
+                            <span className="flex-shrink-0 text-[#EAA800] text-xl leading-none mt-0.5">⚠</span>
                             <div>
-                                <p className="font-semibold text-yellow-300 text-sm">
+                                <p className="font-semibold text-[#EAA800] text-sm">
                                     {droppedItems.length} item{droppedItems.length > 1 ? 's' : ''} could not be placed
-                                    <span className="ml-1 font-mono text-yellow-400">({formatCurrency(droppedTotal)})</span>
+                                    <span className="ml-1 font-mono text-[#EAA800]">({formatCurrency(droppedTotal)})</span>
                                 </p>
-                                <p className="text-xs text-yellow-500 mt-0.5">
+                                <p className="text-xs text-[#EAA800]/80 mt-0.5">
                                     The AI suggested a category that doesn't exist in the template. Add these manually after setup.
                                 </p>
                             </div>
                         </div>
                         <ul className="space-y-1.5 ml-8">
                             {droppedItems.map((item: any, i: number) => (
-                                <li key={i} className="text-xs flex justify-between gap-4 text-yellow-300/80">
+                                <li key={i} className="text-xs flex justify-between gap-4 text-[#EAA800]">
                                     <span className="font-medium truncate">{item.drawItem || item.originalText}</span>
                                     <span className="flex-shrink-0 font-mono">{formatCurrency(item.budget)}</span>
                                 </li>
@@ -841,7 +841,7 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({ isOpen
                     </div>
                 )}
 
-                <p className="text-xs text-slate-500 text-center pb-1">
+                <p className="text-xs text-[#78819D] text-center pb-1">
                     Select your project type on the next screen to finalize the budget template.
                 </p>
             </div>

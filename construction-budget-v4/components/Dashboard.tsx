@@ -22,9 +22,9 @@ const formatCurrency = (value: number | undefined) => {
 };
 
 const DashboardItem: React.FC<{ label: string; value: string | number; valueClass?: string, isCurrency?: boolean }> = ({ label, value, valueClass, isCurrency }) => (
-  <div className="flex flex-col items-center justify-center p-3 bg-white dark:bg-slate-700 rounded-md shadow-sm border border-slate-200 dark:border-slate-600 h-full">
-    <span className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">{label}</span>
-    <span className={`text-xl md:text-2xl font-bold mt-1 ${valueClass || 'text-slate-700 dark:text-slate-200'}`}>
+  <div className="flex flex-col items-center justify-center p-3 bg-white rounded-md shadow-sm border border-[#DFE1E5] h-full">
+    <span className="text-xs text-slate-500 uppercase tracking-wider">{label}</span>
+    <span className={`text-xl md:text-2xl font-bold mt-1 ${valueClass || 'text-slate-700'}`}>
       {isCurrency && typeof value === 'number' ? formatCurrency(value) : value}
     </span>
   </div>
@@ -34,18 +34,18 @@ const QualitativeItem: React.FC<{ label: string; selectedValue: string; options:
   const selectedOption = options.find(opt => opt.value === selectedValue);
   const displayLabel = selectedOption ? selectedOption.label : 'N/A';
   // Retain original colorClass for the badge itself, assuming it's meant to be a fixed color indicator
-  const colorClass = selectedOption ? selectedOption.colorClass : 'bg-gray-200 dark:bg-gray-600';
+  const colorClass = selectedOption ? selectedOption.colorClass : 'bg-gray-200 ';
   // Adjust text color based on the badge's specific background color for contrast
   const textColor = selectedOption 
     ? (selectedOption.colorClass?.includes('yellow') || selectedOption.colorClass?.includes('green-400') || selectedOption.colorClass?.includes('gray-200')
-      ? 'text-black dark:text-gray-900' // Ensure dark text on light-ish badges even in dark mode if badge color doesn't change
-      : 'text-white dark:text-gray-100') // Ensure light text on dark badges
-    : 'text-black dark:text-white';
+      ? 'text-black ' // Ensure dark text on light-ish badges even in dark mode if badge color doesn't change
+      : 'text-white ') // Ensure light text on dark badges
+    : 'text-black';
 
 
   return (
-    <div className="flex flex-col items-center justify-center p-3 bg-white dark:bg-slate-700 rounded-md shadow-sm border border-slate-200 dark:border-slate-600 h-full">
-      <span className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">{label}</span>
+    <div className="flex flex-col items-center justify-center p-3 bg-white rounded-md shadow-sm border border-[#DFE1E5] h-full">
+      <span className="text-xs text-slate-500 uppercase tracking-wider mb-1">{label}</span>
       <span className={`px-3 py-1 text-sm font-medium rounded-full ${colorClass} ${textColor}`}>
         {displayLabel}
       </span>
@@ -58,7 +58,7 @@ export const DealGradeWidget: React.FC<{ dealGrade: DealGrade, variant?: 'defaul
 
     const getGradeColor = (grade: string) => {
         if (grade.startsWith('A')) return 'bg-green-500 text-white';
-        if (grade.startsWith('B')) return 'bg-[#0693e3] text-white';
+        if (grade.startsWith('B')) return 'bg-brand-500 text-white';
         if (grade.startsWith('C')) return 'bg-yellow-400 text-black';
         if (grade.startsWith('D')) return 'bg-orange-500 text-white';
         return 'bg-red-600 text-white animate-pulse';
@@ -86,10 +86,10 @@ export const DealGradeWidget: React.FC<{ dealGrade: DealGrade, variant?: 'defaul
         <div className="relative h-full">
             <button
                 onClick={() => setShowPopover(!showPopover)}
-                className={`flex items-center justify-center w-full transition-colors group ${isHeader ? 'flex-col gap-0.5' : 'flex-col p-3 bg-white dark:bg-slate-700 rounded-md shadow-sm border border-slate-200 dark:border-slate-600 h-full hover:bg-slate-50 dark:hover:bg-slate-600'}`}
+                className={`flex items-center justify-center w-full transition-colors group ${isHeader ? 'flex-col gap-0.5' : 'flex-col p-3 bg-white rounded-md shadow-sm border border-[#DFE1E5] h-full hover:bg-[#F7F9FC]'}`}
             >
                 <div className={`flex items-center justify-center gap-1 ${isHeader ? '' : 'mb-1'}`}>
-                    <span className={`uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400 ${isHeader ? 'text-[9px]' : 'text-xs'}`}>Deal Grade</span>
+                    <span className={`uppercase tracking-wider font-bold text-slate-500 ${isHeader ? 'text-[9px]' : 'text-xs'}`}>Deal Grade</span>
                     <InfoIcon className="text-slate-300 group-hover:text-[#0693e3] w-3 h-3 transition-colors" />
                 </div>
                 <div
@@ -101,34 +101,34 @@ export const DealGradeWidget: React.FC<{ dealGrade: DealGrade, variant?: 'defaul
             </button>
 
             {showPopover && (
-                <div className={`absolute right-0 ${isHeader ? 'top-12' : 'top-full mt-2'} w-64 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-600 z-50 p-4 animate-in fade-in zoom-in-95 duration-200`}>
-                    <div className="flex justify-between items-start mb-3 border-b border-slate-100 dark:border-slate-700 pb-2">
+                <div className={`absolute right-0 ${isHeader ? 'top-12' : 'top-full mt-2'} w-64 bg-white rounded-lg border border-[#DFE1E5] z-50 p-4 animate-in fade-in zoom-in-95 duration-200`} style={{ boxShadow: '0 4px 20px rgba(30,45,92,0.1)' }}>
+                    <div className="flex justify-between items-start mb-3 border-b border-[#DFE1E5] pb-2">
                         <div>
-                            <h4 className="font-bold text-slate-800 dark:text-slate-100">Deal Scorecard</h4>
-                            <span className="text-xs text-slate-500 dark:text-slate-400">Confidence Score: {dealGrade.numericalScore}/100</span>
+                            <h4 className="font-bold text-[#1E2D5C]">Deal Scorecard</h4>
+                            <span className="text-xs text-[#78819D]">Confidence Score: {dealGrade.numericalScore}/100</span>
                         </div>
-                        <button onClick={() => setShowPopover(false)} className="text-slate-400 hover:text-slate-600"><span className="sr-only">Close</span>×</button>
+                        <button onClick={() => setShowPopover(false)} className="text-[#78819D] hover:text-[#1E2D5C]"><span className="sr-only">Close</span>×</button>
                     </div>
-                    
+
                     <div className="space-y-2 text-sm">
                         <div className="flex justify-between items-center">
-                            <span className="text-slate-600 dark:text-slate-300">Financial Feasibility</span>
+                            <span className="text-[#78819D]">Financial Feasibility</span>
                             <span className={`font-bold ${getScoreColor(dealGrade.breakdown.financials)}`}>{dealGrade.breakdown.financials}</span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-slate-600 dark:text-slate-300">Sponsorship</span>
+                            <span className="text-[#78819D]">Sponsorship</span>
                             <span className={`font-bold ${getScoreColor(dealGrade.breakdown.sponsorship)}`}>{dealGrade.breakdown.sponsorship}</span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-slate-600 dark:text-slate-300">Market Factors</span>
+                            <span className="text-[#78819D]">Market Factors</span>
                             <span className={`font-bold ${getScoreColor(dealGrade.breakdown.market)}`}>{dealGrade.breakdown.market}</span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-slate-600 dark:text-slate-300">Data Completeness</span>
+                            <span className="text-[#78819D]">Data Completeness</span>
                             <span className={`font-bold ${getScoreColor(dealGrade.breakdown.completeness)}`}>{dealGrade.breakdown.completeness}</span>
                         </div>
                     </div>
-                    <div className="mt-3 pt-2 border-t border-slate-100 dark:border-slate-700 text-xs italic text-slate-500 dark:text-slate-400">
+                    <div className="mt-3 pt-2 border-t border-[#DFE1E5] text-xs italic text-[#78819D]">
                         "{dealGrade.summary}"
                     </div>
                 </div>
@@ -153,12 +153,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
   dealGrade,
 }) => {
   return (
-    <div className="app-dashboard mb-8 p-4 bg-[#1E2E5C] dark:bg-slate-800 rounded-lg shadow">
-      <h2 className="text-xl font-semibold text-white dark:text-slate-100 text-center mb-4">Project Overview</h2>
+    <div className="app-dashboard mb-8 p-4 bg-brand-700 rounded-lg shadow">
+      <h2 className="text-xl font-semibold text-white text-center mb-4">Project Overview</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-7 gap-3">
-        <DashboardItem label="Borrower Total" value={borrowerTotal} valueClass="text-[#0693e3] dark:text-[#5bb8f5]" isCurrency/>
-        <DashboardItem label="Lima One Approved" value={limaOneApprovedTotal} valueClass="text-green-600 dark:text-emerald-400" isCurrency/>
-        <DashboardItem label="Total Sq Ft" value={totalSqFt || '0'} valueClass="text-slate-700 dark:text-slate-200" />
+        <DashboardItem label="Borrower Total" value={borrowerTotal} valueClass="text-[#0693e3] " isCurrency/>
+        <DashboardItem label="Lima One Approved" value={limaOneApprovedTotal} valueClass="text-green-600 " isCurrency/>
+        <DashboardItem label="Total Sq Ft" value={totalSqFt || '0'} valueClass="text-slate-700" />
         
         <QualitativeItem label="Condition" selectedValue={selectedConditionValue} options={conditions} />
         <QualitativeItem label="Rehab Type" selectedValue={selectedRehabTypeValue} options={rehabTypes} />

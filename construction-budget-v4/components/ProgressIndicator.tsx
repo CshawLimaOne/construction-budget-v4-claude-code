@@ -25,7 +25,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ currentSte
             <div className="progress-step-circle" aria-hidden="true">{step.number}</div>
             <span className="progress-step-label">{step.label}</span>
           </div>
-          {index < steps.length - 1 && <div className={`flex-grow border-t-2 mx-2 transition-all duration-500 ${currentStep > index + 1 ? 'border-[#1E2E5C] dark:border-sky-400' : 'border-slate-300 dark:border-slate-600'}`} aria-hidden="true"></div>}
+          {index < steps.length - 1 && <div className={`flex-grow border-t-2 mx-2 transition-all duration-500 ${currentStep > index + 1 ? 'border-brand-500' : 'border-[#DFE1E5]'}`} aria-hidden="true"></div>}
         </React.Fragment>
       ))}
     </div>
