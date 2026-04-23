@@ -357,14 +357,9 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
   const isAddressAccepted = ADDRESS_KEYS.some(k => editableProjectDetails[k]?.accepted);
 
   const footer = (
-    <>
-      <button onClick={onClose} className="button-base bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC]">
-        Cancel
-      </button>
-      <button onClick={handleConfirmClick} className="button-base bg-brand-500 text-white hover:bg-brand-600">
-        Apply Accepted Items
-      </button>
-    </>
+    <button onClick={handleConfirmClick} className="button-base btn-primary">
+      Apply Accepted Items
+    </button>
   );
 
   return (
@@ -766,13 +761,13 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({ isOpen
     const droppedTotal = droppedItems.reduce((sum: number, item: any) => sum + (item.budget || 0), 0);
 
     const footer = (
-        <button onClick={onClose} className="button-base bg-brand-500 text-white hover:bg-brand-600">
+        <button onClick={onClose} className="button-base btn-primary">
             Continue to Project Setup
         </button>
     );
 
     return (
-        <ComplexModal isOpen={isOpen} onClose={onClose} title="Budget Update Summary" footer={footer} size="md">
+        <ComplexModal isOpen={isOpen} onClose={onClose} title="Budget Update Summary" footer={footer} size="md" hideCloseButton>
             <div className="space-y-5">
 
                 {/* ── Success banner ── */}

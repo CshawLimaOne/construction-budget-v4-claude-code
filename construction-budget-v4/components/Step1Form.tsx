@@ -188,21 +188,25 @@ const VisualSelector: React.FC<{
               disabled={isOptDisabled}
               aria-pressed={isSelected}
               aria-label={`Select ${opt.label}`}
-              className={`vs-card relative flex flex-col items-center p-4 rounded-xl border-2 text-center transition-all duration-200 min-h-[160px]
+              className={`vs-card relative flex flex-col items-center p-4 rounded-xl text-center transition-all duration-200 min-h-[160px]
                 ${isSelected
-                  ? 'border-brand-500 bg-brand-50 vs-card-selected'
+                  ? 'border-brand-500 bg-[#ECF0FF] vs-card-selected scale-[1.02]'
                   : 'border-[#DFE1E5] bg-white hover:border-brand-200 hover:bg-brand-50/50'}
                 ${isOptDisabled ? 'opacity-40 cursor-not-allowed grayscale' : 'cursor-pointer'}`}
-              style={{ '--accent-color': accentColor } as React.CSSProperties}
+              style={{
+                '--accent-color': accentColor,
+                border: isSelected ? '3px solid #1C39D8' : undefined,
+                boxShadow: isSelected ? '0 0 0 4px rgba(28,57,216,0.15)' : undefined,
+              } as React.CSSProperties}
             >
               {/* Colored top-border accent */}
-              <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl transition-opacity duration-200"
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl transition-opacity duration-200"
                 style={{ background: `linear-gradient(90deg, ${accentColor}, transparent)`, opacity: isSelected ? 1 : 0.4 }} />
 
               {/* Selected check badge — absolute top-right */}
               {isSelected && (
-                <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/40 vs-check-badge">
-                  <CheckCircleIcon className="w-3.5 h-3.5 text-white" />
+                <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-brand-500 flex items-center justify-center vs-check-badge" style={{ boxShadow: '0 2px 8px rgba(28,57,216,0.4)' }}>
+                  <CheckCircleIcon className="w-4 h-4 text-white" />
                 </div>
               )}
 

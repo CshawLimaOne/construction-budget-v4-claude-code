@@ -9,9 +9,10 @@ interface ComplexModalProps {
   children: ReactNode;
   footer: ReactNode;
   size?: 'md' | 'lg' | 'xl';
+  hideCloseButton?: boolean;
 }
 
-export const ComplexModal: React.FC<ComplexModalProps> = ({ isOpen, onClose, title, children, footer, size = 'xl' }) => {
+export const ComplexModal: React.FC<ComplexModalProps> = ({ isOpen, onClose, title, children, footer, size = 'xl', hideCloseButton = false }) => {
   if (!isOpen) {
     return null;
   }
@@ -40,13 +41,15 @@ export const ComplexModal: React.FC<ComplexModalProps> = ({ isOpen, onClose, tit
           <h2 id="modal-title" className="text-2xl font-bold text-[#1E2D5C] tracking-tight">
             {title}
           </h2>
-          <button
-            onClick={onClose}
-            className="p-1.5 text-[#78819D] hover:text-[#1E2D5C] bg-[#F6F7F9] hover:bg-[#F7F9FC] rounded-full transition-colors"
-            aria-label="Close modal"
-          >
-            <XIcon className="w-5 h-5" />
-          </button>
+          {!hideCloseButton && (
+            <button
+              onClick={onClose}
+              className="p-1.5 text-[#78819D] hover:text-[#1E2D5C] bg-[#F6F7F9] hover:bg-[#F7F9FC] rounded-full transition-colors"
+              aria-label="Close modal"
+            >
+              <XIcon className="w-5 h-5" />
+            </button>
+          )}
         </header>
 
         <main className="p-6 overflow-y-auto flex-grow text-[#1E2D5C]">

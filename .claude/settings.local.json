@@ -12,7 +12,13 @@
       "Bash(npm run:*)",
       "Bash(grep -r \"generateContent\\\\|generateObject\" construction-budget-v4/*.tsx)",
       "Bash(node -e \"const pkg = require\\(''./node_modules/@google/genai/package.json''\\); console.log\\(pkg.version\\)\")",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "Bash(powershell -Command \"\\(Get-Content 'construction-budget-v4/components/GcOnboardingForm.tsx'\\) -replace 'className=\\\\\"spreadsheet-input w-full\\\\\"', 'className=\\\\\"form-input-premium w-full\\\\\"' | Set-Content 'construction-budget-v4/components/GcOnboardingForm.tsx'\")",
+      "Bash(perl -i -pe 's/text-red-400/text-[#B92814]/g' components/Step1Form.tsx)",
+      "Bash(perl -i -pe 's/border-yellow-400/border-[#EAA800]/g; s/text-yellow-400/text-[#EAA800]/g' components/Step2Budget.tsx)",
+      "Bash(perl -i -pe 's/text-red-400 hover:text-red-300 p2 rounded-full hover:bg-red-900\\\\/20/text-[#B92814] hover:text-[#8B1B0E] p2 rounded-full hover:bg-[#FFF0EE]/g; *)",
+      "Bash(perl -i -pe 's/bg-red-400/bg-[#B92814]/g' components/VoiceRecorder.tsx)",
+      "Bash(perl -i -pe 's/bg-yellow-600 text-white shadow-lg shadow-yellow-900\\\\/50/bg-[#EAA800] text-white shadow-lg shadow-[#b37a00]\\\\/50/g' components/WalkthroughRoomView.tsx)"
     ]
   }
 }

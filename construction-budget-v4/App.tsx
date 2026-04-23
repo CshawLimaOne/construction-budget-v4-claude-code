@@ -2046,7 +2046,7 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
   }
 
   return (
-    <div className="app-shell bg-[#F4F5F7] text-[#1E2D5C] min-h-screen relative overflow-hidden flex flex-col">
+    <div className="app-shell bg-[#F4F5F7] text-[#1E2D5C] h-screen relative overflow-hidden flex flex-col">
 
       <header className="app-shell-nav flex items-center justify-between bg-white border-b border-[#DFE1E5] px-6 py-3 shadow-sm z-20 relative">
         <div className="flex items-center gap-4">
@@ -2100,6 +2100,7 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
             />
         )}
 
+        <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <main className="content-area flex-grow bg-transparent p-4 md:p-8" ref={tourRef as any}>
           {currentUserRole === 'analyst' && (
             <div className="mb-6 border-b border-[#DFE1E5]">
@@ -2127,8 +2128,6 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
           )}
 
           {currentView === 'budget' && (
-            <>
-              {/* Main Card Container with Dark Glassmorphism and Animated Transition Wrapper */}
               <div className="main-content-container bg-white border border-[#DFE1E5] shadow-sm rounded-2xl p-4 md:p-6 mb-6 w-full max-w-[95%] xl:max-w-[1800px] mx-auto overflow-hidden">
                 <div key={currentWizardStep} className={`step-transition-wrapper ${direction === 'forward' ? 'animate-step-forward' : 'animate-step-backward'}`}>
                     {currentWizardStep === 1 && (
@@ -2250,13 +2249,10 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
                     />
                     )}
                 </div>
-              </div>
-
-              <footer className="app-shell-footer flex justify-between items-center bg-white border-t border-[#DFE1E5] px-6 py-5">
+              <div className="flex justify-between items-center pt-6 mt-6 border-t border-[#DFE1E5]">
                 <div>
                   <button
                     onClick={handlePrevStep}
-                    disabled={false}
                     className={`button-base py-2.5 px-7 font-semibold transition-all ${currentWizardStep === 1 && !projectTypeMode ? 'invisible pointer-events-none' : 'bg-white text-[#1E2D5C] border border-[#DFE1E5] hover:bg-[#F7F9FC] shadow-sm'}`}
                   >
                     ← Back
@@ -2267,23 +2263,16 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
                     <button
                       onClick={handleNextStep}
                       disabled={isNextDisabled}
-                      className={`button-base py-2.5 px-8 font-bold transition-all
-                        ${isNextDisabled
-                          ? 'bg-[#BCBFC7] text-white cursor-not-allowed shadow-none'
-                          : 'bg-brand-500 text-white hover:bg-brand-600'}`}
+                      className={`button-base py-2.5 px-8 font-bold transition-all ${isNextDisabled ? 'btn-disabled' : 'btn-primary'}`}
                     >
                       Next Step →
                     </button>
                   ) : currentUserRole === 'analyst' ? null
                     : applicationStatus === 'needs_borrower_action' ? (
-                    /* Item 6: Borrower resubmit after reviewing analyst changes */
                     <button
                       onClick={handleResubmit}
                       disabled={!isReimbursementAcknowledged}
-                      className={`button-base py-2.5 px-8 font-bold transition-all
-                        ${!isReimbursementAcknowledged
-                          ? 'bg-[#BCBFC7] text-white cursor-not-allowed shadow-none'
-                          : 'bg-[#EAA800] text-white hover:bg-[#D49700]'}`}
+                      className={`button-base py-2.5 px-8 font-bold transition-all ${!isReimbursementAcknowledged ? 'btn-disabled' : 'bg-[#EAA800] text-white hover:bg-[#D49700]'}`}
                     >
                       Resubmit Application →
                     </button>
@@ -2291,10 +2280,7 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
                     <button
                       onClick={isRequirementsModalOpen ? handleProceedWithSubmit : () => setIsRequirementsModalOpen(true)}
                       disabled={!isReimbursementAcknowledged || isFormLocked}
-                      className={`button-base py-2.5 px-8 font-bold transition-all
-                        ${(!isReimbursementAcknowledged || isFormLocked)
-                          ? 'bg-[#BCBFC7] text-white cursor-not-allowed shadow-none'
-                          : 'bg-brand-500 text-white hover:bg-brand-600'}`}
+                      className={`button-base py-2.5 px-8 font-bold transition-all ${(!isReimbursementAcknowledged || isFormLocked) ? 'btn-disabled' : 'btn-primary'}`}
                     >
                       {applicationStatus === 'approved' ? 'Approved ✓' : (applicationStatus === 'under_review' ? 'Under Review' : 'Submit Application →')}
                     </button>
@@ -2308,8 +2294,8 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
                     </button>
                   )}
                 </div>
-              </footer>
-            </>
+              </div>
+              </div>
           )}
 
           {currentView === 'analystReport' && (
@@ -2346,6 +2332,7 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
              <RevisionDeltaReport auditLog={auditLog} />
           )}
         </main>
+        </div>
       </div>
 
       {isBulkUploadModalOpen && (

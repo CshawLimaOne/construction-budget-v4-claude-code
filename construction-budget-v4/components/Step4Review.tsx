@@ -48,6 +48,10 @@ const exportReviewPDF = (contentEl: HTMLElement, streetAddress: string) => {
 
     const title = streetAddress ? `Budget Review — ${streetAddress}` : 'Budget Review';
 
+    // Clone content and strip excluded sections (Final Acknowledgment)
+    const clone = contentEl.cloneNode(true) as HTMLElement;
+    clone.querySelectorAll('[data-pdf-exclude]').forEach(el => el.remove());
+
     printWindow.document.write(`<!DOCTYPE html>
 <html>
 <head>
@@ -58,8 +62,8 @@ const exportReviewPDF = (contentEl: HTMLElement, streetAddress: string) => {
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body {
-      background-color: #0f172a !important;
-      color: white;
+      background-color: #ffffff !important;
+      color: #1E2D5C;
       padding: 24px;
       font-family: ui-sans-serif, system-ui, sans-serif;
       -webkit-print-color-adjust: exact;
@@ -67,14 +71,17 @@ const exportReviewPDF = (contentEl: HTMLElement, streetAddress: string) => {
     }
     @page { margin: 0.5in; size: letter; }
     @media print {
-      body { background-color: #0f172a !important; padding: 0; }
+      body { background-color: #ffffff !important; padding: 0; }
       button { display: none !important; }
     }
     select, textarea, input { display: none !important; }
+    /* Ensure light backgrounds render correctly */
+    .section-container { background-color: #ffffff !important; border: 1px solid #DFE1E5 !important; border-radius: 12px; }
+    table { border-collapse: collapse; }
   </style>
 </head>
 <body>
-  ${contentEl.innerHTML}
+  ${clone.innerHTML}
   <script>
     window.addEventListener('load', function() {
       setTimeout(function() { window.print(); }, 600);
@@ -540,23 +547,44 @@ export const Step4Review: React.FC<Step4ReviewProps> = ({
                         <table className="w-full text-sm text-left text-[#1E2D5C]">
                             <thead className="bg-[#F6F7F9] text-xs uppercase text-[#78819D]">
                                 <tr>
-                                    <th className="px-6 py-4 font-bold">Category</th>
+                                    <th className="px-6 py-4 font-bold">Category / Line Item</th>
                                     <th className="px-6 py-4 font-bold text-right">Requested Amount</th>
                                     {showApprovedColumn && <th className="px-6 py-4 font-bold text-right text-[#139B23]">Approved</th>}
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#DFE1E5] bg-white">
+                            <tbody className="bg-white">
                                 {budgetData.map(category => {
                                     const catTotal = category.items.reduce((sum, item) => sum + item.budget, 0);
                                     const catActual = category.items.reduce((sum, item) => sum + item.actual, 0);
                                     if (catTotal === 0 && catActual === 0) return null;
+                                    const budgetedItems = category.items.filter(item => item.budget > 0);
 
                                     return (
-                                        <tr key={category.name} className="hover:bg-[#F7F9FC] transition-colors">
-                                            <td className="px-6 py-3 font-medium text-[#1E2D5C]">{category.name}</td>
-                                            <td className="px-6 py-3 text-right font-mono text-[#1E2D5C]">{formatCurrency(catTotal)}</td>
-                                            {showApprovedColumn && <td className="px-6 py-3 text-right font-mono text-[#139B23]">{formatCurrency(catActual)}</td>}
-                                        </tr>
+                                        <React.Fragment key={category.name}>
+                                            {/* Category header row */}
+                                            <tr style={{ backgroundColor: '#1E2D5C' }}>
+                                                <td className="px-6 py-2.5 font-bold text-xs uppercase tracking-wider" style={{ color: '#ffffff' }} colSpan={showApprovedColumn ? 3 : 2}>
+                                                    {category.name}
+                                                </td>
+                                            </tr>
+                                            {/* Line items with budget */}
+                                            {budgetedItems.map(item => (
+                                                <tr key={item.id} className="border-b border-[#DFE1E5] hover:bg-[#F7F9FC] transition-colors">
+                                                    <td className="px-6 py-2.5 text-[#1E2D5C]">
+                                                        <span className="text-xs text-[#78819D] mr-2">{item.itemNumber}</span>
+                                                        {item.drawItem}
+                                                    </td>
+                                                    <td className="px-6 py-2.5 text-right font-mono text-[#1E2D5C]">{formatCurrency(item.budget)}</td>
+                                                    {showApprovedColumn && <td className="px-6 py-2.5 text-right font-mono text-[#139B23]">{item.actual > 0 ? formatCurrency(item.actual) : '—'}</td>}
+                                                </tr>
+                                            ))}
+                                            {/* Category subtotal */}
+                                            <tr className="bg-[#F6F7F9] border-b-2 border-[#DFE1E5]">
+                                                <td className="px-6 py-2 text-xs font-bold text-[#78819D] uppercase tracking-wider pl-8">Subtotal</td>
+                                                <td className="px-6 py-2 text-right font-bold text-[#1E2D5C]">{formatCurrency(catTotal)}</td>
+                                                {showApprovedColumn && <td className="px-6 py-2 text-right font-bold text-[#139B23]">{catActual > 0 ? formatCurrency(catActual) : '—'}</td>}
+                                            </tr>
+                                        </React.Fragment>
                                     );
                                 })}
                             </tbody>
@@ -643,7 +671,7 @@ export const Step4Review: React.FC<Step4ReviewProps> = ({
             )}
 
             {/* --- 5. PRE-FLIGHT CHECKLIST --- */}
-            <div className={`section-container p-5 mb-8 transition-all duration-500 ${isReimbursementAcknowledged ? 'border-[#ADDEB4] bg-[#E1F7E4]/30' : 'border-[#DFE1E5]'}`}>
+            <div data-pdf-exclude className={`section-container p-5 mb-8 transition-all duration-500 ${isReimbursementAcknowledged ? 'border-[#ADDEB4] bg-[#E1F7E4]/30' : 'border-[#DFE1E5]'}`}>
                 <div className="flex items-center space-x-3 border-b border-[#DFE1E5] pb-4 mb-5">
                     <div className={`p-2 rounded-xl transition-colors ${isReimbursementAcknowledged ? 'bg-[#E1F7E4] text-[#139B23]' : 'bg-brand-50 text-brand-500'}`}>
                         <ClipboardCheckIcon className="w-6 h-6" />
