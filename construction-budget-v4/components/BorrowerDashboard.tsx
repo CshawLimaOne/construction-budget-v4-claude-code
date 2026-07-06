@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '../contexts/SessionContext';
 import { LocalDataService, BudgetSummary } from '../services/dataService';
@@ -27,12 +27,26 @@ export const BorrowerDashboard: React.FC = () => {
   const [budgets, setBudgets] = useState<BudgetSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
+  // Prevents double-creating a budget when React StrictMode (dev only)
+  // double-invokes this effect, and guards against re-firing on re-renders.
+  const hasAutoRedirectedRef = useRef(false);
 
   const loadBudgets = async () => {
     if (!session) return;
     setIsLoading(true);
     const list = await dataService.listBudgetsForUser(session.userId);
     list.sort((a, b) => b.createdAt - a.createdAt);
+
+    // First-time user (no budgets yet): skip the empty list and go straight
+    // to a fresh budget's landing page, same as clicking "+ New Budget".
+    if (list.length === 0) {
+      if (hasAutoRedirectedRef.current) return;
+      hasAutoRedirectedRef.current = true;
+      const budgetId = await dataService.createBudget(session.userId);
+      navigate(`/budget/${budgetId}`, { replace: true });
+      return;
+    }
+
     setBudgets(list);
     setIsLoading(false);
   };

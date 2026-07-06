@@ -20,6 +20,8 @@ interface WelcomeScreenProps {
   onProcessBudgetFile?: (file: File) => void;
   isProcessing?: boolean;
   budgetParsingError?: string | null;
+  onNavigateToDashboard?: () => void;
+  dashboardLabel?: string;
 }
 
 const STATS = [
@@ -37,6 +39,8 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
     onProcessBudgetFile,
     isProcessing = false,
     budgetParsingError = null,
+    onNavigateToDashboard,
+    dashboardLabel,
 }) => {
   const [isExiting, setIsExiting] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -79,6 +83,15 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         <div className="welcome-orb welcome-orb-2" />
         <div className="welcome-orb welcome-orb-3" />
       </div>
+
+      {onNavigateToDashboard && (
+        <button
+          onClick={onNavigateToDashboard}
+          className="absolute top-6 right-6 z-20 flex items-center gap-1.5 text-sm font-semibold text-[#78819D] hover:text-brand-500 transition-colors px-3 py-1.5 rounded-lg hover:bg-white/60"
+        >
+          ← {dashboardLabel || 'My Budgets'}
+        </button>
+      )}
 
       {/* Main Content */}
       <div className="relative z-10 flex-1 flex items-center justify-center p-6 lg:p-10">

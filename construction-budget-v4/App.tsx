@@ -51,7 +51,15 @@ export type StagedPhoto = {
 
 type GcDocUploadKey = 'gcLicenseDoc' | 'driversLicenseDoc' | 'generalLiabilityDoc' | 'workersCompDoc';
 
-export const App: React.FC<{ initialData?: InitializationData }> = ({ initialData }) => {
+interface AppProps {
+  initialData?: InitializationData;
+  // Optional so App still works standalone (e.g. embedded widget usage)
+  // outside of a router. When provided, shows a "back to dashboard" link.
+  onNavigateToDashboard?: () => void;
+  dashboardLabel?: string;
+}
+
+export const App: React.FC<AppProps> = ({ initialData, onNavigateToDashboard, dashboardLabel }) => {
   const { toasts, showToast, dismissToast } = useToast();
 
   // ... (State declarations remain same)
@@ -2017,8 +2025,10 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
           onProcessBudgetFile={handleProcessBudgetFile}
           isProcessing={isParsingBudget || isAnalyzingBudget}
           budgetParsingError={budgetParsingError}
+          onNavigateToDashboard={onNavigateToDashboard}
+          dashboardLabel={dashboardLabel}
         />
-        
+
         {isEstimatorModalOpen && (
             <EstimatorModal 
             isOpen={isEstimatorModalOpen}
@@ -2087,6 +2097,14 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
             </div>
         </div>
         <div className="flex items-center gap-4">
+            {onNavigateToDashboard && (
+                <button
+                  onClick={onNavigateToDashboard}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-[#78819D] hover:text-brand-500 transition-colors px-2 py-1"
+                >
+                  ← {dashboardLabel || 'My Budgets'}
+                </button>
+            )}
             <div className="role-switcher-container">
                 <button onClick={() => setCurrentUserRole('borrower')} className={`role-switcher-option ${currentUserRole === 'borrower' ? 'active bg-brand-500 text-white shadow-sm border border-brand-600' : ''}`}>Borrower</button>
                 <button onClick={() => setCurrentUserRole('analyst')} className={`role-switcher-option ${currentUserRole === 'analyst' ? 'active bg-brand-500 text-white shadow-sm border border-brand-600' : ''}`}>Analyst</button>
