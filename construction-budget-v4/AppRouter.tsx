@@ -11,7 +11,7 @@ import { seedTestBudgetsIfEmpty } from './services/dataService';
 const RootRedirect: React.FC = () => {
   const { session } = useSession();
   if (!session) return <Navigate to="/login" replace />;
-  return <Navigate to={session.role === 'analyst' ? '/review' : '/dashboard'} replace />;
+  return <Navigate to={session.role === 'borrower' ? '/dashboard' : '/review'} replace />;
 };
 
 export const AppRouter: React.FC = () => {
@@ -35,7 +35,7 @@ export const AppRouter: React.FC = () => {
           <Route
             path="/review"
             element={
-              <ProtectedRoute allowedRoles={['analyst']}>
+              <ProtectedRoute allowedRoles={['analyst_i', 'senior_analyst', 'manager']}>
                 <ReviewDashboard />
               </ProtectedRoute>
             }

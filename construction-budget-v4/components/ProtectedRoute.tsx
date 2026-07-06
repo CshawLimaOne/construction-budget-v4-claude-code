@@ -1,10 +1,10 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSession } from '../contexts/SessionContext';
-import type { UserRole } from '../types';
+import type { PortalRole } from '../types';
 
 interface ProtectedRouteProps {
-  allowedRoles?: UserRole[];
+  allowedRoles?: PortalRole[];
   children: React.ReactElement;
 }
 
@@ -16,7 +16,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles, ch
   }
 
   if (allowedRoles && !allowedRoles.includes(session.role)) {
-    return <Navigate to={session.role === 'analyst' ? '/review' : '/dashboard'} replace />;
+    return <Navigate to={session.role === 'borrower' ? '/dashboard' : '/review'} replace />;
   }
 
   return children;

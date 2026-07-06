@@ -1,10 +1,10 @@
-import type { UserRole } from '../types';
+import type { PortalRole, ReviewTier } from '../types';
 
 export interface Session {
   userId: string;
   name: string;
   email: string;
-  role: UserRole;
+  role: PortalRole;
 }
 
 export interface AuthService {
@@ -20,7 +20,7 @@ interface TestUser {
   name: string;
   email: string;
   password: string;
-  role: UserRole;
+  role: PortalRole;
 }
 
 // Test-mode only. Not for production use - passwords are plaintext and
@@ -28,8 +28,26 @@ interface TestUser {
 const TEST_USERS: TestUser[] = [
   { userId: 'borrower-1', name: 'Jordan Smith', email: 'borrower@test.com', password: 'password', role: 'borrower' },
   { userId: 'borrower-2', name: 'Amy Lee', email: 'borrower2@test.com', password: 'password', role: 'borrower' },
-  { userId: 'analyst-1', name: 'Morgan Chen', email: 'analyst@test.com', password: 'password', role: 'analyst' },
+  { userId: 'analyst-1', name: 'Alex Analyst', email: 'analyst1@test.com', password: 'password', role: 'analyst_i' },
+  { userId: 'analyst-2', name: 'Sam Analyst', email: 'analyst2@test.com', password: 'password', role: 'analyst_i' },
+  { userId: 'senior-1', name: 'Morgan Chen', email: 'senior@test.com', password: 'password', role: 'senior_analyst' },
+  { userId: 'manager-1', name: 'Taylor Manager', email: 'manager@test.com', password: 'password', role: 'manager' },
 ];
+
+export interface AssignableUser {
+  userId: string;
+  name: string;
+  role: ReviewTier;
+}
+
+// Test-mode only: the roster a Manager can assign budgets to. In a real
+// backend this would be a directory/user-management API call, not a
+// lookup against the mock login roster.
+export function listAssignableUsers(): AssignableUser[] {
+  return TEST_USERS.filter((u): u is TestUser & { role: ReviewTier } => u.role !== 'borrower' && u.role !== 'manager').map(
+    (u) => ({ userId: u.userId, name: u.name, role: u.role })
+  );
+}
 
 export class MockAuthService implements AuthService {
   async login(email: string, password: string): Promise<Session> {

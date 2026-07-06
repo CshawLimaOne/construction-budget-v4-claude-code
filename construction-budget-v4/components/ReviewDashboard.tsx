@@ -2,10 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '../contexts/SessionContext';
 import { LocalDataService, BudgetSummary } from '../services/dataService';
-import type { ApplicationStatus } from '../types';
+import { listAssignableUsers } from '../services/authService';
+import type { ApplicationStatus, ReviewTier } from '../types';
 import { PortalHeader } from './PortalHeader';
 
 const dataService = new LocalDataService();
+const assignableUsers = listAssignableUsers();
 
 const STATUS_STYLES: Record<ApplicationStatus, string> = {
   draft: 'bg-[#F4F5F7] text-[#78819D]',
@@ -21,6 +23,12 @@ const STATUS_LABELS: Record<ApplicationStatus, string> = {
   approved: 'Approved',
 };
 
+const TIER_LABELS: Record<ReviewTier, string> = {
+  analyst_i: 'Analyst I',
+  senior_analyst: 'Senior Analyst',
+  manager: 'Manager',
+};
+
 const STATUS_FILTERS: Array<{ value: ApplicationStatus | 'all'; label: string }> = [
   { value: 'all', label: 'All' },
   { value: 'under_review', label: 'Under Review' },
@@ -32,14 +40,16 @@ const STATUS_FILTERS: Array<{ value: ApplicationStatus | 'all'; label: string }>
 export const ReviewDashboard: React.FC = () => {
   const { session, logout } = useSession();
   const navigate = useNavigate();
+  const isManager = session?.role === 'manager';
   const [budgets, setBudgets] = useState<BudgetSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | 'all'>('under_review');
   const [search, setSearch] = useState('');
 
   const loadBudgets = async () => {
+    if (!session) return;
     setIsLoading(true);
-    const list = await dataService.listBudgetsForReview();
+    const list = await dataService.listBudgetsForRole(session.role, session.userId);
     list.sort((a, b) => b.createdAt - a.createdAt);
     setBudgets(list);
     setIsLoading(false);
@@ -47,11 +57,21 @@ export const ReviewDashboard: React.FC = () => {
 
   useEffect(() => {
     loadBudgets();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.userId]);
 
   const handleLogout = async () => {
     await logout();
     navigate('/login', { replace: true });
+  };
+
+  const handleAssign = async (budgetId: string, assigneeKey: string) => {
+    if (!session) return;
+    if (!assigneeKey) return;
+    const assignee = assignableUsers.find((u) => u.userId === assigneeKey);
+    if (!assignee) return;
+    await dataService.assignBudget(budgetId, assignee.userId, assignee.name, assignee.role, session.userId);
+    loadBudgets();
   };
 
   const filtered = useMemo(() => {
@@ -67,10 +87,10 @@ export const ReviewDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F4F5F7] p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <PortalHeader
-          title="Budget Review Queue"
-          subtitle={`Signed in as ${session?.name ?? ''}`}
+          title={isManager ? 'Budget Review Queue' : 'My Assigned Reviews'}
+          subtitle={isManager ? `Signed in as ${session?.name ?? ''} · all submitted budgets` : `Signed in as ${session?.name ?? ''}`}
           actions={
             <button
               onClick={handleLogout}
@@ -108,21 +128,24 @@ export const ReviewDashboard: React.FC = () => {
           </div>
         ) : filtered.length === 0 ? (
           <div className="bg-white rounded-2xl border border-[#DFE1E5] shadow-sm p-8 text-center text-[#78819D]">
-            No budgets match this filter.
+            {isManager ? 'No budgets match this filter.' : "Nothing's been assigned to you yet."}
           </div>
         ) : (
           <div className="bg-white rounded-2xl border border-[#DFE1E5] shadow-sm divide-y divide-[#DFE1E5] overflow-hidden">
-            <div className="grid grid-cols-4 gap-4 px-6 py-3 text-xs font-semibold text-[#78819D] uppercase tracking-wide">
+            <div
+              className={`grid gap-4 px-6 py-3 text-xs font-semibold text-[#78819D] uppercase tracking-wide ${isManager ? 'grid-cols-5' : 'grid-cols-4'}`}
+            >
               <span>Borrower</span>
               <span>Project</span>
               <span>Status</span>
-              <span>Updated</span>
+              <span>Assigned To</span>
+              {isManager && <span>Assign</span>}
             </div>
             {filtered.map((b) => (
-              <button
+              <div
                 key={b.budgetId}
                 onClick={() => navigate(`/budget/${b.budgetId}`)}
-                className="w-full text-left grid grid-cols-4 gap-4 items-center px-6 py-4 hover:bg-[#F7F9FC] transition-colors"
+                className={`grid gap-4 items-center px-6 py-4 hover:bg-[#F7F9FC] transition-colors cursor-pointer ${isManager ? 'grid-cols-5' : 'grid-cols-4'}`}
               >
                 <span className="font-semibold text-[#1E2D5C]">{b.borrowerName || 'Unknown'}</span>
                 <span className="text-[#4A5580]">{b.projectName}</span>
@@ -131,8 +154,39 @@ export const ReviewDashboard: React.FC = () => {
                     {STATUS_LABELS[b.status]}
                   </span>
                 </span>
-                <span className="text-xs text-[#78819D]">{new Date(b.createdAt).toLocaleDateString()}</span>
-              </button>
+                <span className="text-xs text-[#78819D]">
+                  {b.assignment?.assignedToUserId ? (
+                    <>
+                      {b.assignment.assignedToName}
+                      <span className="block text-[10px] uppercase tracking-wide text-[#BCBFC7]">
+                        {TIER_LABELS[b.assignment.assignedToRole]}
+                      </span>
+                    </>
+                  ) : b.assignment?.reviewStatus === 'escalated' ? (
+                    <span className="text-[#8A6A05] font-semibold">
+                      Needs {TIER_LABELS[b.assignment.assignedToRole]}
+                    </span>
+                  ) : (
+                    <span className="text-[#BCBFC7]">Unassigned</span>
+                  )}
+                </span>
+                {isManager && (
+                  <span onClick={(e) => e.stopPropagation()}>
+                    <select
+                      value={b.assignment?.assignedToUserId ?? ''}
+                      onChange={(e) => handleAssign(b.budgetId, e.target.value)}
+                      className="w-full border border-[#DFE1E5] rounded-lg text-xs px-2 py-1.5 bg-white text-[#1E2D5C] focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    >
+                      <option value="">Unassigned</option>
+                      {assignableUsers.map((u) => (
+                        <option key={u.userId} value={u.userId}>
+                          {u.name} ({TIER_LABELS[u.role]})
+                        </option>
+                      ))}
+                    </select>
+                  </span>
+                )}
+              </div>
             ))}
           </div>
         )}

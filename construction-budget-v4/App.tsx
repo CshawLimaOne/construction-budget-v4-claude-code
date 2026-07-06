@@ -38,6 +38,8 @@ import { getTutorialSteps } from './tutorialSteps';
 import { ConnectivityBanner } from './components/ConnectivityBanner';
 import { getAsset, deleteAsset } from './utils/offlineStorage';
 import { useToast, ToastContainer } from './components/Toast';
+import { getApprovalLimit } from './services/dataService';
+import type { ReviewTier } from './types';
 
 
 const LOCAL_STORAGE_KEY_BASE = 'constructionBudgetData_v4'; 
@@ -57,9 +59,29 @@ interface AppProps {
   // outside of a router. When provided, shows a "back to dashboard" link.
   onNavigateToDashboard?: () => void;
   dashboardLabel?: string;
+  // Real reviewer tier (Analyst I / Senior Analyst / Manager), used only for
+  // approval-limit + escalation logic. currentUserRole (wizard-internal
+  // UserRole) stays 'borrower' | 'analyst' for all other existing gating.
+  reviewerRole?: ReviewTier;
+  // The tier the budget is CURRENTLY assigned to - used to decide whether a
+  // Senior Analyst/Manager reviewing it can send it back down to whoever
+  // has it now (only makes sense if that's a lower tier than the reviewer).
+  assignedToRole?: ReviewTier;
+  onEscalate?: () => void;
+  onSendBackToAnalyst?: () => void;
 }
 
-export const App: React.FC<AppProps> = ({ initialData, onNavigateToDashboard, dashboardLabel }) => {
+const REVIEW_TIER_RANK: Record<ReviewTier, number> = { analyst_i: 0, senior_analyst: 1, manager: 2 };
+
+export const App: React.FC<AppProps> = ({
+  initialData,
+  onNavigateToDashboard,
+  dashboardLabel,
+  reviewerRole,
+  assignedToRole,
+  onEscalate,
+  onSendBackToAnalyst,
+}) => {
   const { toasts, showToast, dismissToast } = useToast();
 
   // ... (State declarations remain same)
@@ -346,6 +368,15 @@ export const App: React.FC<AppProps> = ({ initialData, onNavigateToDashboard, da
   const applicationStrength = useMemo(() => {
       return calculateApplicationStrength(stateSnapshot);
   }, [stateSnapshot]);
+
+  // ... (Approval-limit / escalation logic) ...
+  const approvalLimit = reviewerRole ? getApprovalLimit(reviewerRole, projectTypeMode) : Infinity;
+  const isOverApprovalLimit = reviewerRole ? scopeSummary.borrowerTotal > approvalLimit : false;
+  const canSendBackToAnalyst = !!(
+      reviewerRole &&
+      assignedToRole &&
+      REVIEW_TIER_RANK[reviewerRole] > REVIEW_TIER_RANK[assignedToRole]
+  );
 
   // ... (Validation Logic) ...
   const isStep1Valid = useMemo(() => {
@@ -2289,6 +2320,12 @@ export const App: React.FC<AppProps> = ({ initialData, onNavigateToDashboard, da
                         onApproveBudget={handleApproveBudget}
                         onAcceptAnalystChange={handleAcceptAnalystChange}
                         onKeepBorrowerValue={handleKeepBorrowerValue}
+                        reviewerRole={reviewerRole}
+                        approvalLimit={approvalLimit}
+                        isOverApprovalLimit={isOverApprovalLimit}
+                        canSendBackToAnalyst={canSendBackToAnalyst}
+                        onEscalate={onEscalate}
+                        onSendBackToAnalyst={onSendBackToAnalyst}
                     />
                     )}
                 </div>

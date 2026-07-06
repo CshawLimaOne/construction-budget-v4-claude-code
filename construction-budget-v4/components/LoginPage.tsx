@@ -16,7 +16,7 @@ export const LoginPage: React.FC = () => {
     setIsSubmitting(true);
     try {
       const session = await login(email, password);
-      navigate(session.role === 'analyst' ? '/review' : '/dashboard', { replace: true });
+      navigate(session.role === 'borrower' ? '/dashboard' : '/review', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to log in.');
     } finally {
@@ -81,9 +81,12 @@ export const LoginPage: React.FC = () => {
 
         <div className="mt-6 border-t border-[#DFE1E5] pt-4 text-xs text-[#78819D] space-y-1">
           <p className="font-semibold text-[#1E2D5C]">Test-mode accounts:</p>
-          <p>borrower@test.com / password</p>
-          <p>borrower2@test.com / password</p>
-          <p>analyst@test.com / password</p>
+          <p>borrower@test.com / password (Borrower)</p>
+          <p>borrower2@test.com / password (Borrower)</p>
+          <p>analyst1@test.com / password (Analyst I)</p>
+          <p>analyst2@test.com / password (Analyst I)</p>
+          <p>senior@test.com / password (Senior Analyst)</p>
+          <p>manager@test.com / password (Manager)</p>
         </div>
       </div>
     </div>

@@ -140,6 +140,37 @@ export interface ScopeOfWorkSummary {
 
 export type UserRole = 'borrower' | 'analyst';
 
+// Portal-level role, used by auth/session/dashboards/assignment. Kept
+// separate from UserRole (above), which is the wizard's own internal
+// borrower-vs-analyst distinction used throughout App.tsx/comments/audit
+// log. A PortalRole other than 'borrower' still maps down to UserRole
+// 'analyst' for the wizard's purposes until tier-aware wizard logic is
+// added (approval limits, escalation, etc.).
+export type PortalRole = 'borrower' | 'analyst_i' | 'senior_analyst' | 'manager';
+
+export type ReviewTier = Exclude<PortalRole, 'borrower'>;
+
+// Status of the manager/analyst review workflow. Kept separate from
+// ApplicationStatus (below), which belongs to the wizard's own AppState
+// and is written by the borrower's auto-save effect - assignment/review
+// metadata must not live in that same blob or risk being raced/clobbered.
+export type ReviewStatus =
+  | 'pending_assignment'
+  | 'assigned'
+  | 'needs_analyst_revision'
+  | 'escalated'
+  | 'approved';
+
+export interface AssignmentRecord {
+  budgetId: string;
+  assignedToUserId: string;
+  assignedToName: string;
+  assignedToRole: ReviewTier;
+  assignedByUserId: string;
+  assignedAt: number;
+  reviewStatus: ReviewStatus;
+}
+
 export interface Comment {
   id: string;
   fieldId: string;

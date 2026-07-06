@@ -1,6 +1,6 @@
 
 import React, { useMemo, useRef } from 'react';
-import { PropertyDetails, AsIsProjectedData, ProjectQuestion, GeneralContractor, BudgetCategoryData, BudgetItem, ScopeOfWorkSummary, ApplicationStatus, AsIsProjectedItem, AsIsProjectedPerUnitItem, UserRole, Comment, CommentThread } from '../types';
+import { PropertyDetails, AsIsProjectedData, ProjectQuestion, GeneralContractor, BudgetCategoryData, BudgetItem, ScopeOfWorkSummary, ApplicationStatus, AsIsProjectedItem, AsIsProjectedPerUnitItem, UserRole, Comment, CommentThread, ReviewTier } from '../types';
 import { CONDITIONS_OF_PROPERTY, TYPES_OF_REHAB, MATERIAL_QUALITIES } from '../constants';
 import { WarningTriangleIcon, BuildingIcon, ClipboardUserIcon, CalculatorIcon, MapPinIcon, CheckCircleIcon, ClipboardCheckIcon, ChatBubbleIcon } from './Icons';
 
@@ -28,7 +28,21 @@ interface Step4ReviewProps {
   onApproveBudget: () => void;
   onAcceptAnalystChange: (categoryName: string, itemId: string) => void;
   onKeepBorrowerValue: (categoryName: string, itemId: string) => void;
+  // Approval-limit / escalation - only meaningful for reviewer tiers
+  // (Analyst I / Senior Analyst / Manager), undefined for borrowers.
+  reviewerRole?: ReviewTier;
+  approvalLimit?: number;
+  isOverApprovalLimit?: boolean;
+  canSendBackToAnalyst?: boolean;
+  onEscalate?: () => void;
+  onSendBackToAnalyst?: () => void;
 }
+
+const TIER_LABELS: Record<ReviewTier, string> = {
+  analyst_i: 'Analyst I',
+  senior_analyst: 'Senior Analyst',
+  manager: 'Manager',
+};
 
 const getLabel = (options: any[], value: string) => options.find(o => o.value === value)?.label || 'N/A';
 
@@ -193,6 +207,12 @@ export const Step4Review: React.FC<Step4ReviewProps> = ({
   onApproveBudget,
   onAcceptAnalystChange,
   onKeepBorrowerValue,
+  reviewerRole,
+  approvalLimit,
+  isOverApprovalLimit,
+  canSendBackToAnalyst,
+  onEscalate,
+  onSendBackToAnalyst,
 }) => {
     const reviewContentRef = useRef<HTMLDivElement>(null);
     const showApprovedColumn = applicationStatus !== 'draft';
@@ -302,6 +322,18 @@ export const Step4Review: React.FC<Step4ReviewProps> = ({
                             </span>
                         )}
                     </div>
+
+                    {reviewerRole && isOverApprovalLimit && (
+                        <div className="mb-4 flex items-start gap-2 text-xs font-medium text-[#B92814] bg-[#FBE4E1] border border-[#F3C6BF] rounded-lg px-3 py-2">
+                            <WarningTriangleIcon className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                            <span>
+                                This budget ({formatCurrency(scopeSummary.borrowerTotal)}) exceeds the {TIER_LABELS[reviewerRole]} approval limit
+                                {typeof approvalLimit === 'number' && Number.isFinite(approvalLimit) ? ` of ${formatCurrency(approvalLimit)}` : ''}.
+                                Escalate it for approval at the next tier.
+                            </span>
+                        </div>
+                    )}
+
                     <div className="flex flex-col sm:flex-row gap-3">
                         {/* Item 3: Send Back to Borrower */}
                         <button
@@ -313,14 +345,39 @@ export const Step4Review: React.FC<Step4ReviewProps> = ({
                             </svg>
                             Send Back to Borrower for Review
                         </button>
-                        {/* Item 7: Approve Budget */}
-                        <button
-                            onClick={onApproveBudget}
-                            className="flex-1 flex items-center justify-center gap-2 py-3 px-5 rounded-xl font-bold text-sm bg-[#E1F7E4] hover:bg-[#ADDEB4]/40 text-[#139B23] border border-[#ADDEB4] transition-all"
-                        >
-                            <CheckCircleIcon className="w-4 h-4" />
-                            Approve Budget
-                        </button>
+                        {/* Send Back to Analyst - Senior Analyst/Manager only, when it's
+                            currently assigned to a lower tier than them */}
+                        {canSendBackToAnalyst && (
+                            <button
+                                onClick={onSendBackToAnalyst}
+                                className="flex-1 flex items-center justify-center gap-2 py-3 px-5 rounded-xl font-bold text-sm bg-white hover:bg-[#F7F9FC] text-[#1E2D5C] border border-[#DFE1E5] transition-all"
+                            >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                                </svg>
+                                Send Back to Analyst for Revision
+                            </button>
+                        )}
+                        {/* Item 7: Approve Budget, or Escalate when over this reviewer's limit */}
+                        {reviewerRole && isOverApprovalLimit ? (
+                            <button
+                                onClick={onEscalate}
+                                className="flex-1 flex items-center justify-center gap-2 py-3 px-5 rounded-xl font-bold text-sm bg-brand-50 hover:bg-brand-100 text-brand-600 border border-brand-200 transition-all"
+                            >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                </svg>
+                                Escalate for Approval
+                            </button>
+                        ) : (
+                            <button
+                                onClick={onApproveBudget}
+                                className="flex-1 flex items-center justify-center gap-2 py-3 px-5 rounded-xl font-bold text-sm bg-[#E1F7E4] hover:bg-[#ADDEB4]/40 text-[#139B23] border border-[#ADDEB4] transition-all"
+                            >
+                                <CheckCircleIcon className="w-4 h-4" />
+                                Approve Budget
+                            </button>
+                        )}
                     </div>
                 </div>
             )}
