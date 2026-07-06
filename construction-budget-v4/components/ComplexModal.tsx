@@ -61,6 +61,9 @@ export const ComplexModal: React.FC<ComplexModalProps> = ({ isOpen, onClose, tit
         </footer>
       </div>
     </div>,
-    document.body
+    // Portal into the widget's own container, not document.body - all of the
+    // app's styling (e.g. .button-base) is scoped to #construction-budget-app,
+    // so mounting outside it silently loses that styling.
+    document.getElementById('construction-budget-app') || document.body
   );
 };

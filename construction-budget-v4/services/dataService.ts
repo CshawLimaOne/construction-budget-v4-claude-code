@@ -126,12 +126,13 @@ export function seedTestBudgetsIfEmpty(): void {
     state.propertyDetails = { ...state.propertyDetails, street: seed.street };
     state.applicationStatus = seed.status;
     state.feasibilityData = { ...state.feasibilityData, borrowerName: seed.borrowerName };
-    // A real submitted budget always has these set by the time a borrower
-    // gets past the wizard; without them the wizard would show the
-    // project-type-selection screen instead of the actual budget.
+    // A real in-progress-or-submitted budget always has these set by the
+    // time a borrower gets past the wizard; without them the wizard would
+    // show the welcome/project-type screens instead of the actual budget.
     state.projectTypeMode = 'renovation';
     state.selectedRehabType = 'Standard-Full';
     state.selectedMaterialQuality = 'Q4';
+    state.isStarted = true;
     localStorage.setItem(budgetStorageKey(budgetId), JSON.stringify(state));
     index.push({ budgetId, userId: seed.userId, createdAt: Date.now() - (seeds.length - i) * 86400000 });
   });

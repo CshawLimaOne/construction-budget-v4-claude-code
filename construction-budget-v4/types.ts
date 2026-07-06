@@ -470,6 +470,7 @@ export interface AppState {
   feasibilityData?: FeasibilityData;
   manualBaseRateOverride?: number;
   marketMetrics: MarketMetrics;
-  walkthroughState?: WalkthroughState; 
-  projectTypeMode?: ProjectTypeMode; 
+  walkthroughState?: WalkthroughState;
+  projectTypeMode?: ProjectTypeMode;
+  isStarted?: boolean;
 }

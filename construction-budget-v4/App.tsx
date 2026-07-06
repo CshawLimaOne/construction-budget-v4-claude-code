@@ -440,8 +440,12 @@ export const App: React.FC<AppProps> = ({ initialData, onNavigateToDashboard, da
             customRooms: Array.isArray(loadedWalkthrough.customRooms) ? loadedWalkthrough.customRooms : []
         });
         
-        setProjectTypeMode(savedData.projectTypeMode || null); 
-        
+        setProjectTypeMode(savedData.projectTypeMode || null);
+        // Resume returning users directly in the wizard (Property Detail)
+        // instead of the landing page - isStarted only defaults to false
+        // for a genuinely fresh budget with no saved data at all.
+        setIsStarted(savedData.isStarted || false);
+
         setIsRepeatUser(savedData.isRepeatUser || savedData.feasibilityData?.isRepeatBorrower || false);
 
         if (savedData.commentThreads) {
@@ -632,7 +636,8 @@ export const App: React.FC<AppProps> = ({ initialData, onNavigateToDashboard, da
       marketMetrics,
       walkthroughState,
       projectTypeMode,
-      isRepeatUser, 
+      isRepeatUser,
+      isStarted,
     };
     localStorage.setItem(storageKey, JSON.stringify(dataToSave));
   }, [
@@ -665,7 +670,8 @@ export const App: React.FC<AppProps> = ({ initialData, onNavigateToDashboard, da
     walkthroughState,
     projectTypeMode,
     isRepeatUser,
-    isDataLoaded
+    isDataLoaded,
+    isStarted
   ]);
 
     // ... (Soft cost helper functions) ...
