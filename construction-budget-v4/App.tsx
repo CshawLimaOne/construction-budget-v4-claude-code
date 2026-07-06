@@ -70,6 +70,10 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
   const [applicationStatus, setApplicationStatus] = useState<ApplicationStatus>('draft');
   const [currentWizardStep, setCurrentWizardStep] = useState(1); 
   const [isStarted, setIsStarted] = useState(false);
+  // Guards the auto-save effect from writing default state back over
+  // storage before the load effect below has finished populating it for
+  // the current storageKey (see the load effect and the auto-save effect).
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [projectTypeMode, setProjectTypeMode] = useState<ProjectTypeMode | null>(null); 
   const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>({});
   
@@ -555,6 +559,19 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
         }
     }
 
+    // An analyst opening an existing (already-submitted) budget should land
+    // directly on the Review & Submit step, not the borrower's "start a new
+    // budget" welcome/project-type screens.
+    if (savedDataString && initialData?.userRole === 'analyst') {
+        setIsStarted(true);
+        setCurrentWizardStep(4);
+    }
+
+    // Marks this storageKey's data as loaded so the auto-save effect below
+    // doesn't write default/blank state back over it before the setters
+    // above have committed (see isDataLoaded usage).
+    setIsDataLoaded(true);
+
   }, [initialData, storageKey]);
 
   useEffect(() => {
@@ -564,6 +581,11 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
   }, [currentUserRole, currentView]);
 
   useEffect(() => {
+    // Don't overwrite storage until the load effect above has finished
+    // populating state for this storageKey - otherwise this would run on
+    // mount with still-default state and clobber whatever was saved.
+    if (!isDataLoaded) return;
+
     const dataToSave: AppState & { isRepeatUser: boolean } = {
       propertyDetails,
       landDetails,
@@ -634,7 +656,8 @@ export const App: React.FC<{ initialData?: InitializationData }> = ({ initialDat
     storageKey,
     walkthroughState,
     projectTypeMode,
-    isRepeatUser
+    isRepeatUser,
+    isDataLoaded
   ]);
 
     // ... (Soft cost helper functions) ...
