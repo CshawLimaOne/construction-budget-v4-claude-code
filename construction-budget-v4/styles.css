@@ -903,36 +903,6 @@
   }
 }
 
-/* Role Switcher Toggle — Retail 2.0 pill style */
-#construction-budget-app .role-switcher-container {
-    display: flex;
-    border-radius: 8px;
-    padding: 0.25rem;
-    border: 1px solid #DFE1E5;
-    min-height: 42px;
-    background: #F4F5F7;
-    gap: 0.125rem;
-}
-#construction-budget-app .role-switcher-option {
-    padding: 0.4rem 1.25rem;
-    border: none;
-    background-color: transparent;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    z-index: 1;
-    text-align: center;
-    flex: 1;
-    color: #78819D;
-    letter-spacing: 0.01em;
-}
-#construction-budget-app .role-switcher-option:hover:not(.active) {
-    color: #1E2D5C;
-    background: #EBEDF2;
-}
-
 /* Commenting System */
 #construction-budget-app .comment-indicator-wrapper {
     position: absolute;

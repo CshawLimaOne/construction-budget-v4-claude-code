@@ -2105,10 +2105,6 @@ export const App: React.FC<AppProps> = ({ initialData, onNavigateToDashboard, da
                   ← {dashboardLabel || 'My Budgets'}
                 </button>
             )}
-            <div className="role-switcher-container">
-                <button onClick={() => setCurrentUserRole('borrower')} className={`role-switcher-option ${currentUserRole === 'borrower' ? 'active bg-brand-500 text-white shadow-sm border border-brand-600' : ''}`}>Borrower</button>
-                <button onClick={() => setCurrentUserRole('analyst')} className={`role-switcher-option ${currentUserRole === 'analyst' ? 'active bg-brand-500 text-white shadow-sm border border-brand-600' : ''}`}>Analyst</button>
-            </div>
             <button
               onClick={() => { if (window.confirm('Are you sure you want to clear all data? This cannot be undone.')) handleClearAll(); }}
               className="flex items-center gap-1.5 text-xs text-[#78819D] hover:text-[#B92814] transition-colors px-2 py-1 rounded border border-transparent hover:border-[#B92814]/30"
