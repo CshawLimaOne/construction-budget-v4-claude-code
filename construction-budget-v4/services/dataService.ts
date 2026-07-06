@@ -40,6 +40,7 @@ export interface BudgetSummary {
   status: ApplicationStatus;
   createdAt: number;
   projectTypeMode: ProjectTypeMode | null;
+  rehabType: string;
   borrowerTotal: number;
   assignment: AssignmentRecord | null;
 }
@@ -118,6 +119,7 @@ function toSummary(entry: OwnershipEntry, state: AppState | null): BudgetSummary
     status: state?.applicationStatus || 'draft',
     createdAt: entry.createdAt,
     projectTypeMode: state?.projectTypeMode || null,
+    rehabType: state?.selectedRehabType || '',
     borrowerTotal: state?.scopeSummary?.borrowerTotal || 0,
     assignment: findAssignment(entry.budgetId),
   };

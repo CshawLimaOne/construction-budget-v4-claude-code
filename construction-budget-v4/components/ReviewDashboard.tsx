@@ -29,6 +29,11 @@ const TIER_LABELS: Record<ReviewTier, string> = {
   manager: 'Manager',
 };
 
+const formatCurrency = (value: number) =>
+  value.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+const formatRehabType = (rehabType: string) => (rehabType ? rehabType.replace(/-/g, ' - ') : '—');
+
 const STATUS_FILTERS: Array<{ value: ApplicationStatus | 'all'; label: string }> = [
   { value: 'all', label: 'All' },
   { value: 'under_review', label: 'Under Review' },
@@ -87,7 +92,7 @@ export const ReviewDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F4F5F7] p-8">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <PortalHeader
           title={isManager ? 'Budget Review Queue' : 'My Assigned Reviews'}
           subtitle={isManager ? `Signed in as ${session?.name ?? ''} · all submitted budgets` : `Signed in as ${session?.name ?? ''}`}
@@ -133,10 +138,12 @@ export const ReviewDashboard: React.FC = () => {
         ) : (
           <div className="bg-white rounded-2xl border border-[#DFE1E5] shadow-sm divide-y divide-[#DFE1E5] overflow-hidden">
             <div
-              className={`grid gap-4 px-6 py-3 text-xs font-semibold text-[#78819D] uppercase tracking-wide ${isManager ? 'grid-cols-5' : 'grid-cols-4'}`}
+              className={`grid gap-4 px-6 py-3 text-xs font-semibold text-[#78819D] uppercase tracking-wide ${isManager ? 'grid-cols-7' : 'grid-cols-6'}`}
             >
               <span>Borrower</span>
               <span>Project</span>
+              <span>Rehab Type</span>
+              <span>Requested Budget</span>
               <span>Status</span>
               <span>Assigned To</span>
               {isManager && <span>Assign</span>}
@@ -145,10 +152,12 @@ export const ReviewDashboard: React.FC = () => {
               <div
                 key={b.budgetId}
                 onClick={() => navigate(`/budget/${b.budgetId}`)}
-                className={`grid gap-4 items-center px-6 py-4 hover:bg-[#F7F9FC] transition-colors cursor-pointer ${isManager ? 'grid-cols-5' : 'grid-cols-4'}`}
+                className={`grid gap-4 items-center px-6 py-4 hover:bg-[#F7F9FC] transition-colors cursor-pointer ${isManager ? 'grid-cols-7' : 'grid-cols-6'}`}
               >
                 <span className="font-semibold text-[#1E2D5C]">{b.borrowerName || 'Unknown'}</span>
                 <span className="text-[#4A5580]">{b.projectName}</span>
+                <span className="text-[#4A5580]">{formatRehabType(b.rehabType)}</span>
+                <span className="font-semibold text-[#1E2D5C]">{formatCurrency(b.borrowerTotal)}</span>
                 <span>
                   <span className={`text-xs font-semibold rounded-full px-3 py-1 ${STATUS_STYLES[b.status]}`}>
                     {STATUS_LABELS[b.status]}
