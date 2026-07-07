@@ -91,7 +91,7 @@ export const ReviewDashboard: React.FC = () => {
   }, [budgets, statusFilter, search]);
 
   return (
-    <div className="min-h-screen bg-[#F4F5F7] p-8">
+    <div className="h-full overflow-y-auto bg-[#F4F5F7] p-8">
       <div className="max-w-6xl mx-auto">
         <PortalHeader
           title={isManager ? 'Budget Review Queue' : 'My Assigned Reviews'}

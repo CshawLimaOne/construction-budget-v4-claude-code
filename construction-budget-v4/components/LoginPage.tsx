@@ -25,7 +25,7 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F4F5F7] px-4">
+    <div className="h-full overflow-y-auto flex items-center justify-center bg-[#F4F5F7] px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl border border-[#DFE1E5] shadow-sm p-8">
         <div className="pb-5 mb-6 border-b border-[#DFE1E5]">
           <img
