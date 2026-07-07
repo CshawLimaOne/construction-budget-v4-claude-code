@@ -69,6 +69,11 @@ interface AppProps {
   assignedToRole?: ReviewTier;
   onEscalate?: () => void;
   onSendBackToAnalyst?: () => void;
+  // Borrower's own persisted templates (starter + saved), fetched by
+  // BudgetWizardRoute. Falls back to MOCK_TEMPLATES when absent (e.g.
+  // standalone/embedded widget usage with no router/session).
+  initialTemplates?: BudgetTemplate[];
+  onSaveTemplate?: (template: Omit<BudgetTemplate, 'id' | 'userId' | 'createdAt'>) => void;
 }
 
 const REVIEW_TIER_RANK: Record<ReviewTier, number> = { analyst_i: 0, senior_analyst: 1, manager: 2 };
@@ -81,6 +86,8 @@ export const App: React.FC<AppProps> = ({
   assignedToRole,
   onEscalate,
   onSendBackToAnalyst,
+  initialTemplates,
+  onSaveTemplate,
 }) => {
   const { toasts, showToast, dismissToast } = useToast();
 
@@ -154,8 +161,16 @@ export const App: React.FC<AppProps> = ({
 
   // Template Library State
   const [isTemplateLibraryOpen, setIsTemplateLibraryOpen] = useState(false);
-  const [templateList, setTemplateList] = useState<BudgetTemplate[]>(MOCK_TEMPLATES); 
+  const [templateList, setTemplateList] = useState<BudgetTemplate[]>(initialTemplates ?? MOCK_TEMPLATES);
   const [isSaveTemplateModalOpen, setIsSaveTemplateModalOpen] = useState(false);
+
+  // initialTemplates arrives asynchronously from BudgetWizardRoute (it has
+  // to fetch the borrower's saved templates from storage) - sync it in once
+  // it resolves, since useState's initializer only runs on first mount and
+  // would otherwise miss this update entirely.
+  useEffect(() => {
+    if (initialTemplates) setTemplateList(initialTemplates);
+  }, [initialTemplates]);
 
   // Walkthrough Mode State
   const [walkthroughState, setWalkthroughState] = useState(INITIAL_WALKTHROUGH_STATE);
@@ -840,13 +855,12 @@ export const App: React.FC<AppProps> = ({
     };
 
     const handleSaveTemplate = (name: string, description: string) => {
-        const newTemplate: BudgetTemplate = {
-            id: `custom-template-${Date.now()}`,
+        const newTemplate: Omit<BudgetTemplate, 'id' | 'userId' | 'createdAt'> = {
             name,
             description,
             tags: ['Custom', 'User Saved'],
             totalCostEstimate: scopeSummary.borrowerTotal,
-            budgetData: JSON.parse(JSON.stringify(budgetData)), 
+            budgetData: JSON.parse(JSON.stringify(budgetData)),
             projectedSqFt: parseFloat(asIsProjectedData.totalBuildingSqFeet.projected || '0'),
             projectedBeds: parseFloat(asIsProjectedData.bedroomCount.projected || '0'),
             projectedBaths: parseFloat(asIsProjectedData.bathroomCount.projected || '0'),
@@ -856,7 +870,12 @@ export const App: React.FC<AppProps> = ({
             projectType: projectTypeMode || 'renovation', // Default to renovation if not set
         };
 
-        setTemplateList(prev => [...prev, newTemplate]);
+        // Optimistic local update (instant feedback in this session's
+        // Template Library modal) - onSaveTemplate persists it for real and
+        // the initialTemplates sync effect above will reconcile this with
+        // the authoritative, persisted copy shortly after.
+        setTemplateList(prev => [...prev, { ...newTemplate, id: `pending-${Date.now()}` }]);
+        onSaveTemplate?.(newTemplate);
         setIsSaveTemplateModalOpen(false);
         showToast(`Template "${name}" saved to your library!`, 'success');
     };

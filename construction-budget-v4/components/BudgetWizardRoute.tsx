@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { App } from '../App';
 import { useSession } from '../contexts/SessionContext';
 import { LocalDataService } from '../services/dataService';
-import type { AssignmentRecord, ReviewTier, UserRole } from '../types';
+import type { AssignmentRecord, BudgetTemplate, ReviewTier, UserRole } from '../types';
 
 const dataService = new LocalDataService();
 
@@ -21,11 +21,19 @@ export const BudgetWizardRoute: React.FC = () => {
   const reviewerRole = !isBorrower && role !== undefined ? role : undefined;
 
   const [assignment, setAssignment] = useState<AssignmentRecord | null>(null);
+  // Starts undefined (not []) so App falls back to MOCK_TEMPLATES while
+  // this fetch is in flight, instead of briefly showing an empty list.
+  const [templates, setTemplates] = useState<BudgetTemplate[] | undefined>(undefined);
 
   useEffect(() => {
     if (!budgetId || isBorrower) return;
     dataService.getAssignment(budgetId).then(setAssignment);
   }, [budgetId, isBorrower]);
+
+  useEffect(() => {
+    if (!session || !isBorrower) return;
+    dataService.listTemplatesForUser(session.userId).then(setTemplates);
+  }, [session, isBorrower]);
 
   // App.tsx's internal UserRole is only 'borrower' | 'analyst' - it doesn't
   // yet distinguish Analyst I / Senior Analyst / Manager tiers for most of
@@ -55,6 +63,12 @@ export const BudgetWizardRoute: React.FC = () => {
     navigate('/review');
   };
 
+  const handleSaveTemplate = async (template: Omit<BudgetTemplate, 'id' | 'userId' | 'createdAt'>) => {
+    if (!session) return;
+    const saved = await dataService.saveTemplate(session.userId, template);
+    setTemplates((prev) => [...(prev ?? []), saved]);
+  };
+
   // Force a full remount per budget: without this, navigating from one
   // budget straight to another reuses the same App instance, and its
   // load effect can race with its auto-save effect using the previous
@@ -69,6 +83,8 @@ export const BudgetWizardRoute: React.FC = () => {
       assignedToRole={assignment?.assignedToRole}
       onEscalate={handleEscalate}
       onSendBackToAnalyst={handleSendBackToAnalyst}
+      initialTemplates={isBorrower ? templates : undefined}
+      onSaveTemplate={isBorrower ? handleSaveTemplate : undefined}
     />
   );
 };

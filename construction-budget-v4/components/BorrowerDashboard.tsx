@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '../contexts/SessionContext';
 import { LocalDataService, BudgetSummary } from '../services/dataService';
-import type { ApplicationStatus } from '../types';
+import type { ApplicationStatus, BudgetTemplate } from '../types';
 import { PortalHeader } from './PortalHeader';
 
 const dataService = new LocalDataService();
@@ -21,15 +21,26 @@ const STATUS_LABELS: Record<ApplicationStatus, string> = {
   approved: 'Approved',
 };
 
+const formatCurrency = (value: number) =>
+  value.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
 export const BorrowerDashboard: React.FC = () => {
   const { session, logout } = useSession();
   const navigate = useNavigate();
   const [budgets, setBudgets] = useState<BudgetSummary[]>([]);
+  const [templates, setTemplates] = useState<BudgetTemplate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
+  const [creatingTemplateId, setCreatingTemplateId] = useState<string | null>(null);
   // Prevents double-creating a budget when React StrictMode (dev only)
   // double-invokes this effect, and guards against re-firing on re-renders.
   const hasAutoRedirectedRef = useRef(false);
+
+  const loadTemplates = async () => {
+    if (!session) return;
+    const list = await dataService.listTemplatesForUser(session.userId);
+    setTemplates(list);
+  };
 
   const loadBudgets = async () => {
     if (!session) return;
@@ -53,6 +64,7 @@ export const BorrowerDashboard: React.FC = () => {
 
   useEffect(() => {
     loadBudgets();
+    loadTemplates();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.userId]);
 
@@ -72,9 +84,27 @@ export const BorrowerDashboard: React.FC = () => {
     }
   };
 
+  const handleUseTemplate = async (template: BudgetTemplate) => {
+    if (!session) return;
+    setCreatingTemplateId(template.id);
+    try {
+      const budgetId = await dataService.createBudget(session.userId, template);
+      navigate(`/budget/${budgetId}`);
+    } finally {
+      setCreatingTemplateId(null);
+    }
+  };
+
+  const handleDeleteTemplate = async (templateId: string) => {
+    if (!session) return;
+    if (!window.confirm('Delete this saved template? This cannot be undone.')) return;
+    await dataService.deleteTemplate(templateId, session.userId);
+    loadTemplates();
+  };
+
   return (
     <div className="min-h-screen bg-[#F4F5F7] p-8">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <PortalHeader
           title="My Budgets"
           subtitle={`Welcome back, ${session?.name ?? ''}`}
@@ -124,6 +154,60 @@ export const BorrowerDashboard: React.FC = () => {
                 </span>
               </button>
             ))}
+          </div>
+        )}
+
+        {templates.length > 0 && (
+          <div className="mt-10">
+            <h2 className="text-lg font-bold text-[#1E2D5C] mb-1">Template Library</h2>
+            <p className="text-sm text-[#78819D] mb-4">
+              Start a new budget pre-filled from a starter template or one you've saved.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {templates.map((t) => {
+                const isOwnTemplate = !!t.userId;
+                return (
+                  <div
+                    key={t.id}
+                    className="bg-white rounded-2xl border border-[#DFE1E5] shadow-sm p-5 flex flex-col"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="font-semibold text-[#1E2D5C]">{t.name}</h3>
+                      {isOwnTemplate && (
+                        <button
+                          onClick={() => handleDeleteTemplate(t.id)}
+                          className="text-xs text-[#BCBFC7] hover:text-[#B92814] transition-colors flex-shrink-0"
+                          title="Delete template"
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </div>
+                    <p className="text-sm text-[#78819D] mt-1 flex-grow">{t.description}</p>
+                    <div className="flex items-center gap-2 mt-3 flex-wrap">
+                      {t.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[10px] font-semibold uppercase tracking-wide bg-[#F4F5F7] text-[#78819D] rounded-full px-2 py-1"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex items-center justify-between mt-4 pt-4 border-t border-[#DFE1E5]">
+                      <span className="font-semibold text-[#1E2D5C]">{formatCurrency(t.totalCostEstimate)}</span>
+                      <button
+                        onClick={() => handleUseTemplate(t)}
+                        disabled={creatingTemplateId === t.id}
+                        className="button-base bg-brand-500 hover:bg-brand-600 text-white text-sm"
+                      >
+                        {creatingTemplateId === t.id ? 'Creating...' : 'Use This Template'}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>

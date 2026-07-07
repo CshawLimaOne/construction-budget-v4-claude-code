@@ -1,5 +1,6 @@
-import type { AppState, ApplicationStatus, AssignmentRecord, PortalRole, ProjectTypeMode, ReviewTier } from '../types';
-import { getInitialAppState } from '../constants';
+import type { AppState, ApplicationStatus, AssignmentRecord, BudgetTemplate, PortalRole, ProjectTypeMode, ReviewTier } from '../types';
+import { getInitialAppState, MOCK_TEMPLATES } from '../constants';
+import { applyTemplateToState, stripTemplatePhotos } from '../utils/templateUtils';
 
 // Must match App.tsx's own LOCAL_STORAGE_KEY_BASE / storageKey scheme exactly,
 // so the wizard's existing save/load effects and this service share one
@@ -16,6 +17,10 @@ const OWNERSHIP_INDEX_KEY = 'l1_budget_ownership_index';
 // auto-save effect rewrites on every change and knows nothing about tiers,
 // assignment, or escalation.
 const ASSIGNMENT_INDEX_KEY = 'l1_budget_assignments';
+
+// Borrower-saved templates. MOCK_TEMPLATES (starter templates, no userId)
+// are always available to everyone alongside whatever's stored here.
+const TEMPLATE_INDEX_KEY = 'l1_budget_templates';
 
 // FNF (Fix & Flip / renovation) vs NC (New Construction) approval ceilings,
 // checked against the borrower's submitted total (scopeSummary.borrowerTotal).
@@ -56,10 +61,13 @@ export interface DataService {
   getBudget(budgetId: string): Promise<AppState | null>;
   getAssignment(budgetId: string): Promise<AssignmentRecord | null>;
   updateStatus(budgetId: string, status: ApplicationStatus): Promise<void>;
-  createBudget(userId: string): Promise<string>;
+  createBudget(userId: string, template?: BudgetTemplate): Promise<string>;
   assignBudget(budgetId: string, assignedToUserId: string, assignedToName: string, assignedToRole: ReviewTier, assignedByUserId: string): Promise<void>;
   sendBackToAnalyst(budgetId: string): Promise<void>;
   escalate(budgetId: string, nextTier: ReviewTier): Promise<void>;
+  listTemplatesForUser(userId: string): Promise<BudgetTemplate[]>;
+  saveTemplate(userId: string, template: Omit<BudgetTemplate, 'id' | 'userId' | 'createdAt'>): Promise<BudgetTemplate>;
+  deleteTemplate(templateId: string, userId: string): Promise<void>;
 }
 
 interface OwnershipEntry {
@@ -98,6 +106,20 @@ function writeAssignmentIndex(index: AssignmentRecord[]): void {
 
 function findAssignment(budgetId: string): AssignmentRecord | null {
   return readAssignmentIndex().find((a) => a.budgetId === budgetId) || null;
+}
+
+function readTemplateIndex(): BudgetTemplate[] {
+  const raw = localStorage.getItem(TEMPLATE_INDEX_KEY);
+  if (!raw) return [];
+  try {
+    return JSON.parse(raw) as BudgetTemplate[];
+  } catch {
+    return [];
+  }
+}
+
+function writeTemplateIndex(index: BudgetTemplate[]): void {
+  localStorage.setItem(TEMPLATE_INDEX_KEY, JSON.stringify(index));
 }
 
 function readBudgetState(budgetId: string): AppState | null {
@@ -163,13 +185,20 @@ export class LocalDataService implements DataService {
     localStorage.setItem(budgetStorageKey(budgetId), JSON.stringify(state));
   }
 
-  async createBudget(userId: string): Promise<string> {
+  async createBudget(userId: string, template?: BudgetTemplate): Promise<string> {
     const budgetId = `budget-${userId}-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
     const index = readOwnershipIndex();
     index.push({ budgetId, userId, createdAt: Date.now() });
     writeOwnershipIndex(index);
-    // App.tsx writes the real AppState on mount/first change; nothing to
-    // pre-seed here besides ownership.
+    if (template) {
+      // Pre-populate the new budget's storage with the template applied,
+      // using the same transformation the in-wizard Template Library uses
+      // (see applyTemplateToState) so both entry points stay consistent.
+      // Without this, App.tsx would mount with default empty state since
+      // it only writes the real AppState on its own mount/first change.
+      const initialState = applyTemplateToState(getInitialAppState(), template);
+      localStorage.setItem(budgetStorageKey(budgetId), JSON.stringify(initialState));
+    }
     return budgetId;
   }
 
@@ -221,6 +250,33 @@ export class LocalDataService implements DataService {
     existing.assignedToRole = nextTier;
     existing.reviewStatus = 'escalated';
     writeAssignmentIndex(index);
+  }
+
+  async listTemplatesForUser(userId: string): Promise<BudgetTemplate[]> {
+    const own = readTemplateIndex().filter((t) => t.userId === userId);
+    return [...MOCK_TEMPLATES, ...own];
+  }
+
+  async saveTemplate(userId: string, template: Omit<BudgetTemplate, 'id' | 'userId' | 'createdAt'>): Promise<BudgetTemplate> {
+    const newTemplate: BudgetTemplate = {
+      ...template,
+      budgetData: stripTemplatePhotos(template.budgetData),
+      id: `custom-template-${Date.now()}`,
+      userId,
+      createdAt: Date.now(),
+    };
+    const index = readTemplateIndex();
+    index.push(newTemplate);
+    writeTemplateIndex(index);
+    return newTemplate;
+  }
+
+  async deleteTemplate(templateId: string, userId: string): Promise<void> {
+    const index = readTemplateIndex();
+    // Scoped to userId so a borrower can only ever delete their own saved
+    // templates, never a starter template (which isn't in this index at
+    // all) or another borrower's.
+    writeTemplateIndex(index.filter((t) => !(t.id === templateId && t.userId === userId)));
   }
 }
 

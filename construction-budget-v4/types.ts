@@ -405,6 +405,10 @@ export interface BudgetTemplate {
   rehabType: string;
   projectType: 'renovation' | 'new_construction';
   budgetData: BudgetCategoryData[];
+  // Absent for built-in starter templates (e.g. MOCK_TEMPLATES), which are
+  // available to every borrower. Present for a borrower's own saved ones.
+  userId?: string;
+  createdAt?: number;
 }
 
 export interface RiskFactor {
