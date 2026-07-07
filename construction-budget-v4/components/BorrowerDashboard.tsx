@@ -102,6 +102,13 @@ export const BorrowerDashboard: React.FC = () => {
     loadTemplates();
   };
 
+  const handleDeleteBudget = async (budgetId: string) => {
+    if (!session) return;
+    if (!window.confirm('Delete this draft budget? This cannot be undone.')) return;
+    await dataService.deleteBudget(budgetId, session.userId);
+    loadBudgets();
+  };
+
   return (
     <div className="h-full overflow-y-auto bg-[#F4F5F7] p-8">
       <div className="max-w-4xl mx-auto">
@@ -138,10 +145,10 @@ export const BorrowerDashboard: React.FC = () => {
         ) : (
           <div className="bg-white rounded-2xl border border-[#DFE1E5] shadow-sm divide-y divide-[#DFE1E5] overflow-hidden">
             {budgets.map((b) => (
-              <button
+              <div
                 key={b.budgetId}
                 onClick={() => navigate(`/budget/${b.budgetId}`)}
-                className="w-full text-left px-6 py-4 flex items-center justify-between hover:bg-[#F7F9FC] transition-colors"
+                className="w-full text-left px-6 py-4 flex items-center justify-between hover:bg-[#F7F9FC] transition-colors cursor-pointer"
               >
                 <div>
                   <p className="font-semibold text-[#1E2D5C]">{b.projectName}</p>
@@ -149,10 +156,28 @@ export const BorrowerDashboard: React.FC = () => {
                     Created {new Date(b.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <span className={`text-xs font-semibold rounded-full px-3 py-1 ${STATUS_STYLES[b.status]}`}>
-                  {STATUS_LABELS[b.status]}
-                </span>
-              </button>
+                <div className="flex items-center gap-3">
+                  <span className={`text-xs font-semibold rounded-full px-3 py-1 ${STATUS_STYLES[b.status]}`}>
+                    {STATUS_LABELS[b.status]}
+                  </span>
+                  {b.status === 'draft' && (
+                    <span className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                      <button
+                        onClick={() => navigate(`/budget/${b.budgetId}`)}
+                        className="button-base bg-white text-[#1E2D5C] border border-[#DFE1E5] text-xs py-1.5 px-3"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteBudget(b.budgetId)}
+                        className="button-base bg-white text-[#B92814] border border-[#F3C6BF] text-xs py-1.5 px-3"
+                      >
+                        Delete
+                      </button>
+                    </span>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         )}

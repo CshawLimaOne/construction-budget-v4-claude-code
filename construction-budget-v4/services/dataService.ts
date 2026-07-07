@@ -62,6 +62,7 @@ export interface DataService {
   getAssignment(budgetId: string): Promise<AssignmentRecord | null>;
   updateStatus(budgetId: string, status: ApplicationStatus): Promise<void>;
   createBudget(userId: string, template?: BudgetTemplate): Promise<string>;
+  deleteBudget(budgetId: string, userId: string): Promise<void>;
   assignBudget(budgetId: string, assignedToUserId: string, assignedToName: string, assignedToRole: ReviewTier, assignedByUserId: string): Promise<void>;
   sendBackToAnalyst(budgetId: string): Promise<void>;
   escalate(budgetId: string, nextTier: ReviewTier): Promise<void>;
@@ -200,6 +201,17 @@ export class LocalDataService implements DataService {
       localStorage.setItem(budgetStorageKey(budgetId), JSON.stringify(initialState));
     }
     return budgetId;
+  }
+
+  async deleteBudget(budgetId: string, userId: string): Promise<void> {
+    // Scoped to userId so a borrower can only ever delete their own
+    // budget, matching deleteTemplate's ownership check.
+    const index = readOwnershipIndex();
+    const owned = index.find((e) => e.budgetId === budgetId && e.userId === userId);
+    if (!owned) throw new Error(`Budget ${budgetId} not found for this user.`);
+    writeOwnershipIndex(index.filter((e) => e.budgetId !== budgetId));
+    writeAssignmentIndex(readAssignmentIndex().filter((a) => a.budgetId !== budgetId));
+    localStorage.removeItem(budgetStorageKey(budgetId));
   }
 
   async assignBudget(
