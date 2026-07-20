@@ -691,12 +691,18 @@ export const NC_SOFT_COST_ROWS = [
 // same NC_HIDDEN_ITEM_NUMBERS/RENOVATION_HIDDEN_ITEM_NUMBERS + NC_SOFT_COST_ROWS
 // logic Step2Budget/injectNcSoftCosts use for display, but here it shapes what
 // the model is even allowed to choose from, before mapping happens.
+// Shared by getTargetBudgetJSON (what the AI is allowed to map to) and the AI
+// Review modal (what the "AI Interpretation" dropdown offers, and which
+// catalog items count as "not found in your file") so both stay in sync with
+// a single definition of which items are invalid for a given project type.
+export const getHiddenItemNumbersForType = (projectType?: ProjectTypeMode): string[] => {
+  if (projectType === 'new_construction') return NC_HIDDEN_ITEM_NUMBERS;
+  if (projectType === 'renovation') return RENOVATION_HIDDEN_ITEM_NUMBERS;
+  return [];
+};
+
 export const getTargetBudgetJSON = (projectType?: ProjectTypeMode): string => {
-  const hiddenItemNumbers = projectType === 'new_construction'
-    ? NC_HIDDEN_ITEM_NUMBERS
-    : projectType === 'renovation'
-      ? RENOVATION_HIDDEN_ITEM_NUMBERS
-      : [];
+  const hiddenItemNumbers = getHiddenItemNumbersForType(projectType);
 
   const allItems = INITIAL_BUDGET_CATEGORIES.flatMap(category =>
     category.items

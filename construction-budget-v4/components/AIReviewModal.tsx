@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { ComplexModal } from './ComplexModal';
-import { BudgetItem, BudgetCategoryData, ScopeOfWorkSummary, SelectOption } from '../types';
-import { getCategoryNames, CONTINGENCY_ITEM_ID } from '../constants';
+import { BudgetItem, BudgetCategoryData, ScopeOfWorkSummary, SelectOption, ProjectTypeMode } from '../types';
+import { getCategoryNames, getHiddenItemNumbersForType, CONTINGENCY_ITEM_ID } from '../constants';
 import { FlagIcon } from './Icons';
 import Tooltip from './Tooltip';
 
@@ -36,6 +36,9 @@ interface UnifiedSuggestion {
   // New-specific
   categoryName: string;
   drawItem: string;
+  // False for a synthetic row added so the borrower can see every valid
+  // template item, even ones the AI never found in the uploaded file.
+  isAiDetected: boolean;
 }
 
 
@@ -49,6 +52,7 @@ interface AIReviewModalProps {
   conditions: SelectOption[];
   rehabTypes: SelectOption[];
   materialQualities: SelectOption[];
+  projectTypeMode?: ProjectTypeMode;
 }
 
 const formatCurrency = (value: number | undefined) => {
@@ -73,10 +77,16 @@ const detailKeyToLabelMap: Record<string, string> = {
     projectScopeStatement: 'Scope of Work',
 };
 
-export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, onConfirm, suggestions, budgetCategoryData, scopeSummary, conditions, rehabTypes, materialQualities }) => {
+export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, onConfirm, suggestions, budgetCategoryData, scopeSummary, conditions, rehabTypes, materialQualities, projectTypeMode }) => {
   const [editableSuggestions, setEditableSuggestions] = useState<UnifiedSuggestion[]>([]);
   const [editableProjectDetails, setEditableProjectDetails] = useState<Record<string, { value: any; accepted: boolean }>>({});
+  const [showOtherItems, setShowOtherItems] = useState(false);
   const categoryNames = getCategoryNames();
+
+  // Items hidden for the chosen project type (e.g. "Roofing*" for New
+  // Construction) so the dropdown never offers - and the "other items in your
+  // template" list never lists - a row that won't exist on this template.
+  const hiddenItemNumbers = useMemo(() => getHiddenItemNumbersForType(projectTypeMode), [projectTypeMode]);
 
   useEffect(() => {
     if (isOpen && suggestions) {
@@ -86,14 +96,38 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
         accepted: true,
         categoryName: '',
         drawItem: '',
+        isAiDetected: true,
       }));
       const newItems: UnifiedSuggestion[] = (suggestions.newItems || []).map(s => ({
         ...s,
         suggestionType: 'new',
         accepted: true,
         id: '',
+        isAiDetected: true,
       }));
-      setEditableSuggestions([...mapped, ...newItems]);
+
+      // Every valid-for-type template item the AI did NOT map to, so the
+      // borrower can see the complete template - not just what the AI found -
+      // and add a budget for anything it missed.
+      const mappedIds = new Set(mapped.map(s => s.id));
+      const otherItems: UnifiedSuggestion[] = budgetCategoryData.flatMap(category =>
+        category.items
+          .filter(item => !item.isCustomDescription && !hiddenItemNumbers.includes(item.itemNumber) && !mappedIds.has(item.id))
+          .map(item => ({
+            id: item.id,
+            budget: 0,
+            description: item.description || '',
+            isUncertain: false,
+            originalText: `${item.itemNumber} - ${item.drawItem}`,
+            suggestionType: 'mapped' as const,
+            accepted: false,
+            categoryName: '',
+            drawItem: '',
+            isAiDetected: false,
+          }))
+      );
+
+      setEditableSuggestions([...mapped, ...newItems, ...otherItems]);
 
       const initialDetails: Record<string, { value: any; accepted: boolean }> = {};
       if (suggestions.projectDetails) {
@@ -125,8 +159,9 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
       });
 
       setEditableProjectDetails(initialDetails);
+      setShowOtherItems(false);
     }
-  }, [isOpen, suggestions]);
+  }, [isOpen, suggestions, budgetCategoryData, hiddenItemNumbers]);
 
   const acceptedTotal = useMemo(() => {
     return editableSuggestions
@@ -355,6 +390,125 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
       Apply Accepted Items
     </button>
   );
+
+  const BADGE_COLORS = [
+      'bg-blue-50 text-blue-700 border-blue-200',
+      'bg-purple-50 text-purple-700 border-purple-200',
+      'bg-[#E1F7E4] text-[#139B23] border-[#ADDEB4]',
+      'bg-orange-50 text-orange-700 border-orange-200',
+      'bg-pink-50 text-pink-700 border-pink-200',
+      'bg-teal-50 text-teal-700 border-teal-200',
+      'bg-[#FFF5DB] text-[#EAA800] border-[#EDDDB1]',
+      'bg-[#FFF0EE] text-[#B92814] border-[#F2C0BA]',
+      'bg-indigo-50 text-indigo-700 border-indigo-200',
+      'bg-cyan-50 text-cyan-700 border-cyan-200',
+  ];
+
+  // Shared row renderer for both the AI-detected table and the "other
+  // template items" table below it, so the two stay visually and
+  // behaviorally identical - `index` is always the row's position in the
+  // full editableSuggestions array (not the filtered sub-list) since that's
+  // what handleSuggestionChange/handleInterpretationChange key off of.
+  const renderSuggestionRow = (suggestion: UnifiedSuggestion, index: number) => {
+      const interpretationValue = suggestion.suggestionType === 'new'
+          ? `NEW:${suggestion.categoryName}`
+          : suggestion.id;
+
+      let categoryLabel = '';
+      if (suggestion.suggestionType === 'mapped' && suggestion.id) {
+          const parentCat = budgetCategoryData.find(c => c.items.some(i => i.id === suggestion.id));
+          categoryLabel = parentCat?.name || '';
+      } else if (suggestion.suggestionType === 'new') {
+          categoryLabel = suggestion.categoryName || '';
+      }
+
+      const catIndex = budgetCategoryData.findIndex(c => c.name === categoryLabel);
+      const badgeColor = catIndex >= 0
+          ? BADGE_COLORS[catIndex % BADGE_COLORS.length]
+          : 'bg-[#F6F7F9] text-[#78819D] border-[#DFE1E5]';
+
+      const rowBg = suggestion.isUncertain
+          ? 'bg-[#FFF5DB]'
+          : index % 2 === 0 ? 'bg-white' : 'bg-[#F6F7F9]';
+      const rowOpacity = !suggestion.accepted ? 'opacity-40' : '';
+
+      return (
+          <tr key={index} className={`${rowBg} ${rowOpacity} hover:bg-[#F7F9FC] transition-opacity`}>
+              <td className="py-2 px-3 text-center align-middle">
+                  <input
+                      type="checkbox"
+                      checked={suggestion.accepted}
+                      onChange={e => handleSuggestionChange(index, 'accepted', e.target.checked)}
+                      className="h-4 w-4 rounded border-[#DFE1E5] bg-white text-brand-500 focus:ring-brand-500"
+                  />
+              </td>
+              <td className="py-2 px-3 text-sm text-[#1E2D5C] align-middle">
+                  {suggestion.isUncertain && (
+                      <Tooltip text="AI is uncertain about this item. Please review carefully.">
+                          <FlagIcon className="text-[#EAA800] inline-block mr-1 flex-shrink-0" />
+                      </Tooltip>
+                  )}
+                  <span>{suggestion.originalText}</span>
+              </td>
+              <td className="py-2 px-3 align-middle">
+                  {categoryLabel ? (
+                      <span className={`inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded border truncate max-w-full ${badgeColor}`}>
+                          {categoryLabel}
+                      </span>
+                  ) : (
+                      <span className="text-[#78819D] text-xs">—</span>
+                  )}
+              </td>
+              <td className="py-2 px-3 text-sm align-middle">
+                  <select
+                      value={interpretationValue}
+                      onChange={e => handleInterpretationChange(index, e.target.value)}
+                      className="w-full text-xs rounded bg-white border border-[#DFE1E5] text-[#1E2D5C] px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                  >
+                      <optgroup label="Create New Item">
+                          {categoryNames.map(name => (
+                              <option value={`NEW:${name}`} key={`NEW:${name}`}>New Item in: {name}</option>
+                          ))}
+                      </optgroup>
+                      {budgetCategoryData.map(category => {
+                          const validItems = category.items.filter(item => !item.isCustomDescription && !hiddenItemNumbers.includes(item.itemNumber));
+                          if (validItems.length === 0) return null;
+                          return (
+                              <optgroup label={category.name} key={category.name}>
+                                  {validItems.map(item => (
+                                      <option value={item.id} key={item.id}>
+                                          {item.itemNumber} - {item.drawItem}
+                                      </option>
+                                  ))}
+                              </optgroup>
+                          );
+                      })}
+                  </select>
+              </td>
+              <td className="py-2 px-3 text-sm align-middle">
+                  <input
+                      type="text"
+                      value={suggestion.drawItem}
+                      onChange={e => handleSuggestionChange(index, 'drawItem', e.target.value)}
+                      className="w-full text-xs rounded bg-white border border-[#DFE1E5] text-[#1E2D5C] px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:opacity-30 disabled:cursor-not-allowed"
+                      disabled={suggestion.suggestionType === 'mapped'}
+                      placeholder={suggestion.suggestionType === 'mapped' ? '' : 'Item name…'}
+                  />
+              </td>
+              <td className="py-2 px-3 text-sm align-middle">
+                  <input
+                      type="number"
+                      value={suggestion.budget}
+                      onChange={e => handleSuggestionChange(index, 'budget', parseFloat(e.target.value) || 0)}
+                      className="w-full text-xs rounded bg-white border border-[#DFE1E5] text-[#1E2D5C] text-right px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                  />
+              </td>
+          </tr>
+      );
+  };
+
+  const aiDetectedIndices = editableSuggestions.reduce<number[]>((acc, s, i) => { if (s.isAiDetected) acc.push(i); return acc; }, []);
+  const otherItemIndices = editableSuggestions.reduce<number[]>((acc, s, i) => { if (!s.isAiDetected) acc.push(i); return acc; }, []);
 
   return (
     <ComplexModal isOpen={isOpen} onClose={onClose} title="Review AI Budget Suggestions" footer={footer} size="xl">
@@ -618,119 +772,48 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-[#DFE1E5]">
-                    {editableSuggestions.length > 0 ? editableSuggestions.map((suggestion, index) => {
-                        const interpretationValue = suggestion.suggestionType === 'new'
-                            ? `NEW:${suggestion.categoryName}`
-                            : suggestion.id;
-
-                        // Resolve the category name for the badge
-                        let categoryLabel = '';
-                        if (suggestion.suggestionType === 'mapped' && suggestion.id) {
-                            const parentCat = budgetCategoryData.find(c => c.items.some(i => i.id === suggestion.id));
-                            categoryLabel = parentCat?.name || '';
-                        } else if (suggestion.suggestionType === 'new') {
-                            categoryLabel = suggestion.categoryName || '';
-                        }
-
-                        // Consistent badge color per category using index in the list
-                        const catIndex = budgetCategoryData.findIndex(c => c.name === categoryLabel);
-                        const badgeColors = [
-                            'bg-blue-50 text-blue-700 border-blue-200',
-                            'bg-purple-50 text-purple-700 border-purple-200',
-                            'bg-[#E1F7E4] text-[#139B23] border-[#ADDEB4]',
-                            'bg-orange-50 text-orange-700 border-orange-200',
-                            'bg-pink-50 text-pink-700 border-pink-200',
-                            'bg-teal-50 text-teal-700 border-teal-200',
-                            'bg-[#FFF5DB] text-[#EAA800] border-[#EDDDB1]',
-                            'bg-[#FFF0EE] text-[#B92814] border-[#F2C0BA]',
-                            'bg-indigo-50 text-indigo-700 border-indigo-200',
-                            'bg-cyan-50 text-cyan-700 border-cyan-200',
-                        ];
-                        const badgeColor = catIndex >= 0
-                            ? badgeColors[catIndex % badgeColors.length]
-                            : 'bg-[#F6F7F9] text-[#78819D] border-[#DFE1E5]';
-
-                        // Row background: uncertain → warning, deselected → dimmed, alternating
-                        const rowBg = suggestion.isUncertain
-                            ? 'bg-[#FFF5DB]'
-                            : index % 2 === 0 ? 'bg-white' : 'bg-[#F6F7F9]';
-                        const rowOpacity = !suggestion.accepted ? 'opacity-40' : '';
-
-                        return (
-                            <tr key={index} className={`${rowBg} ${rowOpacity} hover:bg-[#F7F9FC] transition-opacity`}>
-                                <td className="py-2 px-3 text-center align-middle">
-                                    <input
-                                        type="checkbox"
-                                        checked={suggestion.accepted}
-                                        onChange={e => handleSuggestionChange(index, 'accepted', e.target.checked)}
-                                        className="h-4 w-4 rounded border-[#DFE1E5] bg-white text-brand-500 focus:ring-brand-500"
-                                    />
-                                </td>
-                                <td className="py-2 px-3 text-sm text-[#1E2D5C] align-middle">
-                                    {suggestion.isUncertain && (
-                                        <Tooltip text="AI is uncertain about this item. Please review carefully.">
-                                            <FlagIcon className="text-[#EAA800] inline-block mr-1 flex-shrink-0" />
-                                        </Tooltip>
-                                    )}
-                                    <span>{suggestion.originalText}</span>
-                                </td>
-                                <td className="py-2 px-3 align-middle">
-                                    {categoryLabel ? (
-                                        <span className={`inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded border truncate max-w-full ${badgeColor}`}>
-                                            {categoryLabel}
-                                        </span>
-                                    ) : (
-                                        <span className="text-[#78819D] text-xs">—</span>
-                                    )}
-                                </td>
-                                <td className="py-2 px-3 text-sm align-middle">
-                                    <select
-                                        value={interpretationValue}
-                                        onChange={e => handleInterpretationChange(index, e.target.value)}
-                                        className="w-full text-xs rounded bg-white border border-[#DFE1E5] text-[#1E2D5C] px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
-                                    >
-                                        <optgroup label="Create New Item">
-                                            {categoryNames.map(name => (
-                                                <option value={`NEW:${name}`} key={`NEW:${name}`}>New Item in: {name}</option>
-                                            ))}
-                                        </optgroup>
-                                        {budgetCategoryData.map(category => (
-                                            <optgroup label={category.name} key={category.name}>
-                                                {category.items.filter(item => !item.isCustomDescription).map(item => (
-                                                    <option value={item.id} key={item.id}>
-                                                        {item.itemNumber} - {item.drawItem}
-                                                    </option>
-                                                ))}
-                                            </optgroup>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td className="py-2 px-3 text-sm align-middle">
-                                    <input
-                                        type="text"
-                                        value={suggestion.drawItem}
-                                        onChange={e => handleSuggestionChange(index, 'drawItem', e.target.value)}
-                                        className="w-full text-xs rounded bg-white border border-[#DFE1E5] text-[#1E2D5C] px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:opacity-30 disabled:cursor-not-allowed"
-                                        disabled={suggestion.suggestionType === 'mapped'}
-                                        placeholder={suggestion.suggestionType === 'mapped' ? '' : 'Item name…'}
-                                    />
-                                </td>
-                                <td className="py-2 px-3 text-sm align-middle">
-                                    <input
-                                        type="number"
-                                        value={suggestion.budget}
-                                        onChange={e => handleSuggestionChange(index, 'budget', parseFloat(e.target.value) || 0)}
-                                        className="w-full text-xs rounded bg-white border border-[#DFE1E5] text-[#1E2D5C] text-right px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
-                                    />
-                                </td>
-                            </tr>
-                        );
-                    }) : (
-                        <tr><td colSpan={6} className="text-center py-6 text-[#78819D] italic">No items were found in the uploaded file.</td></tr>
-                    )}
+                    {aiDetectedIndices.length > 0
+                        ? aiDetectedIndices.map(index => renderSuggestionRow(editableSuggestions[index], index))
+                        : <tr><td colSpan={6} className="text-center py-6 text-[#78819D] italic">No items were found in the uploaded file.</td></tr>
+                    }
                 </tbody>
             </table>
         </div>
+
+        {otherItemIndices.length > 0 && (
+            <div className="mt-4">
+                <button
+                    type="button"
+                    onClick={() => setShowOtherItems(v => !v)}
+                    className="flex items-center gap-1.5 text-sm font-semibold text-brand-500 hover:text-brand-600 transition-colors"
+                >
+                    <span className={`inline-block transition-transform ${showOtherItems ? 'rotate-90' : ''}`}>▸</span>
+                    {showOtherItems ? 'Hide' : 'Show'} {otherItemIndices.length} other template item{otherItemIndices.length !== 1 ? 's' : ''} not found in your file
+                </button>
+                <p className="text-xs text-[#78819D] mt-1">
+                    These are the rest of the line items on your {projectTypeMode === 'new_construction' ? 'New Construction' : projectTypeMode === 'renovation' ? 'Renovation' : ''} template. The AI didn't find them in your file - check the box and enter an amount for any that should be budgeted.
+                </p>
+                {showOtherItems && (
+                    <div className="overflow-x-auto border border-[#DFE1E5] rounded-lg mt-2">
+                        <table className="min-w-full divide-y divide-[#DFE1E5]">
+                            <thead className="bg-[#F6F7F9]">
+                                <tr>
+                                    <th scope="col" className="py-2 px-3 w-8 text-center"><span className="sr-only">Accept</span></th>
+                                    <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-[#78819D] uppercase tracking-wider">Template Item</th>
+                                    <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-[#78819D] uppercase tracking-wider w-28">Category</th>
+                                    <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-[#78819D] uppercase tracking-wider">AI Interpretation</th>
+                                    <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-[#78819D] uppercase tracking-wider w-36">New Item Name</th>
+                                    <th scope="col" className="py-2 px-3 text-left text-xs font-semibold text-[#78819D] uppercase tracking-wider w-28">Budget</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-[#DFE1E5]">
+                                {otherItemIndices.map(index => renderSuggestionRow(editableSuggestions[index], index))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
+        )}
     </ComplexModal>
   );
 };

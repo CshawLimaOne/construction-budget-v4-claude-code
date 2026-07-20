@@ -2106,6 +2106,7 @@ export const App: React.FC<AppProps> = ({
             conditions={CONDITIONS_OF_PROPERTY}
             rehabTypes={TYPES_OF_REHAB}
             materialQualities={MATERIAL_QUALITIES}
+            projectTypeMode={projectTypeMode}
         />
         <ReconciliationModal
             isOpen={isReconciliationModalOpen}
@@ -2552,6 +2553,7 @@ export const App: React.FC<AppProps> = ({
         conditions={CONDITIONS_OF_PROPERTY}
         rehabTypes={TYPES_OF_REHAB}
         materialQualities={MATERIAL_QUALITIES}
+        projectTypeMode={projectTypeMode}
       />
 
       <ReconciliationModal
