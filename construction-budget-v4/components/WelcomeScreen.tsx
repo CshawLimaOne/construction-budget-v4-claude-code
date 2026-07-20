@@ -11,13 +11,15 @@ import {
     ChevronRightIcon
 } from './Icons';
 
+type UploadProjectType = 'renovation' | 'new_construction';
+
 interface WelcomeScreenProps {
   onGetStarted: (type?: 'new' | 'repeat') => void;
   onStartWithTemplate: () => void;
   onOpenEstimator?: () => void;
   onStartWalkthrough?: () => void;
   onStartTutorial?: () => void;
-  onProcessBudgetFile?: (file: File) => void;
+  onProcessBudgetFile?: (file: File, projectType: UploadProjectType) => void;
   isProcessing?: boolean;
   budgetParsingError?: string | null;
   onNavigateToDashboard?: () => void;
@@ -45,6 +47,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   const [isExiting, setIsExiting] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [cardsVisible, setCardsVisible] = useState(false);
+  const [uploadProjectType, setUploadProjectType] = useState<UploadProjectType | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -53,7 +56,8 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   }, []);
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault(); e.stopPropagation(); setIsDragging(true);
+    e.preventDefault(); e.stopPropagation();
+    if (uploadProjectType) setIsDragging(true);
   };
   const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault(); e.stopPropagation(); setIsDragging(false);
@@ -63,8 +67,8 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   };
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault(); e.stopPropagation(); setIsDragging(false);
-    if (e.dataTransfer.files?.[0] && onProcessBudgetFile) {
-      onProcessBudgetFile(e.dataTransfer.files[0]);
+    if (e.dataTransfer.files?.[0] && onProcessBudgetFile && uploadProjectType) {
+      onProcessBudgetFile(e.dataTransfer.files[0], uploadProjectType);
     }
   };
 
@@ -154,24 +158,60 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             {/* AI Drop Zone */}
             {onProcessBudgetFile && (
               <div className={`welcome-fade-up welcome-delay-4 ${cardsVisible ? 'visible' : ''}`}>
+                {/* Project type must be chosen before upload so the AI only maps
+                    against line items that are valid for that template. */}
+                <div className="mb-2.5">
+                  <p className="text-[11px] font-bold text-[#78819D] uppercase tracking-wider mb-1.5">
+                    What type of project is this?
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setUploadProjectType('renovation')}
+                      className={`flex-1 text-xs font-semibold py-2 px-3 rounded-lg border transition-colors duration-200 ${
+                        uploadProjectType === 'renovation'
+                          ? 'bg-brand-500 border-brand-500 text-white'
+                          : 'bg-white border-[#DFE1E5] text-[#78819D] hover:border-brand-400 hover:text-brand-500'
+                      }`}
+                    >
+                      Renovation / Value Add
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setUploadProjectType('new_construction')}
+                      className={`flex-1 text-xs font-semibold py-2 px-3 rounded-lg border transition-colors duration-200 ${
+                        uploadProjectType === 'new_construction'
+                          ? 'bg-brand-500 border-brand-500 text-white'
+                          : 'bg-white border-[#DFE1E5] text-[#78819D] hover:border-brand-400 hover:text-brand-500'
+                      }`}
+                    >
+                      New Construction
+                    </button>
+                  </div>
+                </div>
+
                 <div
                   onDragEnter={handleDragEnter}
                   onDragLeave={handleDragLeave}
                   onDragOver={handleDragOver}
                   onDrop={handleDrop}
-                  onClick={() => fileInputRef.current?.click()}
-                  className={`welcome-drop-zone group relative rounded-2xl border-2 border-dashed transition-all duration-300 p-6 flex flex-col items-center justify-center cursor-pointer
-                    ${isDragging
-                      ? 'border-brand-500 bg-brand-50 scale-[1.02]'
-                      : 'border-[#DFE1E5] hover:border-brand-400 bg-white hover:bg-[#F7F9FC]'
+                  onClick={() => uploadProjectType && fileInputRef.current?.click()}
+                  aria-disabled={!uploadProjectType}
+                  className={`welcome-drop-zone group relative rounded-2xl border-2 border-dashed transition-all duration-300 p-6 flex flex-col items-center justify-center
+                    ${!uploadProjectType
+                      ? 'border-[#DFE1E5] bg-[#F6F7F9] cursor-not-allowed opacity-60'
+                      : isDragging
+                        ? 'border-brand-500 bg-brand-50 scale-[1.02] cursor-pointer'
+                        : 'border-[#DFE1E5] hover:border-brand-400 bg-white hover:bg-[#F7F9FC] cursor-pointer'
                     }`}
                 >
                   <input
                     type="file"
                     ref={fileInputRef}
-                    onChange={(e) => e.target.files?.[0] && onProcessBudgetFile(e.target.files[0])}
+                    onChange={(e) => e.target.files?.[0] && uploadProjectType && onProcessBudgetFile(e.target.files[0], uploadProjectType)}
                     className="hidden"
                     accept=".csv,.xlsx,.pdf"
+                    disabled={!uploadProjectType}
                   />
 
                   {isProcessing ? (
@@ -189,7 +229,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                           {isDragging ? 'Drop to Auto-Fill' : 'Have a budget file?'}
                         </h3>
                         <p className="text-xs text-[#78819D] group-hover:text-[#1E2D5C] transition-colors">
-                          Drop it here — we'll do the typing.
+                          {uploadProjectType ? "Drop it here — we'll do the typing." : 'Select a project type above to enable upload.'}
                         </p>
                         <div className="flex gap-1.5 mt-2">
                           {['CSV', 'XLSX', 'PDF'].map(fmt => (

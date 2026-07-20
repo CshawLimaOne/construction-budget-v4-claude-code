@@ -1,11 +1,12 @@
 
 import React, { useEffect, useState, useMemo, useRef } from 'react'; 
 import { BudgetItem, BudgetCategoryData, ScopeOfWorkSummary, Comment, CommentThread, UserRole, RiskAnalysisResult, ApplicationStatus } from '../types'; 
-import { CONTINGENCY_ITEM_ID, GC_BUILDER_FEES_ITEM_ID, DRAW_SCHEDULE_OPTIONS, NC_HIDDEN_ITEM_NUMBERS, RENOVATION_HIDDEN_ITEM_NUMBERS } from '../constants'; 
+import { CONTINGENCY_ITEM_ID, DRAW_SCHEDULE_OPTIONS, NC_HIDDEN_ITEM_NUMBERS, RENOVATION_HIDDEN_ITEM_NUMBERS } from '../constants';
 import Tooltip from './Tooltip'; 
 import { InfoIcon, XCircleIcon, ChatBubbleIcon, FlagIcon, SpinnerIcon, WarningTriangleIcon, CalculatorIcon, CameraIcon, LightBulbIcon, MagicWandIcon, BuildingIcon, CheckIcon, PercentDownIcon, CloudUploadIcon, PlusIcon } from './Icons'; 
 import { CommentIndicator } from './CommentIndicator';
 import { checkBudgetLineItem, GuidanceResult, SUPPORTED_BENCHMARKS } from '../utils/budgetGuidanceEngine';
+import { roundBudget } from '../utils/budgetMath';
 import { ComplexModal } from './ComplexModal';
 
 interface Step2BudgetProps {
@@ -297,7 +298,7 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
         rowId = `budget-item-row-${CONTINGENCY_ITEM_ID}`;
     }
     const isHighlighted = highlightedItemIds.has(item.id);
-    const gcFeeTooltipText = "GC/Builder Fees are automatically capped at 10% of the subtotal (excluding contingency). Any entered amount exceeding this cap will be adjusted.";
+    const gcFeeTooltipText = "GC/Builder Fees are not capped - enter the amount from the file or contract.";
     const contingencyTooltipText = "Check 'Auto' to calculate contingency as a percentage of the subtotal (including GC fees). Uncheck to enter a manual contingency amount. The percentage applies to the sum of all budget items plus GC/Builder Fees.";
     const itemRisk = riskAnalysis.factors.find(f => f.itemId === item.id);
     
@@ -434,8 +435,15 @@ const BudgetItemRow: React.FC<BudgetItemRowProps> = ({ item, categoryName, isLim
                             type={(isBudgetFocused && !budgetInputReadOnly) ? 'number' : 'text'}
                             value={budgetDisplayValue}
                             onFocus={() => { if (!budgetInputReadOnly) setIsBudgetFocused(true);}}
-                            onBlur={() => { if (!budgetInputReadOnly) setIsBudgetFocused(false);}}
-                            onChange={(e) => { 
+                            onBlur={() => {
+                                if (!budgetInputReadOnly) {
+                                    setIsBudgetFocused(false);
+                                    // Round up to a whole dollar once the user is done typing, so
+                                    // partial-dollar entries never linger as the stored value.
+                                    onUpdateBudgetItem(categoryName, item.id, 'budget', roundBudget(item.budget));
+                                }
+                            }}
+                            onChange={(e) => {
                                 if (!budgetInputReadOnly) {
                                     // FORCE PARSE FLOAT to prevent string concatenation
                                     const val = e.target.value === '' ? 0 : parseFloat(e.target.value);

@@ -1,6 +1,6 @@
 
 import { Type } from "@google/genai";
-import { AsIsProjectedData, BudgetCategoryData, ProjectQuestion, ScopeOfWorkSummary, SelectOption, PropertyDetails, AppState, GeneralContractor, GcOnboardingData, RiskAdjustments, FeasibilityData, MarketMetrics, WalkthroughState, LandDetails, BudgetTemplate } from './types';
+import { AsIsProjectedData, BudgetCategoryData, ProjectQuestion, ScopeOfWorkSummary, SelectOption, PropertyDetails, AppState, GeneralContractor, GcOnboardingData, RiskAdjustments, FeasibilityData, MarketMetrics, WalkthroughState, LandDetails, BudgetTemplate, ProjectTypeMode } from './types';
 
 export const INITIAL_PROPERTY_DETAILS: PropertyDetails = {
   street: '',
@@ -684,15 +684,41 @@ export const NC_SOFT_COST_ROWS = [
     { id: 'nc_sc_6', itemNumber: '1000-NC6', drawItem: 'Water/Sewer Tap Fees' },
 ];
 
-export const getTargetBudgetJSON = (): string => {
+// Builds the list of valid mapping targets for the AI budget parser, filtered
+// to the chosen project type so it never offers (and can't map to) a row that
+// won't exist once the borrower's template is finalized - e.g. "Roofing*" for
+// New Construction, or "Fire Sprinklers Final" for a Renovation. Mirrors the
+// same NC_HIDDEN_ITEM_NUMBERS/RENOVATION_HIDDEN_ITEM_NUMBERS + NC_SOFT_COST_ROWS
+// logic Step2Budget/injectNcSoftCosts use for display, but here it shapes what
+// the model is even allowed to choose from, before mapping happens.
+export const getTargetBudgetJSON = (projectType?: ProjectTypeMode): string => {
+  const hiddenItemNumbers = projectType === 'new_construction'
+    ? NC_HIDDEN_ITEM_NUMBERS
+    : projectType === 'renovation'
+      ? RENOVATION_HIDDEN_ITEM_NUMBERS
+      : [];
+
   const allItems = INITIAL_BUDGET_CATEGORIES.flatMap(category =>
-    category.items.map(item => ({
-      id: item.id,
-      itemNumber: item.itemNumber,
-      drawItem: item.drawItem,
-      categoryName: category.name,
-    }))
+    category.items
+      .filter(item => !hiddenItemNumbers.includes(item.itemNumber))
+      .map(item => ({
+        id: item.id,
+        itemNumber: item.itemNumber,
+        drawItem: item.drawItem,
+        categoryName: category.name,
+      }))
   );
+
+  if (projectType === 'new_construction') {
+    const softCostCategory = INITIAL_BUDGET_CATEGORIES.find(c => c.name === 'Soft Costs');
+    const existingDrawItems = new Set(softCostCategory?.items.map(i => i.drawItem) || []);
+    NC_SOFT_COST_ROWS.forEach(row => {
+      if (!existingDrawItems.has(row.drawItem)) {
+        allItems.push({ id: row.id, itemNumber: row.itemNumber, drawItem: row.drawItem, categoryName: 'Soft Costs' });
+      }
+    });
+  }
+
   return JSON.stringify(allItems);
 };
 
@@ -852,8 +878,40 @@ export const ESTIMATOR_JSON_SCHEMA = {
   }
 };
 
-export const BUDGET_PARSER_SYSTEM_INSTRUCTION = `You are a construction budget data extraction specialist. Your task is to parse a raw budget file and map every line item to the provided VALID_BUDGET_ITEMS list.
+// The VALID_BUDGET_ITEMS list passed alongside this instruction is already
+// filtered to the chosen project type (see getTargetBudgetJSON), so the model
+// can only ever map to rows that will actually exist on the borrower's
+// template. This framing exists so the model understands *why* the list looks
+// the way it does, rather than treating the absence of a familiar item
+// (e.g. no "Roofing*" for New Construction) as something to work around.
+export const getBudgetParserSystemInstruction = (projectType?: ProjectTypeMode): string => {
+  const typeFraming = projectType === 'new_construction'
+    ? `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PROJECT TYPE — NEW CONSTRUCTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+This is a ground-up New Construction project. VALID_BUDGET_ITEMS has already been filtered to
+only the items that exist on the New Construction template - renovation-only repair items like
+"Roofing*", "Trashout", or "Slab Leveling" are intentionally absent because there is no existing
+structure to repair. Only map to items in the provided list; if a file line genuinely has no
+corresponding item, put it in "newItems" instead of forcing it onto an unrelated existing row.
+`
+    : projectType === 'renovation'
+      ? `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PROJECT TYPE — RENOVATION / VALUE-ADD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+This is a Renovation / Value-Add (Fix & Flip) project on an existing structure. VALID_BUDGET_ITEMS
+has already been filtered to only the items that exist on the Renovation template - ground-up items
+like "Excavation & Backfill", "Slab (Form/Place/Finish)*", or "Impact Fees" are intentionally absent
+because there is no new foundation being built. Only map to items in the provided list; if a file
+line genuinely has no corresponding item, put it in "newItems" instead of forcing it onto an
+unrelated existing row.
+`
+      : '';
 
+  return `You are a construction budget data extraction specialist. Your task is to parse a raw budget file and map every line item to the provided VALID_BUDGET_ITEMS list.
+${typeFraming}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CRITICAL RULE — TOTALS AND SUBTOTALS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -911,6 +969,7 @@ Extract from any header, footer, title block, or notes section:
   - Project scope statement (brief summary of work)
 If a metadata field is not present in the file, leave it as 0 (for numbers) or "" (for strings).
 `;
+};
 
 export const BUDGET_PARSER_SCHEMA = {
   type: Type.OBJECT,

@@ -4,7 +4,7 @@ import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import Shepherd from 'shepherd.js';
 import { GoogleGenAI } from '@google/genai';
 import { PropertyDetails, AsIsProjectedData, ProjectQuestion, BudgetItem, BudgetCategoryData, ScopeOfWorkSummary, AsIsProjectedField, AsIsProjectedAspect, AppState, SelectOption, AsIsProjectedItem, ProjectDocument, GeneralContractor, GcOnboardingData, GcDocument, Requirement, AsIsProjectedPerUnitItem, UserRole, Comment, ApplicationStatus, CommentThread, CommentThreadStatus, AuditLogEntry, InitializationData, RiskAdjustments, FeasibilityData, MarketMetrics, EstimatorResult, WalkthroughItemRecord, WalkthroughRoomDef, ProjectTypeMode, LandDetails, BudgetTemplate, PendingSyncJob } from './types';
-import { INITIAL_PROPERTY_DETAILS, INITIAL_AS_IS_PROJECTED_DATA, INITIAL_PROJECT_QUESTIONS, INITIAL_BUDGET_CATEGORIES, INITIAL_SCOPE_SUMMARY, getInitialAppState, CONDITIONS_OF_PROPERTY, TYPES_OF_REHAB, MATERIAL_QUALITIES, CONTINGENCY_ITEM_ID, CONTINGENCY_CATEGORY_NAME, GC_BUILDER_FEES_ITEM_ID, FINAL_MISC_CATEGORY_NAME, INITIAL_GENERAL_CONTRACTOR, INITIAL_GC_ONBOARDING_DATA, TEMPLATE_BUDGET_DATA, getTargetBudgetJSON, getCategoryNames, INITIAL_RISK_ADJUSTMENTS, INITIAL_FEASIBILITY_DATA, INITIAL_MARKET_METRICS, ESTIMATOR_SYSTEM_INSTRUCTION, ESTIMATOR_JSON_SCHEMA, BUDGET_PARSER_SYSTEM_INSTRUCTION, BUDGET_PARSER_SCHEMA, INITIAL_WALKTHROUGH_STATE, WALKTHROUGH_AUDIO_SCHEMA, WALKTHROUGH_AUDIO_INSTRUCTION, WALKTHROUGH_DEPENDENCIES, INITIAL_LAND_DETAILS, NC_SOFT_COST_ROWS, MOCK_TEMPLATES } from './constants';
+import { INITIAL_PROPERTY_DETAILS, INITIAL_AS_IS_PROJECTED_DATA, INITIAL_PROJECT_QUESTIONS, INITIAL_BUDGET_CATEGORIES, INITIAL_SCOPE_SUMMARY, getInitialAppState, CONDITIONS_OF_PROPERTY, TYPES_OF_REHAB, MATERIAL_QUALITIES, CONTINGENCY_ITEM_ID, CONTINGENCY_CATEGORY_NAME, GC_BUILDER_FEES_ITEM_ID, FINAL_MISC_CATEGORY_NAME, INITIAL_GENERAL_CONTRACTOR, INITIAL_GC_ONBOARDING_DATA, TEMPLATE_BUDGET_DATA, getTargetBudgetJSON, getCategoryNames, INITIAL_RISK_ADJUSTMENTS, INITIAL_FEASIBILITY_DATA, INITIAL_MARKET_METRICS, ESTIMATOR_SYSTEM_INSTRUCTION, ESTIMATOR_JSON_SCHEMA, getBudgetParserSystemInstruction, BUDGET_PARSER_SCHEMA, INITIAL_WALKTHROUGH_STATE, WALKTHROUGH_AUDIO_SCHEMA, WALKTHROUGH_AUDIO_INSTRUCTION, WALKTHROUGH_DEPENDENCIES, INITIAL_LAND_DETAILS, NC_SOFT_COST_ROWS, MOCK_TEMPLATES } from './constants';
 import { Step1Form } from './components/Step1Form';
 import { Step2Contractor } from './components/Step2Contractor';
 import { Step2Budget } from './components/Step2Budget';
@@ -39,6 +39,8 @@ import { ConnectivityBanner } from './components/ConnectivityBanner';
 import { getAsset, deleteAsset } from './utils/offlineStorage';
 import { useToast, ToastContainer } from './components/Toast';
 import { getApprovalLimit } from './services/dataService';
+import { roundBudget } from './utils/budgetMath';
+import { computeMaxItemSuffix } from './utils/itemNumbering';
 import type { ReviewTier } from './types';
 
 
@@ -888,7 +890,7 @@ export const App: React.FC<AppProps> = ({
                     if (item.budget > 0) {
                         return {
                             ...item,
-                            budget: Math.round(item.budget * multiplier)
+                            budget: roundBudget(item.budget * multiplier)
                         };
                     }
                     return item;
@@ -975,13 +977,7 @@ export const App: React.FC<AppProps> = ({
           if (!newItemsForCategory) return category;
 
           const updatedItems = [...category.items];
-          let maxSuffix = 0;
-          updatedItems.forEach(item => {
-            const match = item.itemNumber.match(/^(\d+)-(\d+)$/);
-            if (match && category.itemNumberPrefix && match[1] === category.itemNumberPrefix) {
-                maxSuffix = Math.max(maxSuffix, parseInt(match[2]));
-            }
-          });
+          let maxSuffix = computeMaxItemSuffix(updatedItems, category.itemNumberPrefix);
 
           newItemsForCategory.forEach(newItem => {
             maxSuffix++;
@@ -1234,28 +1230,21 @@ export const App: React.FC<AppProps> = ({
         setCurrentWizardStep(step);
     };
 
-    const handleProcessBudgetFile = async (file: File) => {
+    const handleProcessBudgetFile = async (file: File, projectType: ProjectTypeMode) => {
         // ... (Budget Parser Implementation) ...
         setIsParsingBudget(true);
         setBudgetParsingError(null);
-        
+
+        // Lock in the project type up front (same effect as picking it on the
+        // Project Type screen) so the AI only ever maps against items that are
+        // valid for this template, and so that screen is skipped afterward
+        // rather than asking the borrower the same question twice.
+        handleProjectTypeSelect(projectType);
+
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            // Use current budgetData (not static INITIAL_BUDGET_CATEGORIES) so NC soft cost
-            // items injected by injectNcSoftCosts() are included in the valid items list.
-            const targetTopology = JSON.stringify(
-                budgetData.flatMap(category =>
-                    category.items
-                        .filter(item => !item.isCustomDescription && item.drawItem)
-                        .map(item => ({
-                            id: item.id,
-                            itemNumber: item.itemNumber,
-                            drawItem: item.drawItem,
-                            categoryName: category.name,
-                        }))
-                )
-            );
-            
+            const targetTopology = getTargetBudgetJSON(projectType);
+
             let contentPart: any;
 
             if (file.name.endsWith('.xlsx') || file.name.endsWith('.csv') || file.name.endsWith('.xls')) {
@@ -1282,7 +1271,7 @@ export const App: React.FC<AppProps> = ({
                 model: 'gemini-2.5-flash',
                 contents: { parts: [topologyPart, contentPart] },
                 config: {
-                    systemInstruction: BUDGET_PARSER_SYSTEM_INSTRUCTION,
+                    systemInstruction: getBudgetParserSystemInstruction(projectType),
                     responseMimeType: "application/json",
                     responseSchema: BUDGET_PARSER_SCHEMA,
                     temperature: 0.0,
@@ -1817,7 +1806,7 @@ export const App: React.FC<AppProps> = ({
                 // dropped by find().
                 const mappedMatches = mapped.filter((m: any) => m.id === item.id);
                 if (mappedMatches.length > 0) {
-                    const totalBudget = mappedMatches.reduce((sum: number, m: any) => sum + (m.budget || 0), 0);
+                    const totalBudget = roundBudget(mappedMatches.reduce((sum: number, m: any) => sum + (m.budget || 0), 0));
                     // When multiple file rows map to the same line item (e.g. "Siding Material"
                     // + "Siding Labor"), combine their original texts into the description so
                     // both are traceable in the budget detail.
@@ -1839,18 +1828,23 @@ export const App: React.FC<AppProps> = ({
 
             const newItemsForCategory = newItems.filter((n: any) => n.categoryName === category.name);
             if (newItemsForCategory.length > 0) {
-                const createdItems = newItemsForCategory.map((n: any) => ({
-                    id: `ai-new-${Date.now()}-${Math.random()}`,
-                    itemNumber: 'New',
-                    drawItem: n.drawItem,
-                    description: n.description,
-                    budget: n.budget,
-                    actual: 0,
-                    isCustomDescription: true,
-                    isUncertain: n.isUncertain,
-                    uploadedPhotos: []
-                }));
-                updatedItems = [...updatedItems, ...createdItems];
+                let maxSuffix = computeMaxItemSuffix(updatedItems, category.itemNumberPrefix);
+                const createdItems = newItemsForCategory.map((n: any) => {
+                    maxSuffix++;
+                    return {
+                        id: `ai-new-${Date.now()}-${Math.random()}`,
+                        itemNumber: `${category.itemNumberPrefix || 'Custom'}-${maxSuffix}`,
+                        drawItem: n.drawItem,
+                        description: n.description,
+                        budget: roundBudget(n.budget),
+                        actual: 0,
+                        isCustomDescription: true,
+                        isUncertain: n.isUncertain,
+                        uploadedPhotos: []
+                    };
+                });
+                updatedItems = [...updatedItems, ...createdItems]
+                    .sort((a, b) => a.itemNumber.localeCompare(b.itemNumber, undefined, { numeric: true }));
             }
 
             return {

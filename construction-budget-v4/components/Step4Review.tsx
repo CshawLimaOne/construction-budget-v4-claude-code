@@ -3,6 +3,7 @@ import React, { useMemo, useRef } from 'react';
 import { PropertyDetails, AsIsProjectedData, ProjectQuestion, GeneralContractor, BudgetCategoryData, BudgetItem, ScopeOfWorkSummary, ApplicationStatus, AsIsProjectedItem, AsIsProjectedPerUnitItem, UserRole, Comment, CommentThread, ReviewTier } from '../types';
 import { CONDITIONS_OF_PROPERTY, TYPES_OF_REHAB, MATERIAL_QUALITIES } from '../constants';
 import { WarningTriangleIcon, BuildingIcon, ClipboardUserIcon, CalculatorIcon, MapPinIcon, CheckCircleIcon, ClipboardCheckIcon, ChatBubbleIcon } from './Icons';
+import { roundBudget } from '../utils/budgetMath';
 
 interface Step4ReviewProps {
   propertyDetails: PropertyDetails;
@@ -165,7 +166,7 @@ const exportBudgetCSV = (budgetData: BudgetCategoryData[]) => {
                     item.itemNumber,
                     item.drawItem,
                     item.description,
-                    item.budget.toFixed(2),
+                    String(roundBudget(item.budget)),
                 ]);
             }
         });
@@ -418,11 +419,11 @@ export const Step4Review: React.FC<Step4ReviewProps> = ({
                                     <div className="grid grid-cols-2 gap-3 mb-3">
                                         <div className="bg-[#F6F7F9] rounded-lg px-3 py-2 border border-[#DFE1E5]">
                                             <div className="text-[10px] font-bold text-[#78819D] uppercase tracking-widest mb-1">Your Requested Amount</div>
-                                            <div className="font-mono font-bold text-[#1E2D5C] text-base">{item.budget.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</div>
+                                            <div className="font-mono font-bold text-[#1E2D5C] text-base">{item.budget.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</div>
                                         </div>
                                         <div className="bg-brand-50 rounded-lg px-3 py-2 border border-brand-200">
                                             <div className="text-[10px] font-bold text-[#78819D] uppercase tracking-widest mb-1">Analyst Approved</div>
-                                            <div className="font-mono font-bold text-brand-500 text-base">{item.actual.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 })}</div>
+                                            <div className="font-mono font-bold text-brand-500 text-base">{item.actual.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })}</div>
                                         </div>
                                     </div>
 

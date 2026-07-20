@@ -180,15 +180,10 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
         }
     });
 
-    // Default 10% cap logic still applies if we want to enforce it, 
-    // but here we just want to calculate totals correctly for display.
-    // If the file has explicit GC Fees, we use them (capped or not depends on backend logic, here we just sum).
-    // Let's stick to the visual representation.
-    
-    const maxAllowedGcFee = Math.round(0.10 * baseSubTotal);
-    const effectiveGcFee = Math.min(gcFeeFromFile, maxAllowedGcFee);
-    const subTotalIncludingGc = baseSubTotal + effectiveGcFee;
-    
+    // GC/Builder Fees are not capped - whatever the file states (or the
+    // reviewer enters) is used as-is.
+    const subTotalIncludingGc = baseSubTotal + gcFeeFromFile;
+
     const hasManualContingency = acceptedSuggestions.some(s => s.suggestionType === 'mapped' && s.id === CONTINGENCY_ITEM_ID);
 
     let effectiveContingency = contingencyFromFile;
@@ -206,7 +201,6 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
         breakdown: {
             baseSubTotal,
             subTotalIncludingGc,
-            effectiveGcFee,
             effectiveContingency,
             gcFeeFromFile,
             contingencyFromFile,
@@ -364,11 +358,21 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
 
   return (
     <ComplexModal isOpen={isOpen} onClose={onClose} title="Review AI Budget Suggestions" footer={footer} size="xl">
+        <div className="flex items-center gap-4 p-4 rounded-xl bg-[#FFF5DB] border border-[#EDDDB1] mb-4">
+            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#EDDDB1]/50 border border-[#EDDDB1] flex items-center justify-center">
+                <span className="text-2xl leading-none text-[#EAA800]">⚠</span>
+            </div>
+            <div>
+                <p className="text-base font-bold text-[#EAA800]">AI-generated — verify before applying</p>
+                <p className="text-xs text-[#EAA800]/80 mt-0.5">Every mapping and dollar amount below was produced by AI. Review each line item carefully before applying it to the budget.</p>
+            </div>
+        </div>
+
         <div className="text-sm text-[#78819D] mb-4">
             <p>The AI has analyzed your uploaded file. Please review its interpretation for each line item.</p>
             <p className="mt-2">You can correct any mappings, adjust budgets, or uncheck items to ignore them before applying changes.</p>
         </div>
-        
+
         {(hasAddress || hasDimensions || hasProjectInfo) && (
             <div className="rounded-xl border border-[#DFE1E5] bg-[#F6F7F9] mb-6 overflow-hidden">
 
@@ -582,14 +586,7 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                 )}
                 <div className="flex justify-between py-1 border-b border-[#DFE1E5]">
                     <span className="text-[#1E2D5C]">GC/Builder Fee</span>
-                    <div className="text-right">
-                        {breakdown.gcFeeFromFile > breakdown.effectiveGcFee && (
-                            <Tooltip text="Capped at 10% of subtotal.">
-                                <span className="text-xs line-through text-[#B92814] mr-2">{formatCurrency(breakdown.gcFeeFromFile)}</span>
-                            </Tooltip>
-                        )}
-                        <span className="font-medium text-[#1E2D5C]">{formatCurrency(breakdown.effectiveGcFee)}</span>
-                    </div>
+                    <span className="font-medium text-[#1E2D5C]">{formatCurrency(breakdown.gcFeeFromFile)}</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-[#DFE1E5]">
                     <span className="text-[#1E2D5C]">Contingency</span>
@@ -780,6 +777,17 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({ isOpen
                     <div>
                         <p className="text-base font-bold text-[#139B23]">Budget Successfully Updated</p>
                         <p className="text-xs text-[#139B23]/80 mt-0.5">All accepted items have been applied to your budget.</p>
+                    </div>
+                </div>
+
+                {/* ── AI verification reminder ── */}
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-[#FFF5DB] border border-[#EDDDB1]">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#EDDDB1]/50 border border-[#EDDDB1] flex items-center justify-center">
+                        <span className="text-2xl leading-none text-[#EAA800]">⚠</span>
+                    </div>
+                    <div>
+                        <p className="text-base font-bold text-[#EAA800]">Double-check before you continue</p>
+                        <p className="text-xs text-[#EAA800]/80 mt-0.5">These items were mapped and priced by AI. Verify every line item in the detailed budget before submitting.</p>
                     </div>
                 </div>
 
