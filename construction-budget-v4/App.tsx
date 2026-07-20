@@ -141,7 +141,7 @@ export const App: React.FC<AppProps> = ({
   const [scrollToFieldId, setScrollToFieldId] = useState<string | null>(null);
   const [isParsingBudget, setIsParsingBudget] = useState(false);
   const [budgetParsingError, setBudgetParsingError] = useState<string | null>(null);
-  const [reviewableSuggestions, setReviewableSuggestions] = useState<{ mappedItems: any[], newItems: any[], totalBudgetFromFile?: number, projectDetails?: any } | null>(null);
+  const [reviewableSuggestions, setReviewableSuggestions] = useState<{ mappedItems: any[], newItems: any[], totalBudgetFromFile?: number, documentStatedTotal?: number, projectDetails?: any } | null>(null);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isAnalyzingBudget, setIsAnalyzingBudget] = useState(false);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
@@ -1290,6 +1290,7 @@ export const App: React.FC<AppProps> = ({
                 mappedItems: parsedResult.mappedItems || [],
                 newItems: parsedResult.newItems || [],
                 totalBudgetFromFile: calculatedTotal,
+                documentStatedTotal: parsedResult.documentStatedTotal || 0,
                 projectDetails: parsedResult.projectDetails
             });
             setTimeout(() => setIsReviewModalOpen(true), 100);

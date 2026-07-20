@@ -921,13 +921,41 @@ ${typeFraming}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CRITICAL RULE — TOTALS AND SUBTOTALS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-You MUST ignore any row that is a total, subtotal, grand total, section total, or summary row.
-These rows do NOT represent actual work items — they are summations of rows above them.
-Indicators of a total/subtotal row (SKIP these completely):
+You MUST ignore any row that is a total, subtotal, grand total, section total, or summary row -
+do NOT extract these into "mappedItems" or "newItems". These rows do NOT represent actual work
+items — they are summations of rows above them.
+Indicators of a total/subtotal row (SKIP these as line items):
   - The label contains words like "Total", "Subtotal", "Grand Total", "Section Total", "Summary", "Sub Total"
   - The value equals or is very close to the sum of nearby line items
   - The row appears at the bottom of a section or table
 Only extract INDIVIDUAL LINE ITEMS that describe specific work to be done (e.g., "Demo walls", "Install LVP flooring", "Paint interior").
+
+However, do not simply discard the single row that represents the document's OVERALL grand
+total (usually the last, largest, bottom-most total in the file - not a per-section subtotal).
+Record its value in "documentStatedTotal" so it can be checked against the sum of what you
+extracted. If the document has several layers of totals (section subtotals rolling up into one
+final grand total), use the final grand total, not an intermediate section subtotal. If the
+document has no discernible overall total at all, set "documentStatedTotal" to 0.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION / DIVISION HEADER ROWS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Long, multi-page, or CSI-style budgets often group line items under a section or
+division header row, e.g. "Division 6 - General Labor", "SECTION 09 - FINISHES",
+or a bolded/all-caps trade name with no dollar amount of its own.
+A row like this is a HEADER, not a line item, when:
+  - It only names a trade, division, or category - it does not describe a
+    specific piece of work
+  - It has no cost of its own, or its cost equals the sum of the costed rows
+    immediately beneath it (see TOTALS AND SUBTOTALS above)
+  - The rows beneath it are the real, individually-priced work items
+Do NOT create a "newItems" entry for the header row itself, and do NOT map every
+row beneath it onto one single item just because they share a header. A header
+naming a trade (e.g. "Division 6: General Labor") can still contain framing labor,
+drywall labor, and electrical labor rows underneath it that belong on three
+different template items - look at what each child row actually describes and
+map (or sum) each one individually into its matching VALID_BUDGET_ITEM, exactly
+as you would if the header weren't there.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 NUMBER PARSING RULES
@@ -945,7 +973,18 @@ ITEM MAPPING RULES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Each valid_budget_item has an "id", "itemNumber", "drawItem", and "categoryName".
 - Match each line item from the file to the most semantically similar VALID_BUDGET_ITEM.
-- If multiple file rows describe the same work (e.g., "Roof Shingles" + "Roof Labor"), SUM their costs into one mapped entry.
+- If multiple file rows describe the same work, SUM their costs into one mapped entry - this
+  applies even when the rows sit under different section headers or are pages apart in a long
+  file. For example:
+    - "Roof Shingles" + "Roof Labor" → one "Roofing*" entry
+    - "Framing Material" (under a "Division 6: General Labor" header) + "Framing Labor" (under
+      a separate "Materials" header elsewhere in the file) → one "Framing*" (L&M) entry
+    - "Electrical Rough-In" + "Electrical Trim/Finish" + "Electrical Labor" → one combined
+      electrical entry if VALID_BUDGET_ITEMS has a single rough-and-final electrical item, or
+      two entries (rough vs. final) if the list has both as separate items
+  A shared header or section name is a hint about the row's trade, not an instruction to merge
+  everything under it into one line - map each row on its own merits first, then sum any that
+  land on the same VALID_BUDGET_ITEM.
 - Use the "categoryName" field as a hint — match file items to items in the same category when possible.
 - Set isUncertain: true if you are not confident in the match, or the dollar amount looks suspicious.
 - Set isUncertain: false if the match is clear and the amount looks correct.
@@ -1025,6 +1064,10 @@ export const BUDGET_PARSER_SCHEMA = {
           isUncertain: { type: Type.BOOLEAN }
         }
       }
+    },
+    documentStatedTotal: {
+      type: Type.NUMBER,
+      description: "The overall grand total the source document itself states (the value of the row you identified as the total/grand-total/subtotal-of-subtotals per the TOTALS AND SUBTOTALS rule - captured here instead of discarded). 0 if the document has no discernible overall total."
     }
   }
 };

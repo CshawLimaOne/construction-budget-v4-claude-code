@@ -46,7 +46,7 @@ interface AIReviewModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: (acceptedMapped: MappedSuggestion[], acceptedNew: NewSuggestion[], acceptedProjectDetails: any) => void;
-  suggestions: { mappedItems: MappedSuggestion[], newItems: NewSuggestion[], totalBudgetFromFile?: number, projectDetails?: any } | null;
+  suggestions: { mappedItems: MappedSuggestion[], newItems: NewSuggestion[], totalBudgetFromFile?: number, documentStatedTotal?: number, projectDetails?: any } | null;
   budgetCategoryData: BudgetCategoryData[];
   scopeSummary: ScopeOfWorkSummary;
   conditions: SelectOption[];
@@ -81,6 +81,7 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
   const [editableSuggestions, setEditableSuggestions] = useState<UnifiedSuggestion[]>([]);
   const [editableProjectDetails, setEditableProjectDetails] = useState<Record<string, { value: any; accepted: boolean }>>({});
   const [showOtherItems, setShowOtherItems] = useState(false);
+  const [acknowledgedTotalMismatch, setAcknowledgedTotalMismatch] = useState(false);
   const categoryNames = getCategoryNames();
 
   // Items hidden for the chosen project type (e.g. "Roofing*" for New
@@ -160,6 +161,7 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
 
       setEditableProjectDetails(initialDetails);
       setShowOtherItems(false);
+      setAcknowledgedTotalMismatch(false);
     }
   }, [isOpen, suggestions, budgetCategoryData, hiddenItemNumbers]);
 
@@ -170,7 +172,18 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
   }, [editableSuggestions]);
 
   const totalFromFile = suggestions?.totalBudgetFromFile ?? 0;
-  
+
+  // Independent check: does the total the AI extracted match what the source
+  // document itself states as its overall total? Unlike totalsMismatch below
+  // (which only catches a reviewer unchecking items), this catches the AI
+  // missing, mis-pricing, or mis-consolidating something relative to the
+  // document's own stated number. A small tolerance absorbs whole-dollar
+  // rounding (see utils/budgetMath.ts).
+  const DOCUMENT_TOTAL_TOLERANCE = 5;
+  const documentStatedTotal = suggestions?.documentStatedTotal ?? 0;
+  const documentTotalGap = documentStatedTotal - totalFromFile;
+  const documentTotalMismatch = documentStatedTotal > 0 && Math.abs(documentTotalGap) > DOCUMENT_TOTAL_TOLERANCE;
+
   const { finalBudgetTotal, breakdown } = useMemo(() => {
     const acceptedSuggestions = editableSuggestions.filter(s => s.accepted);
     
@@ -386,7 +399,12 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
   const isAddressAccepted = ADDRESS_KEYS.some(k => editableProjectDetails[k]?.accepted);
 
   const footer = (
-    <button onClick={handleConfirmClick} className="button-base btn-primary">
+    <button
+      onClick={handleConfirmClick}
+      disabled={documentTotalMismatch && !acknowledgedTotalMismatch}
+      className="button-base btn-primary disabled:opacity-40 disabled:cursor-not-allowed"
+      title={documentTotalMismatch && !acknowledgedTotalMismatch ? 'Acknowledge the total mismatch above before applying' : undefined}
+    >
       Apply Accepted Items
     </button>
   );
@@ -708,6 +726,14 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
         )}
 
         <div className="p-4 rounded-lg bg-[#F6F7F9] border border-[#DFE1E5] mb-6 space-y-2">
+            {documentStatedTotal > 0 && (
+                <div className="flex justify-between items-center">
+                    <span className="font-semibold text-[#1E2D5C]">Total Stated in Document:</span>
+                    <span className={`font-bold text-lg ${documentTotalMismatch ? 'text-[#B92814]' : 'text-[#1E2D5C]'}`}>
+                        {formatCurrency(documentStatedTotal)}
+                    </span>
+                </div>
+            )}
             <div className="flex justify-between items-center">
                 <span className="font-semibold text-[#1E2D5C]">Total Detected in File:</span>
                 <span className="font-bold text-lg text-[#1E2D5C]">{formatCurrency(totalFromFile)}</span>
@@ -724,7 +750,37 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ isOpen, onClose, o
                 </div>
             )}
         </div>
-        
+
+        {documentTotalMismatch && (
+            <div className="p-4 rounded-lg bg-[#FFF0EE] border border-[#F2C0BA] mb-6">
+                <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 text-[#B92814] text-xl leading-none mt-0.5">⚠</span>
+                    <div className="flex-1">
+                        <p className="font-bold text-[#B92814] text-sm">
+                            Extracted total doesn't match the document
+                        </p>
+                        <p className="text-xs text-[#B92814]/90 mt-1">
+                            The document states a total of <strong>{formatCurrency(documentStatedTotal)}</strong>, but
+                            the line items the AI extracted only add up to <strong>{formatCurrency(totalFromFile)}</strong> -
+                            a difference of <strong>{formatCurrency(Math.abs(documentTotalGap))}</strong>
+                            {documentTotalGap > 0 ? ' that appears to be missing.' : ' more than the document states.'}
+                            {' '}This usually means the AI missed a line item, mis-priced one, or combined several
+                            into one incorrectly. Review the line items below carefully before applying.
+                        </p>
+                        <label className="flex items-center gap-2 mt-3 text-xs font-semibold text-[#B92814] cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={acknowledgedTotalMismatch}
+                                onChange={e => setAcknowledgedTotalMismatch(e.target.checked)}
+                                className="h-4 w-4 rounded border-[#F2C0BA] text-[#B92814] focus:ring-[#B92814]"
+                            />
+                            I understand and want to proceed anyway
+                        </label>
+                    </div>
+                </div>
+            </div>
+        )}
+
         <div className="p-4 rounded-lg bg-[#F6F7F9] border border-[#DFE1E5] mb-6">
             <h4 className="font-semibold text-brand-500 mb-3 text-center text-base">Calculation Breakdown</h4>
             <div className="space-y-2 text-sm max-w-md mx-auto">
