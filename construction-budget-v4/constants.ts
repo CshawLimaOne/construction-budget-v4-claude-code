@@ -1,6 +1,23 @@
 
-import { Type } from "@google/genai";
 import { AsIsProjectedData, BudgetCategoryData, ProjectQuestion, ScopeOfWorkSummary, SelectOption, PropertyDetails, AppState, GeneralContractor, GcOnboardingData, RiskAdjustments, FeasibilityData, MarketMetrics, WalkthroughState, LandDetails, BudgetTemplate, ProjectTypeMode } from './types';
+
+// Every Claude-migrated feature uses Opus 4.8 - no per-feature tiering.
+export const CLAUDE_MODELS = {
+  OPUS: 'claude-opus-4-8',
+} as const;
+
+// Plain JSON Schema type strings for Claude tool "input_schema" definitions,
+// replacing Gemini's Type.OBJECT/STRING/etc enum for schemas that have been
+// migrated off Gemini. (The `Type` import above stays until every schema in
+// this file - including the not-yet-migrated ones - is converted.)
+const SchemaType = {
+  OBJECT: 'object',
+  STRING: 'string',
+  ARRAY: 'array',
+  NUMBER: 'number',
+  INTEGER: 'integer',
+  BOOLEAN: 'boolean',
+} as const;
 
 export const INITIAL_PROPERTY_DETAILS: PropertyDetails = {
   street: '',
@@ -378,25 +395,6 @@ export const INITIAL_WALKTHROUGH_STATE: WalkthroughState = {
   customRooms: [], // Initialize customRooms
   items: {}, 
 };
-
-export const WALKTHROUGH_AUDIO_SCHEMA = {
-  type: "OBJECT",
-  properties: {
-    action: { type: "STRING", description: "The action to take: 'Replace', 'Repair', or 'Keep'." },
-    description: { type: "STRING", description: "Detailed notes about the condition and work needed." },
-    costEstimate: { type: "NUMBER", description: "Estimated cost if mentioned or implied. If unsure, return 0." }
-  },
-  required: ["action", "description"]
-};
-
-export const WALKTHROUGH_AUDIO_INSTRUCTION = `
-You are a construction estimator assistant processing voice notes from a site walkthrough.
-Analyze the audio and extract the scope of work.
-If the user says "Trash it", "Gut it", "New one", "Replace", map to 'Replace'.
-If the user says "Fix", "Patch", "Paint", "Repair", map to 'Repair'.
-If the user mentions specific quantities (e.g. "300 sqft"), include that in the description.
-Use the context of the room and item provided to ensure relevance.
-`;
 
 // Logic Trigger Map: If Key is 'Replace', Value MUST NOT be 'Keep'/'N/A'
 export const WALKTHROUGH_DEPENDENCIES: Record<string, string[]> = {
@@ -850,38 +848,39 @@ GUIDELINES:
 `;
 
 export const ESTIMATOR_JSON_SCHEMA = {
-  type: Type.OBJECT,
+  type: SchemaType.OBJECT,
   properties: {
     inspectionSummary: {
-      type: Type.ARRAY,
+      type: SchemaType.ARRAY,
       items: {
-        type: Type.OBJECT,
+        type: SchemaType.OBJECT,
         properties: {
-          area: { type: Type.STRING },
-          findings: { type: Type.ARRAY, items: { type: Type.STRING } }
+          area: { type: SchemaType.STRING },
+          findings: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } }
         }
       }
     },
-    detectiveReport: { type: Type.ARRAY, items: { type: Type.STRING } },
+    detectiveReport: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
     estimatedItems: {
-      type: Type.ARRAY,
+      type: SchemaType.ARRAY,
       items: {
-        type: Type.OBJECT,
+        type: SchemaType.OBJECT,
         properties: {
-          category: { type: Type.STRING },
-          item: { type: Type.STRING },
-          description: { type: Type.STRING },
-          cost: { type: Type.NUMBER },
-          materialCost: { type: Type.NUMBER },
-          laborCost: { type: Type.NUMBER },
-          isAiDetected: { type: Type.BOOLEAN },
-          logic: { type: Type.STRING }
+          category: { type: SchemaType.STRING },
+          item: { type: SchemaType.STRING },
+          description: { type: SchemaType.STRING },
+          cost: { type: SchemaType.NUMBER },
+          materialCost: { type: SchemaType.NUMBER },
+          laborCost: { type: SchemaType.NUMBER },
+          isAiDetected: { type: SchemaType.BOOLEAN },
+          logic: { type: SchemaType.STRING }
         },
         required: ["category", "item", "cost"]
       }
     },
-    totalEstimate: { type: Type.NUMBER }
-  }
+    totalEstimate: { type: SchemaType.NUMBER }
+  },
+  required: ["estimatedItems"]
 };
 
 // The VALID_BUDGET_ITEMS list passed alongside this instruction is already
@@ -1017,59 +1016,60 @@ If a metadata field is not present in the file, leave it as 0 (for numbers) or "
 };
 
 export const BUDGET_PARSER_SCHEMA = {
-  type: Type.OBJECT,
+  type: SchemaType.OBJECT,
   properties: {
     projectDetails: {
-      type: Type.OBJECT,
+      type: SchemaType.OBJECT,
       properties: {
-        street: { type: Type.STRING },
-        city: { type: Type.STRING },
-        state: { type: Type.STRING },
-        zip: { type: Type.STRING },
-        asIsSqft: { type: Type.NUMBER },
-        projectedSqft: { type: Type.NUMBER },
-        asIsBedrooms: { type: Type.NUMBER },
-        projectedBedrooms: { type: Type.NUMBER },
-        asIsBathrooms: { type: Type.NUMBER },
-        projectedBathrooms: { type: Type.NUMBER },
-        conditionOfProperty: { type: Type.STRING },
-        typeOfRehab: { type: Type.STRING },
-        materialQuality: { type: Type.STRING },
-        projectScopeStatement: { type: Type.STRING }
+        street: { type: SchemaType.STRING },
+        city: { type: SchemaType.STRING },
+        state: { type: SchemaType.STRING },
+        zip: { type: SchemaType.STRING },
+        asIsSqft: { type: SchemaType.NUMBER },
+        projectedSqft: { type: SchemaType.NUMBER },
+        asIsBedrooms: { type: SchemaType.NUMBER },
+        projectedBedrooms: { type: SchemaType.NUMBER },
+        asIsBathrooms: { type: SchemaType.NUMBER },
+        projectedBathrooms: { type: SchemaType.NUMBER },
+        conditionOfProperty: { type: SchemaType.STRING },
+        typeOfRehab: { type: SchemaType.STRING },
+        materialQuality: { type: SchemaType.STRING },
+        projectScopeStatement: { type: SchemaType.STRING }
       }
     },
     mappedItems: {
-      type: Type.ARRAY,
+      type: SchemaType.ARRAY,
       items: {
-        type: Type.OBJECT,
+        type: SchemaType.OBJECT,
         properties: {
-          id: { type: Type.STRING, description: "ID of the matching standard item from the provided list, if any." },
-          originalText: { type: Type.STRING },
-          budget: { type: Type.NUMBER },
-          description: { type: Type.STRING },
-          isUncertain: { type: Type.BOOLEAN }
+          id: { type: SchemaType.STRING, description: "ID of the matching standard item from the provided list, if any." },
+          originalText: { type: SchemaType.STRING },
+          budget: { type: SchemaType.NUMBER },
+          description: { type: SchemaType.STRING },
+          isUncertain: { type: SchemaType.BOOLEAN }
         }
       }
     },
     newItems: {
-      type: Type.ARRAY,
+      type: SchemaType.ARRAY,
       items: {
-        type: Type.OBJECT,
+        type: SchemaType.OBJECT,
         properties: {
-          categoryName: { type: Type.STRING },
-          drawItem: { type: Type.STRING },
-          originalText: { type: Type.STRING },
-          budget: { type: Type.NUMBER },
-          description: { type: Type.STRING },
-          isUncertain: { type: Type.BOOLEAN }
+          categoryName: { type: SchemaType.STRING },
+          drawItem: { type: SchemaType.STRING },
+          originalText: { type: SchemaType.STRING },
+          budget: { type: SchemaType.NUMBER },
+          description: { type: SchemaType.STRING },
+          isUncertain: { type: SchemaType.BOOLEAN }
         }
       }
     },
     documentStatedTotal: {
-      type: Type.NUMBER,
+      type: SchemaType.NUMBER,
       description: "The overall grand total the source document itself states (the value of the row you identified as the total/grand-total/subtotal-of-subtotals per the TOTALS AND SUBTOTALS rule - captured here instead of discarded). 0 if the document has no discernible overall total."
     }
-  }
+  },
+  required: ["mappedItems", "newItems"]
 };
 
 export const AUDITOR_SYSTEM_INSTRUCTION = `You are a Construction Scope Auditor.
@@ -1081,22 +1081,23 @@ Your goal is to cross-reference a provided "Borrower Budget" against "Visual Evi
 `;
 
 export const AUDITOR_JSON_SCHEMA = {
-  type: Type.OBJECT,
+  type: SchemaType.OBJECT,
   properties: {
-    summary: { type: Type.STRING },
+    summary: { type: SchemaType.STRING },
     findings: {
-      type: Type.ARRAY,
+      type: SchemaType.ARRAY,
       items: {
-        type: Type.OBJECT,
+        type: SchemaType.OBJECT,
         properties: {
-          severity: { type: Type.STRING, enum: ["Critical", "Medium", "Low", "verified"] },
-          observation: { type: Type.STRING },
-          missingCategoryOrItem: { type: Type.STRING },
-          photoIndex: { type: Type.INTEGER }
+          severity: { type: SchemaType.STRING, enum: ["Critical", "Medium", "Low", "verified"] },
+          observation: { type: SchemaType.STRING },
+          missingCategoryOrItem: { type: SchemaType.STRING },
+          photoIndex: { type: SchemaType.INTEGER }
         }
       }
     }
-  }
+  },
+  required: ["summary", "findings"]
 };
 
 // --- Mock Template Helpers ---

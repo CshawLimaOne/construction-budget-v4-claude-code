@@ -4,7 +4,6 @@ import { ComplexModal } from './ComplexModal';
 import { SpinnerIcon, CalculatorIcon, WarningTriangleIcon, PuzzlePieceIcon, CloudUploadIcon, CameraIcon, CheckCircleIcon, InfoIcon } from './Icons';
 import { EstimatorResult } from '../types';
 import Tooltip from './Tooltip';
-import { GoogleGenAI } from '@google/genai';
 import { ESTIMATOR_JSON_SCHEMA, ESTIMATOR_SYSTEM_INSTRUCTION } from '../constants';
 
 interface EstimatorModalProps {

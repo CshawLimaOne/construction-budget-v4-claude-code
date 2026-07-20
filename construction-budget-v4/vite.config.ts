@@ -1,7 +1,7 @@
 // vite.config.ts
 // Dev mode:    npm run dev           → standard Vite SPA on localhost:5173
 // Widget build: BUILD_TARGET=widget npm run build  → UMD bundle in dist/
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -50,7 +50,6 @@ const cssInjectedByJsPlugin = () => {
 const isWidget = process.env.BUILD_TARGET === 'widget';
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
   return {
     plugins: [
       react(),
@@ -64,9 +63,10 @@ export default defineConfig(({ mode }) => {
       open: true,
     },
     define: {
+      // No API key is defined here anymore - the client never holds one.
+      // Claude calls go through /api/claude (see api/claude.ts), which reads
+      // ANTHROPIC_API_KEY server-side only.
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-      // Reads GEMINI_API_KEY from .env.local and exposes it as process.env.API_KEY
-      'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY || ''),
     },
     build: isWidget
       ? {

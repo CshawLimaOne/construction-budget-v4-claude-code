@@ -46,13 +46,6 @@ export interface WalkthroughRoomDef {
   items: WalkthroughItemDef[];
 }
 
-export interface BatchRoomUpdate {
-  itemId: string;
-  status: WalkthroughItemStatus;
-  description: string;
-  costEstimate?: number;
-}
-
 export interface PropertyDetails {
   street: string;
   city: string;

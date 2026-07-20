@@ -2,9 +2,9 @@
 // ... existing imports
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import Shepherd from 'shepherd.js';
-import { GoogleGenAI } from '@google/genai';
 import { PropertyDetails, AsIsProjectedData, ProjectQuestion, BudgetItem, BudgetCategoryData, ScopeOfWorkSummary, AsIsProjectedField, AsIsProjectedAspect, AppState, SelectOption, AsIsProjectedItem, ProjectDocument, GeneralContractor, GcOnboardingData, GcDocument, Requirement, AsIsProjectedPerUnitItem, UserRole, Comment, ApplicationStatus, CommentThread, CommentThreadStatus, AuditLogEntry, InitializationData, RiskAdjustments, FeasibilityData, MarketMetrics, EstimatorResult, WalkthroughItemRecord, WalkthroughRoomDef, ProjectTypeMode, LandDetails, BudgetTemplate, PendingSyncJob } from './types';
-import { INITIAL_PROPERTY_DETAILS, INITIAL_AS_IS_PROJECTED_DATA, INITIAL_PROJECT_QUESTIONS, INITIAL_BUDGET_CATEGORIES, INITIAL_SCOPE_SUMMARY, getInitialAppState, CONDITIONS_OF_PROPERTY, TYPES_OF_REHAB, MATERIAL_QUALITIES, CONTINGENCY_ITEM_ID, CONTINGENCY_CATEGORY_NAME, GC_BUILDER_FEES_ITEM_ID, FINAL_MISC_CATEGORY_NAME, INITIAL_GENERAL_CONTRACTOR, INITIAL_GC_ONBOARDING_DATA, TEMPLATE_BUDGET_DATA, getTargetBudgetJSON, getCategoryNames, INITIAL_RISK_ADJUSTMENTS, INITIAL_FEASIBILITY_DATA, INITIAL_MARKET_METRICS, ESTIMATOR_SYSTEM_INSTRUCTION, ESTIMATOR_JSON_SCHEMA, getBudgetParserSystemInstruction, BUDGET_PARSER_SCHEMA, INITIAL_WALKTHROUGH_STATE, WALKTHROUGH_AUDIO_SCHEMA, WALKTHROUGH_AUDIO_INSTRUCTION, WALKTHROUGH_DEPENDENCIES, INITIAL_LAND_DETAILS, NC_SOFT_COST_ROWS, MOCK_TEMPLATES } from './constants';
+import { INITIAL_PROPERTY_DETAILS, INITIAL_AS_IS_PROJECTED_DATA, INITIAL_PROJECT_QUESTIONS, INITIAL_BUDGET_CATEGORIES, INITIAL_SCOPE_SUMMARY, getInitialAppState, CONDITIONS_OF_PROPERTY, TYPES_OF_REHAB, MATERIAL_QUALITIES, CONTINGENCY_ITEM_ID, CONTINGENCY_CATEGORY_NAME, GC_BUILDER_FEES_ITEM_ID, FINAL_MISC_CATEGORY_NAME, INITIAL_GENERAL_CONTRACTOR, INITIAL_GC_ONBOARDING_DATA, TEMPLATE_BUDGET_DATA, getTargetBudgetJSON, getCategoryNames, INITIAL_RISK_ADJUSTMENTS, INITIAL_FEASIBILITY_DATA, INITIAL_MARKET_METRICS, ESTIMATOR_SYSTEM_INSTRUCTION, ESTIMATOR_JSON_SCHEMA, getBudgetParserSystemInstruction, BUDGET_PARSER_SCHEMA, CLAUDE_MODELS, INITIAL_WALKTHROUGH_STATE, WALKTHROUGH_DEPENDENCIES, INITIAL_LAND_DETAILS, NC_SOFT_COST_ROWS, MOCK_TEMPLATES } from './constants';
+import { callClaudeForStructuredOutput, toClaudeContentBlock, ClaudeContentBlock } from './utils/claudeClient';
 import { Step1Form } from './components/Step1Form';
 import { Step2Contractor } from './components/Step2Contractor';
 import { Step2Budget } from './components/Step2Budget';
@@ -905,20 +905,16 @@ export const App: React.FC<AppProps> = ({
     const handleGenerateEstimate = useCallback(async (file: File | null, location: string, userPlan: string) => {
       setIsEstimatorGenerating(true);
       try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-        
-        let parts: any[] = [];
-        
         const fullPrompt = `
           **Input Data:**
           ${location ? `**Location:** ${location}` : ''}
           **Borrower's Stated Plan:**
           > "${userPlan}"
-          
+
           ${!file ? `**Visual Description:** No file provided. Rely on user plan.` : '**Visual Evidence:** A property inspection report or photo set is attached. Analyze it thoroughly.'}
         `;
-        
-        parts.push({ text: fullPrompt });
+
+        const content: ClaudeContentBlock[] = [{ type: 'text', text: fullPrompt }];
 
         if (file) {
             const base64Data = await new Promise<string>((resolve, reject) => {
@@ -932,27 +928,19 @@ export const App: React.FC<AppProps> = ({
                 reader.readAsDataURL(file);
             });
 
-            parts.push({
-                inlineData: {
-                    mimeType: file.type,
-                    data: base64Data
-                }
-            });
+            content.push(toClaudeContentBlock(file.type, base64Data));
         }
 
-        const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash',
-          contents: { parts },
-          config: {
-            systemInstruction: ESTIMATOR_SYSTEM_INSTRUCTION,
-            responseMimeType: "application/json",
-            responseSchema: ESTIMATOR_JSON_SCHEMA,
-            temperature: 0.0, 
-            topK: 1, 
-          },
-        });
+        const result = await callClaudeForStructuredOutput({
+          model: CLAUDE_MODELS.OPUS,
+          system: ESTIMATOR_SYSTEM_INSTRUCTION,
+          content,
+          toolName: 'generate_estimate',
+          toolDescription: 'Generate a detailed, realistic line-item construction budget estimate.',
+          inputSchema: ESTIMATOR_JSON_SCHEMA,
+          temperature: 0,
+        }) as EstimatorResult;
 
-        const result = JSON.parse(response.text) as EstimatorResult;
         setEstimatorResult(result);
 
       } catch (error) {
@@ -1242,10 +1230,9 @@ export const App: React.FC<AppProps> = ({
         handleProjectTypeSelect(projectType);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const targetTopology = getTargetBudgetJSON(projectType);
 
-            let contentPart: any;
+            let contentPart: ClaudeContentBlock;
 
             if (file.name.endsWith('.xlsx') || file.name.endsWith('.csv') || file.name.endsWith('.xls')) {
                 const arrayBuffer = await file.arrayBuffer();
@@ -1253,8 +1240,8 @@ export const App: React.FC<AppProps> = ({
                 const firstSheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[firstSheetName];
                 const csvText = (window as any).XLSX.utils.sheet_to_csv(worksheet);
-                
-                contentPart = { text: `**Input CSV Data:**\n${csvText}` };
+
+                contentPart = { type: 'text', text: `**Input CSV Data:**\n${csvText}` };
             } else {
                 const base64Data = await new Promise<string>((resolve, reject) => {
                     const reader = new FileReader();
@@ -1262,25 +1249,21 @@ export const App: React.FC<AppProps> = ({
                     reader.onerror = reject;
                     reader.readAsDataURL(file);
                 });
-                contentPart = { inlineData: { mimeType: file.type, data: base64Data } };
+                contentPart = toClaudeContentBlock(file.type, base64Data);
             }
 
-            const topologyPart = { text: `**VALID_BUDGET_ITEMS (Topology Map):**\n${targetTopology}` };
+            const topologyPart: ClaudeContentBlock = { type: 'text', text: `**VALID_BUDGET_ITEMS (Topology Map):**\n${targetTopology}` };
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: { parts: [topologyPart, contentPart] },
-                config: {
-                    systemInstruction: getBudgetParserSystemInstruction(projectType),
-                    responseMimeType: "application/json",
-                    responseSchema: BUDGET_PARSER_SCHEMA,
-                    temperature: 0.0,
-                    thinkingConfig: { thinkingBudget: 0 },
-                },
+            const parsedResult = await callClaudeForStructuredOutput({
+                model: CLAUDE_MODELS.OPUS,
+                system: getBudgetParserSystemInstruction(projectType),
+                content: [topologyPart, contentPart],
+                toolName: 'extract_budget',
+                toolDescription: 'Extract structured budget line items and project details from the uploaded file.',
+                inputSchema: BUDGET_PARSER_SCHEMA,
+                temperature: 0,
             });
 
-            const parsedResult = JSON.parse(response.text);
-            
             const calculatedTotal = [
                 ...(parsedResult.mappedItems || []), 
                 ...(parsedResult.newItems || [])
@@ -1801,7 +1784,7 @@ export const App: React.FC<AppProps> = ({
 
         const updatedBudgetData = currentBudgetData.map(category => {
             let updatedItems = category.items.map(item => {
-                // Use filter+reduce instead of find so that if Gemini returns multiple
+                // Use filter+reduce instead of find so that if the AI returns multiple
                 // mapped entries for the same ID (e.g. two NC soft costs both mapping
                 // to sc5), their budgets are SUMMED rather than the later ones silently
                 // dropped by find().
@@ -2016,7 +1999,6 @@ export const App: React.FC<AppProps> = ({
                             onPrevRoom={prevRoom ? () => setWalkthroughState(prev => ({ ...prev, currentRoomId: prevRoom.id })) : undefined}
                             nextRoomLabel={nextRoom?.label}
                             prevRoomLabel={prevRoom?.label}
-                            onAddPendingJob={handleAddPendingJob}
                             onToast={showToast}
                         />
                     </div>

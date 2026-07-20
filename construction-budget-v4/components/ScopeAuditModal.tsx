@@ -1,9 +1,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { ComplexModal } from './ComplexModal';
-import { GoogleGenAI } from '@google/genai';
 import { BudgetCategoryData, ScopeAuditResult, ScopeAuditFinding } from '../types';
-import { AUDITOR_SYSTEM_INSTRUCTION, AUDITOR_JSON_SCHEMA } from '../constants';
+import { AUDITOR_SYSTEM_INSTRUCTION, AUDITOR_JSON_SCHEMA, CLAUDE_MODELS } from '../constants';
+import { callClaudeForStructuredOutput, toClaudeContentBlock, ClaudeContentBlock } from '../utils/claudeClient';
 import { SpinnerIcon, WarningTriangleIcon, CheckCircleIcon, CloudUploadIcon, CameraIcon } from './Icons';
 import { ShowToastFn } from './Toast';
 
@@ -59,11 +59,9 @@ export const ScopeAuditModal: React.FC<ScopeAuditModalProps> = ({ isOpen, onClos
     setProgressMessage('Initializing Auditor Agent...');
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      
       // 1. Prepare Budget Context (Text)
       // Flatten budget into a readable string for the AI
-      const budgetContext = budgetData.flatMap(cat => 
+      const budgetContext = budgetData.flatMap(cat =>
         cat.items
           .filter(item => item.budget > 0) // Only send what IS budgeted
           .map(item => `${cat.name}: ${item.drawItem} ($${item.budget})`)
@@ -74,17 +72,12 @@ export const ScopeAuditModal: React.FC<ScopeAuditModalProps> = ({ isOpen, onClos
 
       // 2. Prepare Visual Context (Images)
       setProgressMessage('Scanning Visual Evidence...');
-      const imageParts = await Promise.all(uploadedFiles.map(async (file) => {
-        return new Promise<any>((resolve, reject) => {
+      const imageParts: ClaudeContentBlock[] = await Promise.all(uploadedFiles.map(async (file) => {
+        return new Promise<ClaudeContentBlock>((resolve, reject) => {
           const reader = new FileReader();
           reader.onloadend = () => {
             const base64String = (reader.result as string).split(',')[1];
-            resolve({
-              inlineData: {
-                data: base64String,
-                mimeType: file.type
-              }
-            });
+            resolve(toClaudeContentBlock(file.type, base64String));
           };
           reader.onerror = reject;
           reader.readAsDataURL(file);
@@ -93,24 +86,22 @@ export const ScopeAuditModal: React.FC<ScopeAuditModalProps> = ({ isOpen, onClos
 
       // 3. Construct Prompt
       setProgressMessage('Cross-referencing Scope...');
-      
-      const parts = [
-        { text: `**CURRENT BUDGET CONTEXT:**\n${budgetContext || "No budget items found."}\n` },
+
+      const content: ClaudeContentBlock[] = [
+        { type: 'text', text: `**CURRENT BUDGET CONTEXT:**\n${budgetContext || "No budget items found."}\n` },
         ...imageParts
       ];
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: { parts },
-        config: {
-          systemInstruction: AUDITOR_SYSTEM_INSTRUCTION,
-          responseMimeType: "application/json",
-          responseSchema: AUDITOR_JSON_SCHEMA,
-          temperature: 0.1 // Low temperature for strict logic
-        },
-      });
+      const result = await callClaudeForStructuredOutput({
+        model: CLAUDE_MODELS.OPUS,
+        system: AUDITOR_SYSTEM_INSTRUCTION,
+        content,
+        toolName: 'audit_scope',
+        toolDescription: 'Cross-reference the borrower budget against the visual evidence and report discrepancies.',
+        inputSchema: AUDITOR_JSON_SCHEMA,
+        temperature: 0.1, // Low temperature for strict logic
+      }) as ScopeAuditResult;
 
-      const result = JSON.parse(response.text) as ScopeAuditResult;
       setAuditResult(result);
       setStep('results');
 

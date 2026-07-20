@@ -4,7 +4,7 @@
 
 A React + TypeScript web app for managing construction project budgets. It replicates a detailed spreadsheet format and supports property details, project scope, AI-assisted estimation, GC onboarding, walkthrough dashboards, and more.
 
-Originally built for Google AI Studio (uses `@google/genai` / Gemini). **To run locally you need a Gemini API key.**
+AI features (budget parsing, cost estimation, scope audit, bulk photo tagging) call Claude Opus 4.8 via `@anthropic-ai/sdk`, through a Vercel serverless function (`api/claude.ts`) rather than directly from the browser - the client never holds an API key. **`npm run dev` cannot exercise these features** since Vite doesn't run Vercel functions locally; they only work once deployed (or via `vercel dev`).
 
 ---
 
@@ -15,7 +15,7 @@ Originally built for Google AI Studio (uses `@google/genai` / Gemini). **To run 
 - **Tailwind CSS** (via CDN in dev)
 - **Shepherd.js** — guided onboarding tours
 - **SheetJS (xlsx)** — parsing uploaded `.xlsx` budget files
-- **@google/genai** — Gemini AI for estimation, budget parsing, scope generation
+- **@anthropic-ai/sdk** — Claude Opus 4.8 for estimation, budget parsing, scope audit, bulk photo tagging (server-side only, via `api/claude.ts`)
 
 ---
 
@@ -26,13 +26,8 @@ Originally built for Google AI Studio (uses `@google/genai` / Gemini). **To run 
 npm install
 ```
 
-### 2. Set your Gemini API key
-```bash
-cp .env.local.example .env.local
-# Then edit .env.local and paste your key
-```
-
-Get a key at https://aistudio.google.com/app/apikey
+### 2. AI features require a deployed environment
+The app itself needs no local API key. AI calls go through `api/claude.ts` (a Vercel serverless function), which reads `ANTHROPIC_API_KEY` from the server's environment - set that in the Vercel project's environment variables (or the equivalent for wherever `api/claude.ts` is deployed). There is nothing to configure in `.env.local` for this to work locally, because it *can't* work locally under plain `npm run dev` (see below).
 
 ### 3. Run in dev mode
 ```bash
@@ -45,9 +40,9 @@ The app opens at http://localhost:5173
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|---|---|---|
-| `GEMINI_API_KEY` | Yes | Your Google Gemini API key |
+| Variable | Required | Where it's set | Description |
+|---|---|---|---|
+| `ANTHROPIC_API_KEY` | Yes, for AI features | Server-side only (Vercel project settings, not `.env.local`) | Used by `api/claude.ts` to call Claude. Never exposed to the client. |
 
 ---
 
@@ -62,6 +57,8 @@ construction-budget-v4/
 ├── constants.ts             # Initial state, config, AI system prompts
 ├── styles.css               # Custom CSS (Tailwind extended)
 ├── vite.config.ts           # Vite config (UMD widget build)
+├── api/
+│   └── claude.ts            # Vercel serverless function — holds ANTHROPIC_API_KEY, proxies Claude calls
 ├── components/
 │   ├── Step1Form.tsx        # Property details step
 │   ├── Step2Budget.tsx      # Line-item budget entry (main view)
@@ -80,7 +77,10 @@ construction-budget-v4/
 │   ├── riskEngine.ts        # Risk score + deal grade calculations
 │   ├── scoring.ts           # Application strength scoring
 │   ├── budgetGuidanceEngine.ts  # Budget validation guidance
-│   └── offlineStorage.ts   # IndexedDB for offline assets
+│   ├── offlineStorage.ts   # IndexedDB for offline assets
+│   ├── claudeClient.ts     # Client-side helper: POSTs to /api/claude for structured AI output
+│   ├── budgetMath.ts       # roundBudget() — whole-dollar rounding
+│   └── itemNumbering.ts    # computeMaxItemSuffix() — item # generation for AI-created items
 ├── walkthroughConstants.ts  # Room/item definitions for walkthrough
 └── tutorialSteps.ts         # Shepherd.js tour step definitions
 ```
@@ -90,7 +90,7 @@ construction-budget-v4/
 ## Key Architectural Patterns
 
 - **All state is centralized in `App.tsx`** — passed down as props. There is no global state library (no Redux/Zustand).
-- **AI calls use `@google/genai`** via the `GEMINI_API_KEY` env var. Look for `GoogleGenAI` usage in `App.tsx` for the pattern.
+- **AI calls go through `callClaudeForStructuredOutput()`** (`utils/claudeClient.ts`), which POSTs to `/api/claude` (a Vercel serverless function) using a forced tool call for structured JSON output. Look for that function's usage in `App.tsx`, `ScopeAuditModal.tsx`, and `BulkPhotoUploader.tsx` for the pattern. All migrated features use `CLAUDE_MODELS.OPUS` (`constants.ts`).
 - **Budget data** is stored as `BudgetCategoryData[]` — categories containing `BudgetItem[]`. See `types.ts`.
 - **Local persistence** uses `localStorage` (key: `constructionBudgetData_v4`) + IndexedDB for binary assets (photos).
 - The app can run as a **standalone widget** (UMD build) mounted via `window.ConstructionBudget.mount()`, or as a standard SPA in dev.

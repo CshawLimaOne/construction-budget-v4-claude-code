@@ -1,12 +1,9 @@
 
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { WalkthroughRoomDef, WalkthroughItemRecord, WalkthroughItemStatus, BatchRoomUpdate } from '../types';
-import { ChevronLeftIcon, CameraIcon, CheckIcon, TrashIcon, SpinnerIcon, LightBulbIcon, ChevronRightIcon, AudioWavesIcon, WavesIcon, CalculatorIcon } from './Icons';
-import { VoiceRecorder } from './VoiceRecorder';
+import { WalkthroughRoomDef, WalkthroughItemRecord, WalkthroughItemStatus } from '../types';
+import { ChevronLeftIcon, CameraIcon, CheckIcon, TrashIcon, LightBulbIcon, ChevronRightIcon, CalculatorIcon } from './Icons';
 import { COST_DB, UNIT_COST_DB, MOCK_HISTORICAL_DATA } from '../constants';
 import { CameraModal } from './CameraModal';
-import { GoogleGenAI, Type } from '@google/genai';
-import { saveAsset } from '../utils/offlineStorage';
 import { ShowToastFn } from './Toast';
 
 // --- Room icon helpers (mirrors WalkthroughDashboard, scoped here to avoid cross-component coupling) ---
@@ -46,7 +43,6 @@ interface WalkthroughRoomViewProps {
   onPrevRoom?: () => void;
   nextRoomLabel?: string;
   prevRoomLabel?: string;
-  onAddPendingJob?: (job: any) => void; // New prop for offline handling
   onToast?: ShowToastFn;
 }
 
@@ -59,9 +55,8 @@ const WalkthroughItemRow: React.FC<{
   onOpenCamera: () => void;
   onToast?: ShowToastFn;
 }> = ({ itemDef, roomId, itemState, onUpdate, quality, onOpenCamera, onToast }) => {
-  const status = itemState?.status || ''; 
+  const status = itemState?.status || '';
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isProcessingVoice, setIsProcessingVoice] = useState(false);
   const [showHistoricalPrompt, setShowHistoricalPrompt] = useState(false);
 
   // "Show the Math" Logic
@@ -116,98 +111,6 @@ const WalkthroughItemRow: React.FC<{
     }
   };
 
-  const calculateCostFromText = (text: string): number | null => {
-      const quantityMatch = text.match(/(\d+([\.,]\d+)?)\s*(sqft|sq\.ft\.|sf|square feet|linear feet|lf|ft)/i);
-      
-      if (quantityMatch && quantityMatch[1]) {
-          const quantity = parseFloat(quantityMatch[1].replace(',', ''));
-          const unitCostData = UNIT_COST_DB[itemDef.defaultCostCode];
-          
-          if (unitCostData) {
-              const unitPrice = unitCostData[quality] || unitCostData['Q4']; 
-              if (unitPrice) {
-                  return Math.round(quantity * unitPrice);
-              }
-          }
-      }
-      return null;
-  };
-  
-  const processVoice = async (blob: Blob) => {
-      setIsProcessingVoice(true);
-      // Fallback for offline single-item voice currently not fully implemented in this MVP due to complexity,
-      // focusing on Batch Room offline mode which is the "Magic Feature".
-      try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-        
-        const base64Audio = await new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const result = reader.result as string;
-                const base64 = result.split(',')[1];
-                resolve(base64);
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-        });
-
-        const prompt = `
-            You are a construction estimator assistant processing voice notes from a site walkthrough.
-            Context: Room: ${roomId}, Item: ${itemDef.label}.
-            Analyze the audio. Extract:
-            - action: 'Replace', 'Repair', or 'Keep'
-            - description: The work needed.
-            - costEstimate: Number, ONLY if the user explicitly says a dollar amount.
-        `;
-        
-        const response = await ai.models.generateContent({
-            model: 'gemini-3-flash-preview',
-            contents: {
-                parts: [
-                    { text: prompt },
-                    { inlineData: { mimeType: 'audio/webm', data: base64Audio } }
-                ]
-            },
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: Type.OBJECT,
-                    properties: {
-                        action: { type: Type.STRING },
-                        description: { type: Type.STRING },
-                        costEstimate: { type: Type.NUMBER }
-                    }
-                },
-                temperature: 0.1
-            }
-        });
-
-        const result = JSON.parse(response.text);
-        
-        if (result.action && result.action !== 'Keep') {
-            handleStatusChange(result.action);
-        }
-        
-        const currentNotes = itemState?.notes || '';
-        const newNotes = currentNotes ? `${currentNotes}\n${result.description}` : result.description;
-        onUpdate('notes', newNotes);
-        
-        let calculatedCost = result.costEstimate;
-        if (!calculatedCost || calculatedCost === 0) {
-            calculatedCost = calculateCostFromText(result.description);
-        }
-
-        if (calculatedCost && calculatedCost > 0) {
-            onUpdate('costEstimate', calculatedCost);
-        }
-
-      } catch (err) {
-          console.error(err);
-          onToast?.("Failed to process voice note. Please try again online.", 'error');
-      } finally {
-          setIsProcessingVoice(false);
-      }
-  };
 
   const isExpanded = status === 'Replace' || status === 'Repair';
   let containerBorderClass = 'border-[#DFE1E5]';
@@ -297,18 +200,12 @@ const WalkthroughItemRow: React.FC<{
             </div>
             <div>
               <label className="block text-[10px] font-bold text-[#78819D] uppercase mb-1">Notes / Scope</label>
-              <div className="flex gap-2">
-                <textarea
-                  value={itemState?.notes || ''}
-                  onChange={(e) => onUpdate('notes', e.target.value)}
-                  className="flex-grow p-3 rounded-xl border border-[#DFE1E5] bg-white text-[#1E2D5C] text-sm min-h-[80px] focus:border-brand-500 outline-none resize-none"
-                  placeholder="Describe work needed..."
-                />
-                <div className="flex-shrink-0 flex flex-col justify-end items-center gap-2">
-                   {isProcessingVoice && <SpinnerIcon className="w-5 h-5 text-brand-400 animate-spin" />}
-                   <VoiceRecorder onRecordingComplete={processVoice} className="shadow-lg" onToast={onToast} />
-                </div>
-              </div>
+              <textarea
+                value={itemState?.notes || ''}
+                onChange={(e) => onUpdate('notes', e.target.value)}
+                className="w-full p-3 rounded-xl border border-[#DFE1E5] bg-white text-[#1E2D5C] text-sm min-h-[80px] focus:border-brand-500 outline-none resize-none"
+                placeholder="Describe work needed..."
+              />
             </div>
             <div>
               <div className="flex justify-between items-center mb-2">
@@ -345,12 +242,9 @@ const WalkthroughItemRow: React.FC<{
   );
 };
 
-export const WalkthroughRoomView: React.FC<WalkthroughRoomViewProps> = ({ room, itemsState, onUpdateItem, onBack, selectedQuality, onNextRoom, onPrevRoom, nextRoomLabel, prevRoomLabel, onAddPendingJob, onToast }) => {
+export const WalkthroughRoomView: React.FC<WalkthroughRoomViewProps> = ({ room, itemsState, onUpdateItem, onBack, selectedQuality, onNextRoom, onPrevRoom, nextRoomLabel, prevRoomLabel, onToast }) => {
   const total = (Object.values(itemsState) as WalkthroughItemRecord[]).reduce((acc, item) => acc + (item.costEstimate || 0), 0);
   const [cameraTargetId, setCameraTargetId] = useState<string | null>(null);
-  const [isProcessingRoom, setIsProcessingRoom] = useState(false);
-  const [processingStage, setProcessingStage] = useState('');
-  const [showOfflineNotice, setShowOfflineNotice] = useState(false);
 
   const handleCameraSave = (photos: { file: File, preview: string }[]) => {
       if (cameraTargetId) {
@@ -399,134 +293,6 @@ export const WalkthroughRoomView: React.FC<WalkthroughRoomViewProps> = ({ room, 
       prevAllComplete.current = allItemsComplete;
   }, [allItemsComplete, room.items.length, triggerHaptic]);
 
-  const handleBatchRoomVoice = async (blob: Blob) => {
-      if (isProcessingRoom) return;
-      
-      triggerHaptic(100); 
-      
-      // OFFLINE CHECK
-      if (!navigator.onLine) {
-          if (onAddPendingJob) {
-              const dbKey = `pending_voice_${room.id}_${Date.now()}`;
-              try {
-                  await saveAsset(dbKey, blob);
-                  onAddPendingJob({
-                      id: Date.now().toString(),
-                      type: 'room_voice',
-                      roomId: room.id,
-                      timestamp: Date.now(),
-                      dataKey: dbKey
-                  });
-                  setShowOfflineNotice(true);
-                  triggerHaptic([50, 50]); // Success pattern
-                  setTimeout(() => setShowOfflineNotice(false), 4000);
-              } catch (e) {
-                  console.error("Failed to save offline asset", e);
-                  onToast?.("Failed to save recording locally. Please check storage.", 'error');
-              }
-          }
-          return;
-      }
-
-      setIsProcessingRoom(true);
-      setProcessingStage('Analyzing whole-room audio...');
-
-      try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-        
-        const base64Audio = await new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve((reader.result as string).split(',')[1]);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-        });
-
-        const itemsContext = room.items.map(i => `- ${i.id}: ${i.label}`).join('\n');
-        const systemPrompt = `
-            You are a master construction estimator. The user is recording a "Room Walkthrough" for a ${room.label}.
-            Given the audio, extract updates for these specific items:
-            ${itemsContext}
-
-            For each item mentioned, return:
-            - itemId: The string ID provided above.
-            - status: One of 'Replace', 'Repair', or 'Keep'.
-            - description: A concise note of what the user said about this specific item.
-            - costEstimate: Number, ONLY if the user explicitly stated a specific price.
-
-            If an item is NOT mentioned in the audio, do NOT return it in the list.
-            Ignore background noise. Focus only on the inspector's voice.
-        `;
-
-        setProcessingStage(`Mapping to ${room.label} items...`);
-
-        const response = await ai.models.generateContent({
-            model: 'gemini-3-flash-preview',
-            contents: {
-                parts: [
-                    { text: systemPrompt },
-                    { inlineData: { mimeType: 'audio/webm', data: base64Audio } }
-                ]
-            },
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: Type.ARRAY,
-                    items: {
-                        type: Type.OBJECT,
-                        properties: {
-                            itemId: { type: Type.STRING },
-                            status: { type: Type.STRING },
-                            description: { type: Type.STRING },
-                            costEstimate: { type: Type.NUMBER }
-                        }
-                    }
-                },
-                temperature: 0.1
-            }
-        });
-
-        const updates = JSON.parse(response.text) as BatchRoomUpdate[];
-        
-        if (updates && updates.length > 0) {
-            setProcessingStage(`Applying ${updates.length} updates...`);
-            
-            updates.forEach(update => {
-                const storageKey = `${room.id}_${update.itemId}`;
-                const itemDef = room.items.find(i => i.id === update.itemId);
-                
-                if (itemDef) {
-                    const newStatus = update.status as WalkthroughItemStatus;
-                    onUpdateItem(storageKey, 'status', newStatus);
-                    
-                    let finalCost = update.costEstimate;
-                    if (!finalCost || finalCost === 0) {
-                        const tierCosts = COST_DB[itemDef.defaultCostCode];
-                        if (tierCosts) {
-                            const baseCost = tierCosts[selectedQuality] || tierCosts['Q4'] || 0;
-                            finalCost = newStatus === 'Repair' ? Math.round(baseCost * 0.4) : baseCost;
-                        }
-                    }
-                    
-                    onUpdateItem(storageKey, 'costEstimate', finalCost || 0);
-                    onUpdateItem(storageKey, 'notes', update.description);
-                }
-            });
-            triggerHaptic([50, 30, 50]); // Success pattern
-        }
-
-      } catch (err) {
-          console.error(err);
-          onToast?.("Batch processing failed. Try again or record items individually.", 'error');
-      } finally {
-          setIsProcessingRoom(false);
-          setProcessingStage('');
-      }
-  };
-
-  const handleStartRecord = () => {
-      triggerHaptic(50); // Small buzz on start
-  };
-
   return (
     <>
         <div
@@ -553,58 +319,6 @@ export const WalkthroughRoomView: React.FC<WalkthroughRoomViewProps> = ({ room, 
                 <div className="text-lg font-mono font-bold text-brand-500">${total.toLocaleString()}</div>
             </div>
         </div>
-
-        {/* Offline Notice */}
-        {showOfflineNotice && (
-            <div className="p-4 bg-[#FFF5DB] border-b border-[#EDDDB1] animate-in fade-in slide-in-from-top-4">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-[#EAA800] rounded-full text-white">
-                        <WavesIcon className="w-4 h-4" />
-                    </div>
-                    <div>
-                        <h4 className="font-bold text-[#EAA800] text-sm">Saved to Device</h4>
-                        <p className="text-[10px] text-[#78819D]">
-                            Recording queued. Will sync automatically when online.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        )}
-
-        {/* Continuous Flow Mode CTA */}
-        <div className="mx-4 mt-4 mb-2 p-4 bg-brand-50 border border-brand-200 rounded-xl">
-            <div className="flex items-center justify-between gap-4">
-                <div className="flex-grow">
-                    <div className="flex items-center gap-2 mb-1">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
-                        <h4 className="text-sm font-bold text-[#1E2D5C] tracking-tight">
-                            AI Room Scan
-                        </h4>
-                        <span className="inline-flex text-[10px] font-bold bg-brand-500 text-white px-2 py-0.5 rounded-full uppercase tracking-widest">
-                            Recommended
-                        </span>
-                    </div>
-                    <p className="text-[11px] text-[#78819D] leading-snug">
-                        Hold the mic button and describe the whole room aloud. AI will fill in every item automatically.
-                    </p>
-                </div>
-                <VoiceRecorder onRecordingComplete={handleBatchRoomVoice} className="scale-110" onToast={onToast} />
-            </div>
-        </div>
-
-        {/* Processing Overlay */}
-        {isProcessingRoom && (
-            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center p-8 text-center animate-in fade-in duration-300" style={{ backgroundColor: 'rgba(4,11,31,0.5)' }}>
-                <div className="relative mb-6">
-                    <div className="w-24 h-24 border-4 border-brand-200 border-t-brand-500 rounded-full animate-spin"></div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <AudioWavesIcon className="w-10 h-10 text-brand-500 animate-pulse" />
-                    </div>
-                </div>
-                <h3 className="text-xl font-black text-white mb-2">Magic in progress...</h3>
-                <p className="text-sm font-mono text-brand-200 animate-pulse uppercase tracking-widest">{processingStage}</p>
-            </div>
-        )}
 
         {/* List */}
         <div className="flex-grow overflow-y-auto p-4 custom-scrollbar">

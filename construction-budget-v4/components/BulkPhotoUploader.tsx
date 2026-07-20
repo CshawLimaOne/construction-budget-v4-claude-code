@@ -4,7 +4,8 @@ import { BudgetCategoryData } from '../types';
 import { StagedPhoto } from '../App';
 import { ComplexModal } from './ComplexModal';
 import { CloudUploadIcon, SparklesIcon, SpinnerIcon } from './Icons';
-import { GoogleGenAI, Type } from '@google/genai';
+import { CLAUDE_MODELS } from '../constants';
+import { callClaudeForStructuredOutput, toClaudeContentBlock, ClaudeContentBlock } from '../utils/claudeClient';
 import { ShowToastFn } from './Toast';
 
 interface BulkPhotoUploaderProps {
@@ -72,32 +73,25 @@ export const BulkPhotoUploader: React.FC<BulkPhotoUploaderProps> = ({
       setIsAnalyzing(true);
 
       try {
-          const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-          
           // 1. Prepare Budget Schema for AI
-          const budgetSchema = budgetData.flatMap(cat => 
+          const budgetSchema = budgetData.flatMap(cat =>
               cat.items.map(item => ({
                   id: `ITEM:${item.id}`,
                   name: `${cat.name} - ${item.drawItem || item.description || 'Item'}`
               }))
           );
-          
+
           // Limit schema size for prompt efficiency, most critical items usually top of list
-          const schemaText = JSON.stringify(budgetSchema.slice(0, 150)); 
+          const schemaText = JSON.stringify(budgetSchema.slice(0, 150));
 
           // 2. Prepare Images
-          // Gemini 1.5/3 Flash supports multiple images. We'll batch if necessary, but assume < 16 photos for burst.
-          const imageParts = await Promise.all(photosToAnalyze.map(async (item) => {
-              return new Promise<any>((resolve, reject) => {
+          // Claude's vision API supports multiple images in one message. We'll batch if necessary, but assume < 16 photos for burst.
+          const imageParts: ClaudeContentBlock[] = await Promise.all(photosToAnalyze.map(async (item) => {
+              return new Promise<ClaudeContentBlock>((resolve, reject) => {
                   const reader = new FileReader();
                   reader.onloadend = () => {
                       const base64String = (reader.result as string).split(',')[1];
-                      resolve({
-                          inlineData: {
-                              data: base64String,
-                              mimeType: item.photo.file.type
-                          }
-                      });
+                      resolve(toClaudeContentBlock(item.photo.file.type, base64String));
                   };
                   reader.onerror = reject;
                   reader.readAsDataURL(item.photo.file);
@@ -106,50 +100,46 @@ export const BulkPhotoUploader: React.FC<BulkPhotoUploaderProps> = ({
 
           // 3. Construct Prompt
           const prompt = `
-            You are a construction estimator. 
+            You are a construction estimator.
             I am uploading ${photosToAnalyze.length} images from a site inspection.
-            
+
             Match each image (in order) to the most appropriate Budget Item from this list:
             ${schemaText}
-            
+
             Return a JSON object where 'assignments' is an array. Each object in the array should have:
             - 'imageIndex': The 0-based index of the image from the uploaded set.
             - 'itemId': The 'id' of the matching Budget Item from the list above.
-            
+
             If an image clearly shows a specific trade (e.g. toilet -> plumbing fixture, hole in roof -> roofing), assign it.
             If ambiguous, skip it or return null for itemId.
           `;
 
-          const response = await ai.models.generateContent({
-              model: 'gemini-3-flash-preview',
-              contents: {
-                  parts: [
-                      { text: prompt },
-                      ...imageParts
-                  ]
-              },
-              config: {
-                  responseMimeType: "application/json",
-                  responseSchema: {
-                      type: Type.OBJECT,
-                      properties: {
-                          assignments: {
-                              type: Type.ARRAY,
-                              items: {
-                                  type: Type.OBJECT,
-                                  properties: {
-                                      imageIndex: { type: Type.INTEGER },
-                                      itemId: { type: Type.STRING }
-                                  }
+          const result = await callClaudeForStructuredOutput({
+              model: CLAUDE_MODELS.OPUS,
+              content: [
+                  { type: 'text', text: prompt },
+                  ...imageParts
+              ],
+              toolName: 'assign_photos',
+              toolDescription: 'Match each uploaded site photo to the most appropriate budget line item.',
+              inputSchema: {
+                  type: 'object',
+                  properties: {
+                      assignments: {
+                          type: 'array',
+                          items: {
+                              type: 'object',
+                              properties: {
+                                  imageIndex: { type: 'integer' },
+                                  itemId: { type: 'string' }
                               }
                           }
                       }
-                  }
-              }
+                  },
+                  required: ['assignments']
+              },
           });
 
-          const result = JSON.parse(response.text);
-          
           if (result.assignments) {
               result.assignments.forEach((assignment: any) => {
                   if (assignment.itemId && assignment.imageIndex < photosToAnalyze.length) {
